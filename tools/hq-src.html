@@ -1,0 +1,1099 @@
+<title>Aedes Dei HQ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Figtree:wght@400;500;600;700&family=Marcellus&display=swap">
+<style>
+/* Layout: navy sidebar (the clinic's "night" colour) + warm cream workspace; gold only for state and focus. */
+:root{
+  --cream:#F8F6F2; --paper:#FFFFFF; --beige:#E9DFD2; --beige-2:#F2ECE3; --navy:#25394B; --navy-deep:#1B2A38; --gold:#B99A6B; --gold-ink:#8A6D42; --taupe:#8C7B6B; --char:#2F2F2F; --muted:#7A7068;
+  --line:#E6DED2; --line-2:#EFE9E0; --ok:#4F7A62; --ok-bg:#E5EFE8; --warn:#A8742E; --warn-bg:#F6EBD9; --bad:#A4534B; --bad-bg:#F5E3E0; --info:#3F6E8C; --info-bg:#E2ECF2;
+  --f-caps:"Marcellus",Georgia,serif; --f-disp:"Cormorant Garamond",Georgia,serif; --f:"Figtree","Helvetica Neue",Arial,sans-serif;
+  --r:14px; --sh:0 1px 2px rgba(37,57,75,.06),0 8px 24px -12px rgba(37,57,75,.18);
+  --ease:cubic-bezier(.22,.8,.18,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{margin:0;background:var(--cream);color:var(--char);font-family:var(--f);font-size:14.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+
+/* ---------- auth ---------- */
+.auth{min-height:100%;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+.auth-art{position:relative;overflow:hidden;background:var(--navy-deep);color:var(--cream);display:flex;flex-direction:column;justify-content:space-between;padding:44px max(44px,env(safe-area-inset-left,0px));min-height:100%}
+.auth-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;transform:scale(1.04);animation:slow 24s ease-in-out infinite alternate}
+@keyframes slow{to{transform:scale(1.12) translate(-1%,-1%)}}
+.auth-art::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(27,42,56,.55),rgba(27,42,56,.92))}
+.auth-art>*{position:relative;z-index:1}
+.wm b{display:block;font-family:var(--f-caps);font-weight:400;font-size:26px;letter-spacing:.28em}
+.wm small{display:block;font-size:10px;letter-spacing:.5em;color:var(--gold);margin-top:6px}
+.auth-art blockquote{margin:0;font-family:var(--f-disp);font-size:clamp(30px,3.4vw,46px);line-height:1.1;font-weight:400;max-width:15ch}
+.auth-art blockquote em{color:var(--gold)}
+.auth-art .foot{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(248,246,242,.6)}
+.auth-main{display:flex;align-items:center;justify-content:center;padding:40px max(20px,env(safe-area-inset-right,0px)) 40px max(20px,env(safe-area-inset-left,0px))}
+.auth-card{width:100%;max-width:400px;display:flex;flex-direction:column;gap:22px}
+.auth-card h1{font-family:var(--f-disp);font-weight:400;font-size:40px;line-height:1.05;margin:0;color:var(--navy)}
+.auth-card h1 em{color:var(--gold-ink)}
+.auth-card p.sub{margin:-8px 0 0;color:var(--muted)}
+.tabs{display:flex;gap:4px;background:var(--beige-2);padding:4px;border-radius:999px}
+.tabs button{flex:1;padding:9px 12px;border-radius:999px;font-weight:600;font-size:13.5px;color:var(--muted);transition:all .3s var(--ease)}
+.tabs button.on{background:var(--paper);color:var(--navy);box-shadow:var(--sh)}
+.demo-banner{background:var(--warn-bg);color:#6d4c1c;border-radius:12px;padding:12px 14px;font-size:13px;display:flex;gap:10px;align-items:flex-start}
+
+/* ---------- form controls ---------- */
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f>label,.lbl{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.in,select.in,textarea.in{width:100%;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none;transition:border-color .2s,box-shadow .2s;min-width:0}
+.in:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(185,154,107,.18)}
+textarea.in{resize:vertical;min-height:90px;line-height:1.55}
+select.in{appearance:none;-webkit-appearance:none;padding-right:32px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238C7B6B' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.full{grid-column:1/-1}
+.check{display:flex;gap:10px;align-items:center;font-size:13.5px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--navy)}
+.err{color:var(--bad);font-size:13px;min-height:1em}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:10px;font-weight:600;font-size:13.5px;transition:background .2s,color .2s,box-shadow .2s,transform .1s;white-space:nowrap;border:1px solid transparent}
+.btn:active{transform:translateY(1px)}
+.btn.p{background:var(--navy);color:var(--cream)}
+.btn.p:hover{background:#1d2e3d}
+.btn.g{background:var(--gold);color:var(--navy-deep)}
+.btn.g:hover{background:#c6a97c}
+.btn.s{background:var(--paper);border-color:var(--line);color:var(--navy)}
+.btn.s:hover{border-color:var(--gold)}
+.btn.q{color:var(--navy);padding:8px 10px}
+.btn.q:hover{background:var(--beige-2)}
+.btn.d{color:var(--bad)}
+.btn.d:hover{background:var(--bad-bg)}
+.btn.lg{padding:13px 18px;font-size:14.5px;border-radius:12px}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.iconbtn{width:36px;height:36px;border-radius:10px;display:inline-grid;place-items:center;color:var(--navy)}
+.iconbtn:hover{background:var(--beige-2)}
+
+/* ---------- shell ---------- */
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);height:100%}
+.side{background:var(--navy-deep);color:rgba(248,246,242,.86);display:flex;flex-direction:column;padding:24px 14px 16px max(14px,env(safe-area-inset-left,0px));gap:6px;position:relative;overflow:hidden}
+.side::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;border:1px solid rgba(185,154,107,.16);left:-210px;bottom:-160px;pointer-events:none}
+.side{--logo-ink:#E9DFD2;--flame-navy:#F8F6F2}
+.auth-art{--logo-ink:#F1E7D8;--flame-navy:#F8F6F2}
+.side .wm{padding:4px 12px 24px;display:flex;align-items:flex-end;gap:10px}
+.side .wm .lgs{width:150px;height:38px;overflow:visible}
+.side .wm small{font-size:10px;font-weight:700;letter-spacing:.3em;color:var(--gold);margin:0 0 4px}
+.auth-art .lgx{width:min(300px,70%);height:auto;aspect-ratio:752/247;overflow:visible;display:block}
+.auth-art .wm small{margin-top:10px}
+.side .wm svg{width:26px;height:32px;flex:none}
+.side .wm b{font-size:17px;letter-spacing:.24em;color:var(--cream)}
+.side .wm small{font-size:8.5px;letter-spacing:.42em;margin-top:5px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;text-decoration:none;font-weight:500;color:rgba(248,246,242,.72);transition:background .2s,color .2s;position:relative}
+.nav a:hover{background:rgba(248,246,242,.06);color:var(--cream)}
+.nav a.on{background:rgba(185,154,107,.16);color:var(--cream)}
+.nav a.on::before{content:"";position:absolute;left:-14px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:var(--gold)}
+.nav .badge{margin-left:auto;background:var(--gold);color:var(--navy-deep);font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;min-width:22px;text-align:center}
+.side .sp{flex:1}
+.side .sect{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(248,246,242,.4);padding:16px 12px 6px}
+.me{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;background:rgba(248,246,242,.05)}
+.me .nm{min-width:0;flex:1}
+.me .nm b{display:block;font-size:13.5px;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.me .nm span{font-size:11.5px;color:rgba(248,246,242,.55)}
+.me .iconbtn{color:rgba(248,246,242,.7)}
+.me .iconbtn:hover{background:rgba(248,246,242,.08)}
+.langs{display:flex;gap:4px;padding:8px 12px}
+.langs button{font-size:11px;font-weight:700;letter-spacing:.14em;padding:4px 9px;border-radius:999px;color:rgba(248,246,242,.55)}
+.langs button.on{background:rgba(248,246,242,.12);color:var(--cream)}
+.av{width:34px;height:34px;border-radius:50%;display:inline-grid;place-items:center;font-size:12.5px;font-weight:700;color:#fff;flex:none;letter-spacing:.02em}
+.av.sm{width:26px;height:26px;font-size:10.5px}
+.avs{display:flex}.avs .av{border:2px solid var(--paper);margin-left:-6px}.avs .av:first-child{margin-left:0}
+
+.main{display:flex;flex-direction:column;min-width:0;height:100%;overflow:hidden}
+.top{display:flex;align-items:center;gap:14px;padding:18px max(28px,env(safe-area-inset-right,0px)) 14px 28px;border-bottom:1px solid var(--line-2);background:rgba(248,246,242,.92);backdrop-filter:blur(10px);position:relative;z-index:5}
+.top h2{margin:0;font-family:var(--f-disp);font-weight:500;font-size:30px;color:var(--navy);line-height:1}
+.top .sub{color:var(--muted);font-size:13px;margin-top:4px}
+.top .tt{min-width:0;flex:1}
+.search{position:relative;width:min(300px,30vw)}
+.search .in{padding-left:36px;border-radius:999px;background:var(--paper)}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--taupe)}
+.sres{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh);max-height:360px;overflow:auto;z-index:20;padding:6px}
+.sres a{display:block;padding:9px 10px;border-radius:8px;text-decoration:none;font-size:13.5px}
+.sres a:hover{background:var(--beige-2)}
+.sres a small{display:block;color:var(--muted);font-size:12px}
+.view{flex:1;overflow:auto;padding:24px max(28px,env(safe-area-inset-right,0px)) 40px 28px;-webkit-overflow-scrolling:touch}
+.menuwrap{position:relative}
+.dropdown{position:absolute;right:0;top:calc(100% + 6px);background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh);padding:6px;min-width:210px;z-index:30}
+.dropdown button{display:flex;gap:10px;align-items:center;width:100%;text-align:left;padding:10px 12px;border-radius:8px;font-weight:500}
+.dropdown button:hover{background:var(--beige-2)}
+
+/* ---------- cards / tiles ---------- */
+.card{background:var(--paper);border:1px solid var(--line-2);border-radius:var(--r);box-shadow:0 1px 2px rgba(37,57,75,.04)}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 18px 10px}
+.card-h h3{margin:0;font-size:14px;font-weight:700;color:var(--navy);letter-spacing:.01em}
+.card-b{padding:6px 18px 18px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.tile{padding:16px 18px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;text-decoration:none}
+.tile .k{font-size:12px;font-weight:600;color:var(--muted)}
+.tile .v{font-family:var(--f-disp);font-size:40px;line-height:1;color:var(--navy);font-weight:500;font-variant-numeric:lining-nums tabular-nums}
+.tile .h{font-size:12px;color:var(--muted)}
+.tile.hl{background:var(--navy);border-color:var(--navy)}
+.tile.hl .k,.tile.hl .h{color:rgba(248,246,242,.7)}
+.tile.hl .v{color:var(--cream)}
+.tile.hl::after{content:"";position:absolute;width:140px;height:140px;border-radius:50%;border:1px solid rgba(185,154,107,.4);right:-50px;top:-60px}
+.hello{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.hello h1{margin:0;font-family:var(--f-disp);font-weight:400;font-size:clamp(30px,3.2vw,40px);color:var(--navy);line-height:1.05}
+.hello h1 em{color:var(--gold-ink)}
+.hello p{margin:6px 0 0;color:var(--muted)}
+.dash{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+/* lists */
+.rows{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-top:1px solid var(--line-2);text-decoration:none;color:inherit;cursor:pointer;transition:background .15s;min-width:0}
+.row:hover{background:var(--beige-2)}
+.row .main-t{min-width:0;flex:1}
+.row .main-t b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--navy)}
+.row .main-t span{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.empty{padding:26px 18px;text-align:center;color:var(--muted);font-size:13.5px}
+.empty b{display:block;color:var(--navy);font-family:var(--f-disp);font-size:22px;font-weight:500;margin-bottom:4px}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;letter-spacing:.01em}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-new{background:var(--warn-bg);color:var(--warn)}
+.st-open{background:var(--info-bg);color:var(--info)}
+.st-replied{background:var(--beige-2);color:var(--taupe)}
+.st-scheduled{background:var(--ok-bg);color:var(--ok)}
+.st-closed{background:#EEEDEA;color:#7c7a75}
+.st-declined{background:var(--bad-bg);color:var(--bad)}
+.src{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);border:1px solid var(--line);padding:2px 7px;border-radius:6px}
+
+/* timeline (agenda list on dashboard) */
+.tl{display:flex;flex-direction:column}
+.tl-item{display:grid;grid-template-columns:62px 4px minmax(0,1fr);gap:12px;padding:10px 18px;border-top:1px solid var(--line-2);cursor:pointer}
+.tl-item:hover{background:var(--beige-2)}
+.tl-item .t{font-weight:700;color:var(--navy);font-size:13.5px;line-height:1.2}
+.tl-item .t small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+.tl-item .bar{border-radius:4px}
+.tl-item b{display:block;color:var(--navy);font-weight:600}
+.tl-item span{font-size:12.5px;color:var(--muted)}
+.dayhdr{padding:10px 18px 4px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink);border-top:1px solid var(--line-2)}
+
+/* ---------- requests (two pane) ---------- */
+.inbox{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:16px;height:100%;min-height:0}
+.view.full-h{display:flex;flex-direction:column;overflow:hidden}
+.view.full-h>.inbox{flex:1}
+.ilist{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.filters{display:flex;gap:6px;padding:12px 12px 10px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line-2)}
+.filters button{font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:999px;color:var(--muted);white-space:nowrap;border:1px solid transparent}
+.filters button.on{background:var(--navy);color:var(--cream)}
+.filters button:not(.on):hover{border-color:var(--line)}
+.filters .c{opacity:.7;margin-left:4px;font-variant-numeric:tabular-nums}
+.ilist .scroll{overflow:auto;flex:1}
+.ritem{display:block;padding:13px 14px 13px 16px;border-bottom:1px solid var(--line-2);cursor:pointer;position:relative;transition:background .15s}
+.ritem:hover{background:var(--beige-2)}
+.ritem.on{background:#F4EEE5}
+.ritem.on::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.ritem .l1{display:flex;align-items:center;gap:8px}
+.ritem .l1 b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--navy);font-weight:600}
+.ritem.unread .l1 b::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-left:7px;vertical-align:middle}
+.ritem .l1 time{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.ritem .l2{font-size:12.5px;color:var(--muted);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ritem .l3{display:flex;gap:6px;align-items:center;margin-top:8px}
+.detail{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.detail .scroll{overflow:auto;flex:1;padding:0 22px 22px}
+.dh{display:flex;align-items:flex-start;gap:14px;padding:18px 22px 14px;border-bottom:1px solid var(--line-2);flex-wrap:wrap}
+.dh .who{flex:1;min-width:200px}
+.dh h3{margin:0;font-family:var(--f-disp);font-weight:500;font-size:28px;color:var(--navy);line-height:1.1}
+.dh .meta{color:var(--muted);font-size:13px;margin-top:4px}
+.dh .acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1px;background:var(--line-2);border:1px solid var(--line-2);border-radius:12px;overflow:hidden;margin:18px 0}
+.facts div{background:var(--paper);padding:10px 14px;min-width:0}
+.facts span{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--taupe)}
+.facts b{display:block;font-weight:500;color:var(--char);overflow-wrap:anywhere}
+.facts a{color:var(--navy)}
+.thread{display:flex;flex-direction:column;gap:12px}
+.msg{max-width:min(640px,92%);border-radius:14px;padding:12px 14px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.6}
+.msg .mh{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:6px;white-space:normal}
+.msg .mh b{color:var(--navy)}
+.msg.in{background:var(--paper);border:1px solid var(--line);align-self:flex-start}
+.msg.out{background:var(--navy);color:rgba(248,246,242,.94);align-self:flex-end}
+.msg.out .mh,.msg.out .mh b{color:rgba(248,246,242,.7)}
+.msg.note{background:#FBF4E6;border:1px dashed #E2C99E;align-self:stretch;max-width:none}
+.msg.note .mh b{color:var(--gold-ink)}
+.msg.auto{opacity:.75}
+.msg .more{display:block;margin-top:6px;font-size:12px;text-decoration:underline;color:inherit;opacity:.8}
+.composer{border-top:1px solid var(--line-2);padding:14px 22px 16px;background:var(--paper);display:flex;flex-direction:column;gap:10px}
+.composer .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.composer textarea{min-height:110px}
+.seg{display:inline-flex;background:var(--beige-2);border-radius:10px;padding:3px}
+.seg button{padding:6px 12px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.seg button.on{background:var(--paper);color:var(--navy);box-shadow:var(--sh)}
+.back{display:none}
+
+/* ---------- agenda ---------- */
+.cal-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.cal-top h3{margin:0 8px 0 4px;font-family:var(--f-disp);font-weight:500;font-size:26px;color:var(--navy);min-width:180px;text-transform:capitalize}
+.cal-top .sp{flex:1}
+.who-f{display:flex;gap:6px;flex-wrap:wrap}
+.who-f button{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:5px 10px 5px 6px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--muted)}
+.who-f button.on{border-color:var(--navy);color:var(--navy)}
+.who-f .dot{width:14px;height:14px;border-radius:50%}
+.month{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line-2);border-radius:var(--r);overflow:hidden;background:var(--line-2);gap:1px}
+.month .dow{background:var(--beige-2);padding:8px 10px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe)}
+.mday{background:var(--paper);min-height:118px;padding:6px 6px 8px;display:flex;flex-direction:column;gap:3px;cursor:pointer;min-width:0;transition:background .15s}
+.mday:hover{background:#FDFBF8}
+.mday.out{background:#FBF9F5}
+.mday.out .dn{color:#c2b9ad}
+.mday .dn{font-size:12.5px;font-weight:600;color:var(--navy);width:26px;height:26px;display:grid;place-items:center;border-radius:50%;margin-bottom:2px;font-variant-numeric:tabular-nums}
+.mday.today .dn{background:var(--gold);color:var(--navy-deep)}
+.ev{display:block;font-size:12px;line-height:1.3;padding:3px 7px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;font-weight:500;cursor:pointer;text-align:left;width:100%}
+.ev.cx{opacity:.45;text-decoration:line-through}
+.more-ev{font-size:11.5px;color:var(--muted);padding-left:6px}
+.week{display:grid;grid-template-columns:54px repeat(7,minmax(0,1fr));border:1px solid var(--line-2);border-radius:var(--r);background:var(--paper);overflow:hidden;min-width:760px}
+.week-wrap{overflow-x:auto}
+.wk-h{padding:10px 8px;text-align:center;border-bottom:1px solid var(--line-2);border-left:1px solid var(--line-2);font-size:12px;color:var(--muted)}
+.wk-h b{display:block;font-family:var(--f-disp);font-size:24px;font-weight:500;color:var(--navy);line-height:1;margin-top:2px;font-variant-numeric:lining-nums}
+.wk-h.today b{color:var(--gold-ink)}
+.wk-times{position:relative}
+.wk-times span{position:absolute;right:8px;font-size:11px;color:var(--muted);transform:translateY(-50%)}
+.wk-col{position:relative;border-left:1px solid var(--line-2);background-image:linear-gradient(var(--line-2) 1px,transparent 1px);background-size:100% 48px;cursor:pointer}
+.wk-col.today{background-color:#FDFAF4}
+.wk-ev{position:absolute;left:4px;right:4px;border-radius:8px;padding:5px 8px;color:#fff;font-size:12px;line-height:1.3;overflow:hidden;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.wk-ev b{display:block;font-weight:600}
+.now-line{position:absolute;left:0;right:0;height:2px;background:var(--bad);z-index:2}
+.now-line::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--bad)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px}
+
+/* ---------- organisations & team ---------- */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.ccard{padding:18px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:box-shadow .2s,border-color .2s}
+.ccard:hover{border-color:var(--gold);box-shadow:var(--sh)}
+.ccard h4{margin:0;font-family:var(--f-disp);font-size:24px;font-weight:500;color:var(--navy);line-height:1.1}
+.ccard .kv{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.ccard .stats{display:flex;gap:16px;border-top:1px solid var(--line-2);padding-top:10px;font-size:12.5px;color:var(--muted)}
+.ccard .stats b{color:var(--navy);font-size:15px;margin-right:4px}
+.table{width:100%;border-collapse:collapse}
+.table th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);padding:10px 18px;border-bottom:1px solid var(--line-2)}
+.table td{padding:12px 18px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+.table tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto}
+.person{display:flex;align-items:center;gap:10px;min-width:0}
+.person b{display:block;color:var(--navy);font-weight:600}
+.person span{font-size:12.5px;color:var(--muted)}
+.role{font-size:12px;font-weight:600;color:var(--navy);background:var(--beige-2);padding:3px 9px;border-radius:6px}
+.callout{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:12px;background:var(--warn-bg);color:#6d4c1c;font-size:13.5px;margin-bottom:16px}
+.callout.info{background:var(--info-bg);color:#284a60}
+.callout.ok{background:var(--ok-bg);color:#2f5640}
+.callout b{display:block}
+.copy{display:flex;gap:8px}
+.copy .in{font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+.set-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.status-dot{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.status-dot::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--bad)}
+.status-dot.ok::before{background:var(--ok)}
+.tpl{border:1px solid var(--line-2);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.act{display:flex;gap:10px;font-size:13px;padding:8px 18px;border-top:1px solid var(--line-2)}
+.act time{color:var(--muted);white-space:nowrap;font-size:12px;min-width:96px}
+
+/* ---------- modal & toast ---------- */
+.ov{position:fixed;inset:0;background:rgba(27,42,56,.42);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:6vh max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));overflow:auto;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.modal{background:var(--paper);border-radius:18px;width:100%;max-width:640px;box-shadow:0 30px 80px -20px rgba(27,42,56,.45);animation:pop .3s var(--ease)}
+@keyframes pop{from{transform:translateY(12px) scale(.98);opacity:0}}
+.modal-h{display:flex;align-items:center;gap:10px;padding:20px 22px 6px}
+.modal-h h3{margin:0;flex:1;font-family:var(--f-disp);font-weight:500;font-size:28px;color:var(--navy)}
+.modal-b{padding:12px 22px 6px;display:flex;flex-direction:column;gap:14px}
+.modal-f{display:flex;gap:8px;justify-content:flex-end;padding:16px 22px 20px;flex-wrap:wrap}
+.modal-f .sp{flex:1}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips label{display:inline-flex;align-items:center;gap:6px;padding:5px 10px 5px 5px;border-radius:999px;border:1px solid var(--line);cursor:pointer;font-size:13px;font-weight:500}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips input:checked+label{border-color:var(--navy);background:var(--navy);color:var(--cream)}
+.chips input:focus-visible+label{outline:2px solid var(--gold)}
+.typesel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.typesel input{position:absolute;opacity:0;pointer-events:none}
+.typesel label{display:flex;align-items:center;gap:8px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px;font-weight:500;cursor:pointer}
+.typesel label i{width:10px;height:10px;border-radius:3px;flex:none}
+.typesel input:checked+label{border-color:var(--navy);box-shadow:inset 0 0 0 1px var(--navy)}
+.toasts{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:max-content;max-width:calc(100vw - 32px)}
+.toast{background:var(--navy-deep);color:var(--cream);padding:11px 18px;border-radius:999px;font-size:13.5px;box-shadow:var(--sh);animation:pop .3s var(--ease);display:flex;gap:10px;align-items:center}
+.toast.bad{background:var(--bad)}
+.spin{width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:rot .8s linear infinite;display:inline-block}
+@keyframes rot{to{transform:rotate(360deg)}}
+.loading{display:grid;place-items:center;height:100%;color:var(--taupe);gap:16px}
+
+/* ---------- responsive ---------- */
+.tabbar{display:none}
+@media (max-width:1100px){
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dash{grid-template-columns:minmax(0,1fr)}
+  .set-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:860px){
+  .auth{grid-template-columns:minmax(0,1fr)}
+  .auth-art{min-height:150px;padding:24px max(20px,env(safe-area-inset-left,0px));justify-content:flex-end}
+  .auth-art blockquote,.auth-art .foot{display:none}
+  .app{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}
+  .side{display:none}
+  .tabbar{display:flex;background:var(--navy-deep);padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));justify-content:space-around}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:rgba(248,246,242,.6);text-decoration:none;padding:6px 8px;border-radius:10px;position:relative;min-width:56px}
+  .tabbar a.on{color:var(--cream);background:rgba(185,154,107,.18)}
+  .tabbar .badge{position:absolute;top:2px;right:10px;background:var(--gold);color:var(--navy-deep);font-size:10px;font-weight:700;border-radius:999px;padding:0 6px}
+  .top{padding:14px max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px));flex-wrap:wrap}
+  .top h2{font-size:26px}
+  .search{order:3;width:100%}
+  .view{padding:16px max(16px,env(safe-area-inset-right,0px)) 28px max(16px,env(safe-area-inset-left,0px))}
+  .inbox{grid-template-columns:minmax(0,1fr);height:auto}
+  .view.full-h{display:block;overflow:auto}
+  .ilist,.detail,.detail .scroll,.ilist .scroll{overflow:visible}
+  .detail .scroll{padding:0 16px 16px}
+  .dh{padding:14px 16px 12px}
+  .composer{padding:14px 16px 16px;border-radius:0 0 var(--r) var(--r)}
+  .tabbar a{min-width:0;flex:1;padding:6px 2px}
+  .inbox.has-sel .ilist{display:none}
+  .inbox:not(.has-sel) .detail{display:none}
+  .back{display:inline-grid}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid2,.grid3,.typesel{grid-template-columns:minmax(0,1fr)}
+  .mday{min-height:74px}
+  .mday .ev{font-size:0;height:6px;padding:0;border-radius:3px}
+  .tiles .tile .v{font-size:32px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mono" viewBox="0 0 30 36"><path d="M2 35V14a13 13 0 0 1 26 0v21" fill="none" stroke="#F8F6F2" stroke-width="1.3"/><path d="M8 35V15.5a7 7 0 0 1 14 0V35" fill="none" stroke="#B99A6B" stroke-width="1.3"/><path d="M15 6v5M12.5 8.5h5" stroke="#B99A6B" stroke-width="1.3"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v12h14V9"/><path d="M10 21v-6h4v6"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5.5 5h13L21 13v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-org" viewBox="0 0 24 24"><path d="M4 21V6l8-3v18"/><path d="M12 9l8 3v9"/><path d="M7.5 8.5v.01M7.5 12.5v.01M7.5 16.5v.01M16 14.5v.01M16 18v.01"/><path d="M2 21h20"/></symbol>
+  <symbol id="i-team" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c2 .7 3.2 2.4 3.6 5.2"/></symbol>
+  <symbol id="i-set" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10 14M21 3l-7 18-4-7-7-4z"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-sync" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16M3 12A9 9 0 0 1 18.5 5.8L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M4 4h16v12l-4 4H4z"/><path d="M16 20v-4h4M8 9h8M8 13h5"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></symbol>
+</svg>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="adfg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9C46F"/><stop offset=".45" stop-color="#C08A33"/><stop offset="1" stop-color="#8E5C1E"/></linearGradient><linearGradient id="adfg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E2B35A"/><stop offset="1" stop-color="#A06A25"/></linearGradient><linearGradient id="adfn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3B527D"/><stop offset=".5" stop-color="#1F3256"/><stop offset="1" stop-color="#14213B"/></linearGradient><g id="ad-letters"><path style="fill:var(--logo-ink,#A8722E)" fill-rule="evenodd" d="M85.91 128.74C84.37 128.59 83.75 128.01 83.95 126.91C84.25 125.28 83.90 122.61 83.14 120.71C82.93 120.17 82.67 119.41 82.57 119.02C82.23 117.68 80.79 114.11 80.35 113.56C80.23 113.40 79.95 113.23 79.75 113.19C79.28 113.08 79.19 112.77 79.30 111.60C79.37 110.77 79.35 110.63 78.67 108.65C78.28 107.50 77.73 105.97 77.44 105.25C77.14 104.53 76.81 103.60 76.69 103.19C76.57 102.79 76.32 102.14 76.13 101.76C75.94 101.37 75.71 100.84 75.63 100.56C75.54 100.29 75.20 99.42 74.87 98.62C74.54 97.83 74.13 96.71 73.94 96.12C73.10 93.41 72.51 91.79 71.72 89.95C71.25 88.86 70.81 87.68 70.73 87.33C70.66 86.98 70.48 86.46 70.34 86.19C70.20 85.91 69.71 84.59 69.24 83.25C68.78 81.91 68.25 80.39 68.07 79.88C67.89 79.36 67.58 78.57 67.37 78.12C67.17 77.68 66.67 76.41 66.25 75.31C65.83 74.21 65.33 72.92 65.14 72.44C64.94 71.96 64.74 71.35 64.70 71.08C64.65 70.81 64.47 70.31 64.31 69.95C64.14 69.60 63.75 68.64 63.43 67.81C63.11 66.99 62.63 65.83 62.37 65.25C62.11 64.67 61.80 63.79 61.69 63.31C61.58 62.83 61.33 62.04 61.13 61.56C60.92 61.08 60.50 60.01 60.18 59.19C59.26 56.80 59.14 56.70 57.00 56.67C53.60 56.63 50.66 56.62 46.00 56.66C41.15 56.70 40.91 56.72 40.25 56.98C39.42 57.31 39.31 57.44 39.21 58.27C39.16 58.69 38.97 59.19 38.64 59.74C38.37 60.20 38.05 60.93 37.94 61.38C37.71 62.28 36.81 64.89 36.56 65.38C36.47 65.55 36.31 66.05 36.20 66.50C36.08 66.94 35.91 67.42 35.81 67.56C35.71 67.70 35.54 67.93 35.44 68.07C35.34 68.21 35.20 68.63 35.13 69.01C35.06 69.38 34.86 69.97 34.69 70.31C34.53 70.66 34.24 71.50 34.06 72.19C33.89 72.88 33.44 74.20 33.07 75.12C32.69 76.05 32.32 77.09 32.24 77.44C32.16 77.78 31.91 78.40 31.68 78.82C31.42 79.29 31.21 79.91 31.13 80.43C31.05 80.90 30.83 81.60 30.63 81.98C30.43 82.37 30.20 82.96 30.13 83.30C30.05 83.63 29.83 84.25 29.62 84.67C29.38 85.18 29.21 85.80 29.12 86.50C29.04 87.08 28.85 88.04 28.69 88.62C28.52 89.21 28.30 90.31 28.19 91.06C28.08 91.82 27.85 93.06 27.68 93.81C26.85 97.60 26.65 102.07 27.22 104.51C27.48 105.66 27.88 108.47 27.87 109.12C27.86 109.60 27.55 109.14 27.45 108.50C27.41 108.22 27.21 107.58 27.00 107.07C25.92 104.34 25.57 97.79 26.31 93.88C26.41 93.36 26.58 92.19 26.68 91.28C26.81 90.22 27.00 89.31 27.20 88.78C27.72 87.39 27.85 86.93 27.99 85.96C28.06 85.45 28.23 84.77 28.37 84.45C28.51 84.13 28.71 83.52 28.82 83.10C28.93 82.68 29.15 82.07 29.31 81.76C29.47 81.44 29.66 80.85 29.75 80.44C29.83 80.03 30.08 79.35 30.31 78.93C30.53 78.51 30.76 77.98 30.81 77.74C30.85 77.51 31.08 76.72 31.31 76.00C31.54 75.28 31.83 74.35 31.94 73.94C32.05 73.53 32.27 72.94 32.43 72.63C32.59 72.32 32.81 71.77 32.93 71.40C33.05 71.04 33.29 70.57 33.47 70.36C33.66 70.13 33.85 69.67 33.95 69.17C34.05 68.72 34.26 68.12 34.43 67.83C34.59 67.55 34.77 67.03 34.82 66.69C34.86 66.34 35.09 65.64 35.31 65.12C35.54 64.61 35.76 63.93 35.81 63.62C35.86 63.32 36.07 62.76 36.27 62.39C36.62 61.77 37.31 59.83 37.81 58.07C37.93 57.66 38.18 57.01 38.38 56.63C38.58 56.25 38.85 55.61 38.99 55.22C39.12 54.82 39.37 54.32 39.53 54.09C39.70 53.87 39.91 53.43 39.99 53.12C40.08 52.82 40.28 52.34 40.44 52.06C40.60 51.79 40.82 51.12 40.93 50.58C41.04 50.03 41.32 49.16 41.55 48.64C41.78 48.12 42.02 47.43 42.06 47.12C42.11 46.82 42.29 46.24 42.45 45.85C42.62 45.45 42.75 45.07 42.75 45.00C42.75 44.93 42.97 44.38 43.24 43.78C43.51 43.18 43.82 42.31 43.93 41.84C44.25 40.44 44.97 38.44 45.37 37.80C45.58 37.47 45.75 37.07 45.75 36.91C45.75 36.75 45.86 36.32 45.99 35.97C46.91 33.48 47.12 32.97 47.46 32.41C47.67 32.07 47.89 31.60 47.94 31.37C47.99 31.13 48.17 30.59 48.35 30.16C48.64 29.44 48.66 29.33 48.52 28.71C48.32 27.82 47.52 26.45 46.14 24.62C45.51 23.79 45.00 23.06 45.00 22.99C45.00 22.92 44.71 22.56 44.36 22.18C43.49 21.26 43.51 20.69 44.44 20.30C45.10 20.03 52.32 20.06 52.87 20.34C53.47 20.64 53.70 21.11 54.81 24.29C55.33 25.80 55.89 27.29 56.05 27.61C56.21 27.93 56.38 28.36 56.43 28.56C56.48 28.77 56.62 29.17 56.76 29.44C56.89 29.72 57.34 30.99 57.75 32.26C58.17 33.52 58.67 34.88 58.88 35.27C59.09 35.66 59.32 36.31 59.39 36.70C59.46 37.10 59.65 37.68 59.81 37.99C60.14 38.66 61.50 42.04 61.50 42.21C61.50 42.38 62.44 44.92 62.81 45.75C63.28 46.79 63.93 48.56 64.31 49.81C64.50 50.43 64.77 51.16 64.91 51.44C65.05 51.71 65.29 52.33 65.45 52.81C66.58 56.28 68.42 61.24 68.87 62.04C69.07 62.40 69.32 63.03 69.43 63.45C69.64 64.29 70.31 66.17 70.81 67.36C70.98 67.78 71.19 68.42 71.26 68.78C71.34 69.14 71.51 69.63 71.65 69.87C71.97 70.42 73.03 73.24 73.87 75.75C74.23 76.82 74.65 77.86 74.81 78.06C75.25 78.65 75.45 79.13 75.61 79.95C75.79 80.91 77.11 84.65 78.12 87.06C79.14 89.51 80.18 92.27 80.32 92.95C80.41 93.38 80.62 94.00 80.80 94.35C80.98 94.70 81.24 95.42 81.39 95.95C81.53 96.48 81.76 97.17 81.90 97.49C82.03 97.80 82.42 98.82 82.76 99.75C83.10 100.68 83.54 101.78 83.75 102.19C83.95 102.60 84.45 103.95 84.86 105.19C85.27 106.42 85.76 107.71 85.93 108.05C86.11 108.39 86.25 108.78 86.25 108.91C86.25 109.05 86.45 109.59 86.69 110.12C86.93 110.66 87.12 111.16 87.12 111.24C87.12 111.51 88.54 115.19 88.88 115.81C89.07 116.16 89.32 116.76 89.43 117.16C89.54 117.55 89.79 118.13 89.99 118.44C90.19 118.75 90.39 119.21 90.43 119.47C90.52 119.94 92.15 123.34 92.93 124.69C93.17 125.10 93.79 125.86 94.31 126.36C95.10 127.14 95.25 127.35 95.25 127.69C95.25 128.22 94.81 128.59 94.08 128.68C93.18 128.79 86.85 128.84 85.91 128.74ZM196.12 128.75C193.42 128.57 192.77 127.67 193.99 125.84C194.32 125.36 194.63 124.65 194.86 123.88C195.44 121.97 195.52 121.53 195.63 119.88C195.68 119.02 195.80 117.33 195.88 116.12C196.00 114.23 195.99 106.41 195.84 100.41C195.81 99.17 195.67 98.83 195.30 99.13C195.07 99.33 194.01 100.86 193.71 101.46C193.60 101.68 193.28 102.12 193.00 102.44C192.73 102.75 192.50 103.07 192.50 103.13C192.50 103.31 190.52 106.20 189.95 106.84C189.66 107.17 189.29 107.63 189.13 107.88C188.97 108.12 188.66 108.51 188.43 108.75C188.21 108.99 187.90 109.39 187.73 109.64C187.57 109.89 186.93 110.56 186.31 111.13C183.99 113.25 182.69 114.46 182.00 115.12C181.40 115.71 179.88 116.54 179.88 116.29C179.88 116.13 180.70 115.18 181.94 113.93C182.69 113.16 183.93 111.82 184.69 110.94C185.44 110.07 186.29 109.09 186.57 108.77C187.20 108.04 188.19 106.48 189.91 103.51C190.53 102.45 191.23 100.98 191.81 99.56C192.06 98.94 192.40 98.13 192.57 97.75C192.75 97.37 193.02 96.51 193.19 95.84C193.52 94.47 194.05 93.48 195.03 92.40C195.82 91.53 195.89 91.31 195.86 89.88C195.84 89.23 195.87 81.80 195.92 73.38C196.03 55.80 195.98 53.75 195.43 53.28C195.13 53.02 195.00 52.99 194.39 53.05C192.68 53.22 190.02 53.26 189.31 53.14C188.21 52.94 184.35 52.60 184.06 52.68C183.75 52.77 175.55 52.94 173.25 52.92C171.53 52.90 149.12 52.79 141.19 52.76C134.94 52.74 124.91 52.87 123.43 52.98C122.73 53.04 121.47 53.03 120.62 52.96C119.76 52.90 115.60 52.84 111.38 52.83C107.15 52.82 103.21 52.77 102.62 52.72C101.19 52.59 99.81 53.04 99.48 53.75C98.28 56.29 97.64 59.84 97.24 66.12C97.02 69.60 97.43 76.16 97.99 78.12C98.06 78.37 98.25 79.35 98.41 80.31C98.69 81.94 99.27 84.03 99.94 85.81C100.09 86.22 100.26 86.77 100.30 87.02C100.41 87.61 101.25 89.90 101.87 91.25C102.14 91.83 102.42 92.54 102.51 92.81C102.74 93.56 104.07 96.33 104.61 97.19C105.67 98.87 105.96 99.37 106.54 100.50C106.87 101.15 107.30 101.86 107.50 102.06C107.69 102.27 107.96 102.66 108.10 102.94C108.24 103.21 108.62 103.69 108.94 104.00C109.26 104.31 110.05 105.35 110.70 106.31C112.65 109.21 115.38 112.20 116.81 112.99C117.75 113.51 118.26 113.99 118.88 114.89C119.17 115.31 119.69 115.83 120.16 116.16C120.59 116.47 121.35 117.06 121.84 117.47C122.95 118.39 124.66 119.44 125.60 119.76C126.04 119.92 126.50 120.20 126.82 120.51C127.43 121.11 131.43 123.17 133.01 123.69C133.58 123.88 134.45 124.22 134.95 124.45C136.26 125.04 137.70 125.47 138.95 125.63C139.56 125.70 140.34 125.84 140.69 125.94C143.06 126.59 151.32 127.07 153.54 126.68C154.23 126.56 155.41 126.47 156.50 126.47C158.13 126.46 158.37 126.43 158.96 126.16C159.62 125.86 160.42 125.84 160.88 126.13C161.29 126.38 160.32 126.87 159.40 126.87C159.18 126.87 158.78 126.98 158.53 127.11C157.86 127.45 155.42 127.97 153.75 128.12C152.96 128.19 151.83 128.31 151.25 128.38C149.97 128.53 146.00 128.56 142.56 128.45C138.52 128.31 135.22 127.75 130.26 126.37C128.24 125.80 125.82 124.81 121.81 122.93C121.33 122.70 120.74 122.44 120.50 122.34C120.26 122.24 119.75 121.91 119.38 121.60C118.70 121.04 117.56 120.31 116.28 119.60C115.93 119.40 115.25 118.93 114.78 118.56C114.32 118.19 113.39 117.48 112.73 117.00C111.64 116.21 109.69 114.54 108.12 113.08C107.82 112.79 107.08 112.00 106.50 111.32C105.92 110.64 105.28 109.94 105.08 109.76C104.89 109.58 104.40 108.96 104.00 108.38C103.60 107.79 102.99 106.95 102.63 106.50C101.64 105.23 100.75 103.90 100.47 103.27C100.33 102.95 100.00 102.41 99.74 102.06C99.13 101.25 97.12 97.18 96.18 94.88C95.12 92.23 94.84 91.49 94.68 90.81C94.59 90.40 94.34 89.57 94.14 88.97C93.93 88.36 93.73 87.61 93.68 87.28C93.63 86.95 93.48 86.38 93.35 86.00C92.51 83.55 91.87 75.71 92.12 70.94C92.30 67.52 92.91 62.92 93.31 61.95C93.42 61.71 93.56 61.11 93.63 60.61C93.70 60.12 93.87 59.45 94.02 59.14C94.16 58.82 94.47 58.00 94.69 57.31C94.92 56.62 95.31 55.53 95.56 54.88C95.81 54.22 96.18 53.23 96.37 52.66C96.57 52.10 96.89 51.39 97.09 51.10C97.29 50.80 97.95 49.61 98.56 48.44C99.16 47.27 99.75 46.17 99.87 46.00C99.99 45.83 100.25 45.38 100.44 45.01C100.86 44.17 101.54 43.24 102.69 41.94C103.17 41.39 103.72 40.74 103.91 40.50C104.10 40.26 104.60 39.62 105.03 39.07C106.11 37.68 108.32 35.41 109.06 34.93C109.41 34.71 109.95 34.26 110.28 33.92C112.26 31.89 113.13 31.08 113.65 30.81C113.97 30.64 114.27 30.45 114.31 30.38C114.42 30.21 116.18 29.01 116.47 28.92C117.48 28.58 118.59 27.94 118.84 27.56C119.03 27.27 119.42 26.98 120.03 26.67C120.52 26.42 121.34 25.97 121.84 25.67C122.34 25.36 122.99 25.03 123.28 24.93C123.57 24.82 124.02 24.61 124.27 24.44C124.52 24.28 125.05 24.05 125.45 23.93C125.86 23.81 126.44 23.59 126.76 23.43C127.07 23.28 127.64 23.09 128.03 23.02C128.42 22.94 128.96 22.74 129.22 22.57C129.50 22.38 130.16 22.15 130.83 22.01C131.45 21.88 132.50 21.54 133.16 21.25C135.95 20.06 141.71 19.52 149.12 19.76C152.63 19.87 153.95 20.02 156.94 20.67C159.97 21.33 160.09 21.36 161.50 21.62C162.71 21.85 163.88 22.26 166.48 23.36C166.99 23.57 167.63 23.81 167.91 23.89C168.62 24.08 171.51 25.52 172.22 26.04C172.55 26.28 173.39 26.76 174.10 27.11C174.80 27.47 175.90 28.14 176.53 28.61C177.17 29.08 178.01 29.67 178.41 29.92C178.81 30.17 179.50 30.68 179.93 31.03C180.37 31.39 181.04 31.91 181.43 32.18C181.82 32.46 182.97 33.55 183.98 34.62C185.81 36.55 186.24 36.99 187.98 38.67C188.49 39.16 189.08 39.82 189.28 40.12C189.49 40.43 189.80 40.84 189.98 41.03C190.56 41.67 192.13 43.93 192.44 44.60C192.61 44.97 193.04 45.61 193.39 46.03C193.74 46.45 194.22 47.19 194.45 47.68C195.32 49.50 195.74 49.65 195.74 48.13C195.74 47.68 195.79 47.03 195.85 46.69C195.98 45.85 195.90 33.32 195.75 31.50C195.68 30.71 195.57 29.34 195.50 28.46C195.36 26.65 195.23 26.09 194.43 23.81C193.46 21.06 193.45 20.86 194.28 20.41C194.83 20.11 204.66 20.05 205.99 20.34C206.59 20.47 207.26 20.49 208.68 20.43C210.01 20.38 211.15 20.41 212.55 20.55C213.64 20.65 214.59 20.71 214.64 20.68C214.76 20.60 227.76 20.46 234.94 20.45C238.07 20.44 239.86 20.49 240.50 20.60C241.02 20.68 242.42 20.92 243.62 21.13C244.83 21.34 246.32 21.60 246.94 21.70C247.56 21.81 248.85 22.14 249.81 22.45C250.78 22.76 252.12 23.18 252.81 23.40C255.08 24.11 257.73 25.27 259.06 26.13C259.48 26.39 260.41 26.84 261.15 27.13C262.03 27.47 262.67 27.81 263.03 28.12C263.32 28.38 264.18 29.00 264.94 29.50C265.69 30.00 266.57 30.65 266.88 30.94C267.18 31.23 268.11 31.95 268.93 32.55C269.85 33.22 271.28 34.47 272.70 35.85C275.08 38.16 275.52 38.66 276.62 40.31C276.99 40.86 277.52 41.57 277.81 41.88C278.29 42.40 280.39 45.51 281.40 47.19C281.65 47.60 282.29 48.83 282.83 49.92C283.37 51.01 284.05 52.36 284.34 52.92C284.63 53.48 285.04 54.45 285.25 55.08C285.87 56.91 286.18 56.94 286.85 55.24C287.29 54.10 288.19 52.29 288.77 51.36C288.96 51.05 289.24 50.46 289.38 50.05C289.52 49.65 289.85 48.95 290.12 48.50C290.39 48.05 290.68 47.45 290.76 47.15C290.85 46.85 291.12 46.37 291.38 46.09C291.63 45.80 292.05 45.23 292.30 44.82C292.56 44.41 293.07 43.71 293.43 43.26C293.79 42.81 294.52 41.78 295.05 40.99C295.75 39.92 296.48 39.05 297.82 37.69C298.81 36.67 299.62 35.80 299.62 35.75C299.62 35.69 299.98 35.37 300.41 35.02C300.84 34.68 301.89 33.72 302.74 32.88C303.89 31.77 304.63 31.17 305.55 30.60C306.25 30.18 307.02 29.67 307.28 29.47C307.54 29.27 308.29 28.83 308.95 28.50C309.70 28.11 310.43 27.62 310.92 27.16C311.48 26.65 311.94 26.35 312.51 26.14C313.41 25.80 315.64 24.71 316.12 24.37C316.30 24.25 316.81 24.04 317.27 23.90C317.73 23.75 318.32 23.53 318.59 23.40C318.85 23.26 319.36 23.07 319.71 22.96C320.07 22.85 320.61 22.63 320.90 22.45C321.20 22.28 322.33 21.92 323.50 21.63C324.63 21.36 325.90 21.04 326.31 20.93C327.11 20.72 327.61 20.63 330.12 20.24C333.54 19.71 339.18 19.49 342.81 19.74C345.01 19.90 350.14 20.71 351.40 21.10C351.83 21.24 352.75 21.52 353.44 21.72C355.29 22.28 358.28 23.39 359.56 23.99C360.18 24.29 361.02 24.65 361.44 24.81C362.32 25.15 365.07 26.62 366.32 27.42C366.81 27.73 367.92 28.41 368.79 28.94C370.02 29.69 370.70 30.21 371.84 31.30C372.65 32.07 373.76 33.03 374.31 33.43C375.86 34.57 379.52 38.35 381.64 41.00C382.44 42.00 383.90 43.56 384.07 43.60C384.34 43.66 384.49 43.22 384.63 41.92C384.71 41.24 384.88 40.38 385.02 40.00C385.16 39.62 385.41 38.87 385.56 38.33C385.99 36.88 387.32 34.53 388.41 33.30C388.71 32.96 389.13 32.43 389.34 32.12C390.17 30.93 392.98 28.37 394.14 27.76C394.58 27.52 395.16 27.19 395.44 27.00C396.30 26.43 399.65 24.67 400.50 24.34C401.20 24.07 402.78 23.55 406.75 22.31C407.27 22.15 408.00 21.98 408.38 21.94C408.75 21.89 409.60 21.72 410.25 21.56C410.90 21.40 411.94 21.20 412.56 21.13C413.18 21.05 414.31 20.90 415.06 20.79C416.66 20.55 423.15 20.53 425.69 20.74C426.51 20.81 428.18 20.87 429.39 20.87C431.62 20.88 433.64 21.05 436.50 21.49C437.36 21.63 438.51 21.80 439.06 21.88C439.61 21.96 440.47 22.16 440.98 22.32C441.48 22.49 442.27 22.69 442.73 22.76C443.83 22.95 446.60 23.76 447.97 24.30C448.57 24.53 449.30 24.79 449.59 24.87C449.89 24.95 450.62 25.20 451.22 25.43C451.82 25.66 452.78 25.97 453.34 26.12C454.39 26.38 456.50 27.43 457.38 28.11C457.62 28.30 458.31 28.75 458.92 29.12C459.53 29.49 460.61 30.30 461.31 30.92C462.02 31.55 462.97 32.39 463.43 32.80C465.18 34.33 466.91 36.87 467.25 38.39C467.54 39.67 467.32 40.10 465.36 42.16C464.53 43.03 464.39 43.13 463.97 43.13C463.34 43.12 463.16 42.82 462.94 41.36C462.71 39.83 462.37 38.88 461.70 37.88C461.40 37.43 460.93 36.64 460.65 36.12C460.11 35.15 459.45 34.42 456.87 31.92C455.55 30.65 454.12 29.50 453.85 29.50C453.78 29.50 452.46 28.82 450.91 27.99C448.01 26.43 444.80 25.18 441.99 24.51C441.47 24.39 440.34 24.06 439.49 23.78C437.82 23.23 436.63 22.94 435.44 22.81C435.02 22.76 434.07 22.59 433.31 22.42C429.74 21.63 417.39 21.60 414.00 22.36C413.35 22.51 412.22 22.74 411.50 22.87C409.31 23.28 405.87 24.32 404.50 24.99C403.03 25.72 401.54 26.57 401.12 26.92C400.91 27.10 400.51 27.31 400.23 27.38C399.68 27.53 398.55 28.21 397.94 28.76C397.73 28.95 397.10 29.41 396.54 29.78C395.64 30.38 395.08 30.93 393.92 32.36C393.25 33.20 391.44 36.24 391.19 36.98C391.03 37.44 390.81 38.02 390.70 38.28C389.91 40.12 389.90 44.91 390.69 47.12C390.80 47.43 390.97 48.07 391.07 48.53C391.32 49.73 391.50 50.06 392.49 51.19C392.97 51.74 393.68 52.56 394.05 53.01C394.48 53.53 395.36 54.31 396.46 55.13C397.41 55.85 398.52 56.79 398.94 57.22C399.53 57.83 399.84 58.05 400.42 58.24C401.28 58.54 402.69 59.37 403.43 60.03C403.96 60.49 405.30 61.21 407.25 62.06C407.83 62.31 409.24 62.97 410.38 63.53C411.51 64.08 412.92 64.72 413.52 64.94C414.11 65.17 414.83 65.48 415.11 65.62C415.40 65.76 416.03 66.03 416.53 66.21C417.03 66.38 417.75 66.69 418.13 66.88C418.52 67.07 419.41 67.43 420.12 67.68C420.82 67.93 422.06 68.43 422.86 68.80C423.66 69.17 424.45 69.52 424.62 69.57C424.80 69.61 425.56 69.91 426.31 70.22C427.07 70.53 428.06 70.91 428.51 71.06C428.96 71.22 429.97 71.63 430.76 71.99C433.40 73.19 433.80 73.36 436.20 74.31C437.52 74.83 438.90 75.42 439.27 75.62C439.63 75.83 440.03 76.00 440.14 76.00C440.39 76.00 441.89 76.77 443.84 77.88C445.92 79.08 447.71 80.03 448.48 80.34C448.85 80.50 449.45 80.84 449.80 81.10C450.15 81.37 450.64 81.69 450.88 81.81C451.12 81.93 451.73 82.33 452.25 82.69C452.77 83.05 453.41 83.46 453.69 83.60C453.96 83.74 454.54 84.14 454.98 84.49C455.42 84.84 455.95 85.22 456.17 85.33C457.25 85.89 462.73 91.12 463.64 92.47C463.86 92.79 464.31 93.35 464.65 93.71C464.98 94.07 465.25 94.44 465.25 94.54C465.25 94.65 465.47 95.15 465.74 95.66C466.22 96.57 467.32 99.85 467.63 101.31C468.22 104.07 467.56 109.18 466.26 111.94C464.53 115.61 461.69 118.88 458.29 121.14C457.91 121.39 457.34 121.85 457.02 122.16C456.41 122.75 453.84 124.09 452.75 124.38C452.44 124.46 451.92 124.66 451.60 124.83C450.67 125.30 448.91 125.88 447.81 126.08C447.26 126.19 446.24 126.46 445.53 126.70C444.82 126.93 444.17 127.12 444.07 127.12C443.98 127.12 443.40 127.27 442.80 127.45C442.19 127.62 441.18 127.82 440.56 127.89C439.94 127.95 439.18 128.06 438.88 128.13C437.69 128.38 434.29 128.50 428.10 128.50C421.84 128.51 421.63 128.50 419.93 128.20C418.97 128.04 417.57 127.86 416.81 127.82C416.06 127.77 415.18 127.65 414.88 127.56C414.57 127.46 413.69 127.29 412.94 127.19C412.18 127.08 411.06 126.85 410.44 126.69C409.82 126.53 408.95 126.33 408.50 126.25C408.05 126.17 407.43 125.99 407.12 125.86C406.82 125.72 406.06 125.47 405.44 125.31C403.84 124.89 401.61 124.20 401.29 124.02C401.14 123.94 400.57 123.71 400.04 123.51C399.50 123.31 398.67 123.00 398.19 122.82C397.28 122.47 395.57 121.49 394.65 120.79C394.36 120.56 393.74 120.18 393.28 119.92C391.09 118.73 388.32 116.37 387.22 114.75C387.00 114.44 386.63 113.93 386.38 113.62C386.13 113.32 385.68 112.62 385.38 112.08C384.70 110.82 384.68 109.74 385.32 108.89C387.13 106.48 387.71 105.88 388.23 105.88C388.85 105.88 389.07 106.21 389.24 107.38C389.40 108.46 389.58 109.00 390.54 111.29C391.23 112.94 391.81 113.85 392.78 114.75C393.19 115.13 394.04 115.94 394.67 116.56C395.35 117.23 396.35 118.04 397.15 118.56C397.89 119.04 398.75 119.61 399.07 119.81C401.33 121.28 405.57 123.22 407.41 123.63C408.02 123.77 408.79 124.02 409.11 124.18C409.44 124.35 410.17 124.60 410.74 124.75C411.30 124.89 412.07 125.15 412.45 125.31C413.66 125.85 420.44 126.95 423.63 127.12C428.27 127.38 429.79 127.41 432.81 127.26C436.27 127.10 437.39 126.98 438.70 126.62C439.18 126.48 439.92 126.38 440.34 126.38C441.18 126.37 443.73 125.70 444.83 125.18C445.18 125.02 445.73 124.83 446.04 124.75C447.49 124.43 452.25 122.17 453.15 121.38C453.45 121.12 454.22 120.56 454.88 120.13C456.18 119.27 457.59 117.97 458.09 117.19C458.27 116.91 458.65 116.41 458.94 116.06C459.60 115.27 460.22 114.13 461.15 112.00C462.57 108.74 462.77 105.02 461.73 101.44C461.19 99.58 460.66 98.67 458.76 96.30C458.42 95.87 458.00 95.30 457.82 95.01C457.64 94.73 457.18 94.26 456.79 93.97C456.40 93.67 455.68 93.07 455.19 92.62C454.69 92.18 454.03 91.64 453.72 91.44C453.40 91.23 452.55 90.67 451.83 90.19C450.20 89.10 449.38 88.61 447.94 87.88C447.32 87.57 446.67 87.21 446.50 87.10C446.32 86.98 445.94 86.80 445.65 86.69C445.35 86.59 444.79 86.31 444.40 86.07C444.01 85.83 443.43 85.54 443.12 85.42C442.82 85.30 442.35 85.07 442.10 84.92C441.65 84.64 440.68 84.19 438.38 83.19C437.79 82.94 436.72 82.46 436.00 82.13C434.51 81.43 433.48 81.00 432.12 80.50C431.61 80.31 430.99 80.04 430.75 79.90C430.51 79.77 430.03 79.59 429.69 79.51C429.34 79.43 428.81 79.22 428.50 79.05C427.87 78.69 425.27 77.58 424.32 77.25C423.96 77.13 423.45 76.91 423.17 76.77C422.89 76.63 422.38 76.44 422.05 76.36C421.71 76.28 421.13 76.06 420.75 75.87C420.37 75.68 419.78 75.44 419.43 75.34C419.08 75.24 418.54 75.02 418.24 74.87C417.94 74.71 417.24 74.43 416.69 74.24C415.04 73.66 413.30 72.91 412.40 72.40C411.94 72.13 410.52 71.40 409.25 70.77C407.98 70.14 406.74 69.52 406.50 69.38C406.26 69.24 405.31 68.76 404.40 68.31C403.49 67.87 402.50 67.34 402.21 67.14C401.92 66.94 401.16 66.52 400.52 66.20C398.81 65.34 396.19 63.56 394.76 62.28C394.31 61.87 393.54 61.21 393.06 60.80C391.64 59.61 387.91 55.75 387.31 54.87C386.52 53.68 386.40 53.60 385.28 53.49C382.51 53.21 381.76 53.12 381.19 53.01C380.37 52.85 377.93 52.81 370.88 52.83C368.64 52.84 359.13 52.86 349.75 52.88C340.37 52.90 332.27 52.91 331.75 52.91C331.23 52.91 327.13 52.87 322.62 52.81C318.12 52.76 313.90 52.71 313.25 52.71C301.52 52.74 295.93 52.72 294.76 52.64C293.59 52.56 293.16 52.58 292.40 52.76C291.03 53.08 291.00 53.13 290.26 56.03C289.59 58.63 289.38 60.20 289.30 63.31C289.28 64.18 289.17 65.21 289.04 65.75C288.79 66.79 288.77 70.46 289.00 72.42C289.06 72.98 289.21 74.31 289.31 75.38C289.50 77.24 289.65 77.96 290.73 82.25C291.00 83.32 291.35 84.72 291.50 85.38C291.89 87.03 292.40 88.53 293.27 90.50C293.68 91.43 294.18 92.67 294.39 93.25C295.17 95.44 296.89 98.62 298.09 100.10C298.38 100.46 298.62 100.81 298.62 100.86C298.62 100.92 298.82 101.21 299.06 101.51C299.30 101.82 299.62 102.37 299.76 102.74C300.00 103.39 301.11 104.97 302.48 106.62C304.34 108.87 304.82 109.42 306.44 111.15C307.40 112.18 308.57 113.33 309.04 113.71C309.51 114.09 310.24 114.72 310.66 115.12C311.09 115.52 311.77 116.01 312.19 116.23C312.60 116.44 313.43 117.05 314.02 117.59C315.36 118.78 316.35 119.50 317.81 120.32C318.43 120.67 319.09 121.05 319.28 121.18C320.58 122.03 323.79 123.56 324.94 123.87C325.49 124.02 326.39 124.33 326.94 124.57C329.37 125.61 334.71 126.44 340.19 126.64C344.42 126.79 347.53 126.62 350.90 126.05C352.01 125.86 352.62 125.91 352.62 126.18C352.62 126.53 352.12 126.77 351.04 126.93C350.44 127.03 349.62 127.25 349.23 127.43C348.67 127.69 348.14 127.80 346.73 127.94C345.74 128.04 344.40 128.21 343.75 128.33C342.82 128.50 341.75 128.54 338.75 128.55C333.06 128.56 329.10 128.21 326.28 127.45C325.68 127.29 324.32 126.94 323.25 126.68C322.18 126.43 320.83 126.03 320.25 125.81C319.67 125.59 318.96 125.34 318.69 125.25C318.41 125.16 318.02 125.01 317.81 124.90C317.61 124.79 316.90 124.50 316.25 124.26C315.60 124.01 314.61 123.51 314.05 123.15C313.50 122.80 312.07 122.01 310.89 121.40C309.39 120.63 308.39 120.02 307.65 119.43C307.06 118.95 306.29 118.37 305.94 118.14C304.25 117.00 302.96 115.95 301.31 114.38C300.90 113.99 300.40 113.56 300.21 113.44C300.02 113.31 299.63 112.87 299.35 112.45C299.06 112.03 298.27 111.10 297.57 110.37C296.01 108.74 295.68 108.34 294.31 106.31C293.71 105.42 292.99 104.44 292.73 104.14C292.47 103.84 292.25 103.52 292.25 103.44C292.25 103.36 291.99 102.91 291.67 102.43C290.99 101.42 289.31 98.10 288.76 96.67C288.55 96.13 288.09 95.19 287.74 94.57C287.39 93.96 287.05 93.31 286.98 93.14C286.29 91.32 285.92 91.50 285.14 94.02C284.85 94.94 284.46 96.00 284.27 96.38C283.41 98.06 281.32 101.85 281.05 102.20C280.89 102.42 280.63 102.90 280.46 103.27C280.18 103.90 279.53 104.95 278.60 106.26C278.37 106.58 277.84 107.22 277.41 107.67C276.98 108.13 276.62 108.57 276.62 108.65C276.62 108.73 275.96 109.47 275.15 110.30C274.34 111.13 273.35 112.22 272.96 112.72C272.56 113.22 271.97 113.83 271.63 114.09C270.33 115.10 268.67 116.49 268.31 116.87C267.96 117.25 265.23 119.12 264.42 119.54C264.22 119.64 263.81 119.95 263.50 120.22C263.19 120.49 262.68 120.84 262.38 121.00C262.07 121.15 261.63 121.42 261.40 121.58C261.18 121.75 260.73 122.00 260.40 122.14C260.08 122.28 258.97 122.81 257.94 123.31C254.00 125.25 253.45 125.47 250.74 126.12C249.34 126.46 247.77 126.88 247.25 127.05C245.44 127.65 244.41 127.85 240.84 128.25C239.42 128.41 235.53 128.57 234.00 128.53C233.35 128.51 230.25 128.50 227.12 128.50C224.00 128.50 218.48 128.45 214.88 128.38C210.02 128.29 207.90 128.29 206.75 128.40C205.89 128.48 204.65 128.55 204.00 128.57C203.35 128.58 201.83 128.65 200.62 128.73C198.26 128.88 198.08 128.88 196.12 128.75ZM532.19 128.75C530.32 128.67 530.22 128.64 529.94 128.04C529.74 127.63 529.74 127.56 529.94 127.05C530.05 126.75 530.20 126.47 530.26 126.43C530.55 126.25 530.79 125.48 531.06 123.84C531.75 119.69 531.87 118.70 531.99 116.62C532.08 114.86 532.20 102.48 532.16 98.19C532.15 97.64 532.16 91.06 532.17 83.56C532.20 63.16 532.19 60.09 532.13 58.25C532.10 57.32 532.11 53.64 532.15 50.06C532.19 46.49 532.18 40.36 532.13 36.44C532.02 28.63 532.02 28.64 531.09 25.10C530.92 24.46 530.74 23.66 530.69 23.31C530.64 22.97 530.47 22.46 530.30 22.18C529.82 21.35 529.93 20.67 530.61 20.32C531.24 20.00 537.89 20.05 539.23 20.39C540.16 20.63 540.40 20.65 541.36 20.53C542.47 20.40 543.03 20.42 544.88 20.64C545.46 20.70 546.23 20.79 546.58 20.83C546.93 20.87 548.09 20.82 549.14 20.71C551.85 20.43 555.92 20.32 563.56 20.33C575.87 20.33 576.44 20.36 579.27 21.01C580.14 21.21 581.16 21.37 581.55 21.38C582.66 21.38 585.82 22.25 588.27 23.23C588.79 23.44 589.56 23.70 589.97 23.80C590.80 24.02 592.34 24.69 593.10 25.17C593.37 25.34 594.21 25.74 594.96 26.06C596.26 26.60 598.21 27.67 599.05 28.31C599.26 28.47 600.06 28.91 600.82 29.29C601.63 29.69 602.49 30.24 602.89 30.59C603.26 30.92 603.90 31.44 604.31 31.75C604.72 32.06 605.73 32.96 606.56 33.75C607.39 34.54 608.46 35.55 608.94 36.00C609.42 36.45 610.15 37.20 610.56 37.67C610.98 38.14 611.57 38.82 611.89 39.17C612.20 39.52 612.69 40.15 612.97 40.56C613.24 40.98 613.84 41.73 614.29 42.24C614.74 42.74 615.43 43.67 615.82 44.30C616.21 44.93 616.66 45.58 616.82 45.75C617.21 46.17 618.07 47.74 618.94 49.63C619.33 50.49 619.98 51.86 620.37 52.69C620.77 53.51 621.24 54.64 621.43 55.20C621.81 56.36 622.18 56.87 622.45 56.60C622.70 56.35 623.59 54.47 623.75 53.85C623.83 53.55 624.15 52.83 624.47 52.25C624.78 51.67 625.57 50.12 626.22 48.81C626.88 47.51 627.56 46.24 627.75 46.00C627.94 45.76 628.21 45.32 628.36 45.03C628.89 43.99 629.81 42.68 631.05 41.21C631.75 40.39 632.54 39.43 632.82 39.08C633.81 37.84 637.15 34.60 637.88 34.17C638.06 34.06 638.31 33.81 638.45 33.61C638.81 33.05 640.62 31.45 641.24 31.13C641.53 30.98 642.27 30.45 642.86 29.94C643.45 29.44 644.39 28.81 644.94 28.53C645.49 28.25 646.27 27.77 646.69 27.47C647.45 26.89 652.70 24.16 653.58 23.88C653.84 23.79 654.23 23.62 654.44 23.49C654.64 23.37 655.19 23.18 655.65 23.07C656.12 22.97 656.76 22.74 657.09 22.57C658.04 22.08 662.89 20.82 664.31 20.70C664.79 20.66 665.69 20.48 666.31 20.30C667.83 19.86 668.85 19.78 673.73 19.68C678.48 19.59 680.62 19.71 682.62 20.17C683.35 20.34 684.33 20.54 684.81 20.63C687.41 21.09 693.37 22.80 694.73 23.49C694.98 23.61 695.56 23.84 696.01 23.99C696.93 24.29 699.70 25.66 700.53 26.22C700.82 26.42 701.54 26.83 702.12 27.14C703.11 27.67 704.23 28.37 706.06 29.63C706.48 29.92 707.21 30.53 707.69 30.99C708.17 31.45 708.98 32.11 709.50 32.46C710.05 32.83 710.94 33.63 711.65 34.39C712.31 35.10 713.38 36.19 714.02 36.81C715.93 38.66 716.63 39.40 717.17 40.12C717.45 40.50 717.97 41.13 718.31 41.51C718.66 41.89 719.16 42.60 719.42 43.07C720.26 44.61 720.82 45.48 721.34 46.04C721.63 46.35 722.24 47.36 722.74 48.34C723.77 50.38 724.08 50.82 724.31 50.63C724.62 50.37 724.65 49.55 724.63 42.31C724.62 34.20 724.50 30.91 724.19 29.89C724.08 29.53 723.85 28.46 723.70 27.52C723.51 26.40 723.25 25.42 722.95 24.66C722.70 24.02 722.50 23.39 722.50 23.24C722.50 22.93 722.31 22.56 721.92 22.08C721.29 21.33 721.75 20.46 722.96 20.11C724.07 19.79 732.64 19.97 733.19 20.32C733.82 20.74 733.94 21.48 733.48 22.22C733.33 22.46 733.14 22.97 733.06 23.36C732.97 23.74 732.76 24.60 732.59 25.25C732.42 25.90 732.22 27.08 732.14 27.88C732.07 28.67 731.90 29.64 731.76 30.04C731.51 30.77 731.51 30.93 731.49 73.79C731.48 111.36 731.50 116.95 731.67 117.88C731.77 118.46 731.89 119.39 731.93 119.94C732.14 122.42 732.80 124.91 733.63 126.34C734.33 127.54 734.26 127.99 733.26 128.50C732.85 128.71 722.85 128.74 722.35 128.53C721.34 128.10 721.29 127.58 722.12 126.35C723.25 124.70 724.06 121.40 724.38 117.19C724.60 114.27 724.72 101.54 724.54 100.03C724.46 99.29 724.38 98.28 724.38 97.79C724.37 96.71 724.23 96.56 723.86 97.28C723.71 97.57 723.44 98.04 723.25 98.31C723.06 98.59 722.56 99.51 722.14 100.36C721.71 101.22 721.23 102.08 721.06 102.27C720.89 102.47 720.69 102.86 720.61 103.13C720.53 103.40 720.23 103.90 719.95 104.24C719.08 105.29 718.68 105.79 718.00 106.69C716.80 108.28 711.75 113.59 710.92 114.14C710.11 114.67 709.89 114.33 710.53 113.53C712.09 111.60 712.59 111.02 713.13 110.54C713.46 110.24 713.90 109.69 714.11 109.32C714.32 108.95 714.75 108.33 715.07 107.94C715.39 107.55 715.71 107.07 715.79 106.89C715.87 106.70 716.43 105.82 717.02 104.93C717.62 104.04 718.30 102.86 718.54 102.31C718.78 101.76 719.37 100.49 719.86 99.49C720.35 98.49 721.11 96.67 721.54 95.44C722.38 93.11 722.77 92.43 723.35 92.30C723.96 92.17 724.36 91.98 724.45 91.77C724.61 91.43 724.64 53.63 724.48 53.14C724.33 52.67 724.18 52.66 723.12 53.06C722.33 53.37 718.26 53.36 716.81 53.05C715.74 52.83 692.07 52.74 663.25 52.86C656.82 52.89 646.70 52.87 640.75 52.83C631.37 52.76 629.85 52.77 629.25 52.94C628.87 53.04 628.38 53.12 628.15 53.12C627.57 53.13 627.18 53.56 627.07 54.31C627.02 54.64 626.82 55.36 626.62 55.89C625.49 58.95 624.85 66.67 625.25 72.44C625.54 76.62 625.62 77.48 625.80 78.25C625.91 78.70 626.12 79.62 626.25 80.31C626.50 81.52 627.19 84.22 627.56 85.38C627.99 86.76 629.62 91.10 629.85 91.50C629.99 91.74 630.17 92.19 630.25 92.50C630.41 93.14 631.38 95.19 631.88 95.94C632.07 96.21 632.40 96.80 632.62 97.25C632.85 97.70 633.39 98.60 633.82 99.25C634.25 99.90 634.69 100.66 634.80 100.93C634.92 101.20 635.22 101.71 635.49 102.06C635.75 102.40 636.09 102.95 636.23 103.28C636.37 103.61 636.96 104.45 637.53 105.16C638.11 105.86 638.94 106.92 639.38 107.50C640.28 108.70 644.32 112.80 645.38 113.59C645.75 113.87 646.32 114.36 646.62 114.69C646.93 115.01 647.60 115.55 648.11 115.89C648.62 116.24 649.58 117.01 650.24 117.61C651.48 118.76 652.32 119.34 653.65 120.01C654.09 120.23 654.69 120.59 655.00 120.81C655.31 121.04 655.93 121.40 656.38 121.62C656.82 121.83 657.89 122.38 658.75 122.83C659.82 123.39 660.64 123.72 661.38 123.89C661.96 124.03 662.68 124.29 662.98 124.46C663.74 124.90 665.52 125.43 667.54 125.81C671.00 126.46 679.17 126.99 682.19 126.75C683.01 126.68 684.28 126.59 685.00 126.55C685.91 126.49 686.46 126.39 686.79 126.23C687.40 125.92 688.54 125.95 688.60 126.27C688.67 126.62 687.99 126.87 687.04 126.88C686.43 126.88 685.93 126.97 685.31 127.21C684.18 127.63 682.60 127.97 681.33 128.06C680.77 128.11 679.72 128.23 679.00 128.34C676.47 128.72 669.08 128.57 666.12 128.07C665.54 127.97 664.70 127.85 664.25 127.81C663.81 127.76 663.23 127.64 662.97 127.55C662.40 127.35 659.36 126.58 658.31 126.37C657.90 126.29 656.77 125.90 655.81 125.50C654.85 125.11 653.87 124.74 653.62 124.69C653.38 124.64 652.82 124.41 652.38 124.19C651.93 123.97 651.35 123.72 651.09 123.63C650.84 123.55 650.27 123.24 649.84 122.95C649.41 122.66 648.78 122.31 648.43 122.17C648.08 122.02 647.31 121.60 646.71 121.23C646.12 120.87 645.28 120.37 644.85 120.12C644.42 119.88 643.51 119.26 642.82 118.75C642.13 118.23 641.17 117.53 640.69 117.19C640.21 116.86 639.36 116.16 638.81 115.64C638.26 115.11 637.50 114.41 637.12 114.06C636.49 113.48 634.29 111.10 632.73 109.30C632.36 108.88 631.78 108.13 631.44 107.64C631.09 107.15 630.28 106.03 629.62 105.15C627.93 102.87 626.29 100.03 625.39 97.85C624.98 96.84 624.28 95.30 623.82 94.43C623.37 93.56 623.00 92.77 623.00 92.67C623.00 92.36 622.63 91.75 622.44 91.75C622.20 91.75 621.95 92.26 621.35 93.93C620.73 95.67 618.30 100.66 617.54 101.73C617.23 102.18 616.53 103.25 615.98 104.12C614.87 105.88 613.84 107.33 613.28 107.92C613.07 108.13 612.81 108.51 612.69 108.74C612.57 108.98 612.21 109.46 611.89 109.81C611.56 110.15 611.14 110.66 610.94 110.93C610.07 112.11 606.27 115.69 604.98 116.54C603.49 117.51 602.11 118.51 601.12 119.33C599.98 120.26 598.52 121.17 597.00 121.87C596.21 122.23 595.20 122.78 594.75 123.07C594.30 123.37 593.43 123.84 592.81 124.10C591.40 124.72 586.00 126.53 584.75 126.81C584.23 126.93 583.32 127.19 582.73 127.39C580.72 128.06 573.15 128.71 569.06 128.57C567.76 128.52 563.37 128.46 559.31 128.43C555.26 128.41 551.26 128.34 550.44 128.29C549.61 128.23 547.42 128.23 545.56 128.29C543.71 128.35 541.60 128.40 540.88 128.42C540.15 128.43 539.06 128.51 538.44 128.60C537.11 128.78 534.46 128.84 532.19 128.75ZM10.94 128.67C10.37 128.54 9.77 128.21 9.65 127.94C9.49 127.59 9.58 127.43 10.54 126.30C10.94 125.82 11.36 125.27 11.46 125.06C11.57 124.86 12.04 124.18 12.52 123.55C13.57 122.16 14.88 119.88 15.33 118.65C15.67 117.71 16.25 116.94 16.53 117.03C17.07 117.21 17.09 118.30 16.57 119.48C16.39 119.87 16.20 120.47 16.12 120.81C16.05 121.16 15.82 121.94 15.60 122.56C15.22 123.68 15.22 123.69 15.29 125.69C15.36 127.83 15.27 128.35 14.77 128.62C14.53 128.74 11.49 128.79 10.94 128.67ZM214.19 127.29C216.39 127.26 221.28 127.22 225.06 127.20C232.66 127.15 237.98 126.99 238.94 126.77C239.28 126.69 240.04 126.54 240.62 126.44C242.80 126.07 246.45 125.27 246.88 125.08C247.12 124.97 248.30 124.51 249.50 124.06C250.70 123.62 252.08 123.06 252.56 122.83C253.04 122.60 253.86 122.20 254.38 121.95C254.89 121.70 255.70 121.23 256.16 120.90C256.63 120.58 257.98 119.65 259.16 118.84C261.89 116.97 262.45 116.55 263.94 115.25C265.45 113.93 268.25 111.18 268.25 111.01C268.25 110.94 268.75 110.39 269.35 109.78C270.10 109.04 270.67 108.33 271.13 107.56C271.49 106.94 272.17 105.90 272.63 105.25C273.09 104.60 273.66 103.67 273.90 103.19C274.92 101.16 275.73 99.63 275.96 99.30C276.74 98.20 278.54 93.91 278.73 92.73C278.80 92.28 279.04 91.49 279.26 90.98C279.63 90.13 280.30 87.28 280.64 85.12C280.71 84.68 280.88 83.61 281.01 82.76C281.35 80.62 281.44 78.62 281.43 72.94C281.42 68.27 281.41 67.98 281.09 66.19C280.92 65.16 280.73 63.92 280.69 63.44C280.64 62.96 280.50 62.20 280.38 61.75C280.25 61.30 280.00 60.38 279.82 59.69C279.65 59.00 279.28 57.79 279.00 57.00C278.73 56.21 278.50 55.46 278.50 55.34C278.50 54.93 276.58 50.41 275.45 48.12C274.67 46.57 274.40 46.11 274.00 45.62C273.75 45.31 273.41 44.82 273.26 44.52C273.11 44.23 272.80 43.78 272.58 43.53C272.35 43.27 271.86 42.62 271.49 42.07C271.12 41.52 270.53 40.76 270.17 40.38C269.82 40.00 269.44 39.49 269.32 39.25C269.19 39.01 268.64 38.32 268.08 37.72C267.52 37.12 266.64 36.17 266.12 35.61C265.61 35.05 264.79 34.28 264.31 33.89C263.83 33.51 263.06 32.88 262.61 32.50C260.55 30.80 260.08 30.44 258.38 29.31C257.38 28.64 256.31 27.99 256.00 27.85C255.69 27.72 255.10 27.39 254.68 27.12C254.26 26.85 253.53 26.49 253.05 26.33C252.57 26.16 252.00 25.94 251.78 25.83C251.39 25.63 249.97 25.09 247.75 24.30C247.10 24.07 246.12 23.82 245.58 23.75C245.04 23.67 243.86 23.37 242.95 23.07C240.78 22.35 239.82 22.23 233.44 21.87C232.07 21.80 230.91 21.71 230.87 21.68C230.63 21.54 214.76 21.50 212.54 21.64C210.64 21.76 209.78 21.76 208.35 21.64C206.72 21.49 206.43 21.50 205.01 21.73C202.92 22.05 203.00 21.94 202.99 24.55C202.99 25.65 202.97 49.02 202.96 76.48L202.94 126.40L203.32 126.74C203.67 127.05 203.84 127.09 205.38 127.24C206.31 127.32 207.15 127.42 207.25 127.44C207.35 127.47 208.06 127.45 208.81 127.41C209.57 127.37 211.99 127.32 214.19 127.29ZM570.84 127.06C572.91 126.96 574.77 126.81 574.96 126.74C575.15 126.66 575.99 126.52 576.81 126.43C578.77 126.20 581.91 125.47 583.25 124.94C583.83 124.71 585.13 124.20 586.12 123.81C587.12 123.42 588.70 122.72 589.62 122.25C590.55 121.79 591.68 121.23 592.12 121.02C592.57 120.80 593.39 120.29 593.94 119.88C595.55 118.67 595.77 118.51 596.58 117.96C600.09 115.58 602.94 113.01 605.16 110.22C605.67 109.58 606.19 108.98 606.31 108.88C606.43 108.78 606.86 108.21 607.26 107.61C607.66 107.02 608.21 106.27 608.50 105.94C608.78 105.62 609.16 105.06 609.33 104.71C609.51 104.35 609.80 103.88 609.96 103.66C610.13 103.45 610.62 102.57 611.05 101.73C612.36 99.17 613.27 97.44 613.37 97.31C613.42 97.24 613.71 96.62 614.00 95.94C614.49 94.79 614.75 93.88 615.75 89.88C615.95 89.08 616.31 87.76 616.56 86.94C616.86 85.95 617.09 84.76 617.26 83.44C617.40 82.34 617.59 80.99 617.68 80.44C617.91 79.11 618.06 71.03 617.88 69.31C617.41 64.73 616.33 59.61 615.25 56.90C614.99 56.23 614.74 55.41 614.69 55.07C614.64 54.72 614.50 54.24 614.37 53.98C614.24 53.73 613.99 53.14 613.81 52.68C613.48 51.80 613.25 51.36 611.85 48.97C611.38 48.17 610.85 47.11 610.69 46.62C610.39 45.76 609.20 43.69 608.80 43.36C608.69 43.28 608.21 42.62 607.72 41.90C607.23 41.18 606.15 39.84 605.32 38.93C604.49 38.03 603.53 36.94 603.19 36.51C602.45 35.59 600.65 33.84 599.88 33.28C599.57 33.06 598.95 32.56 598.50 32.18C596.85 30.76 596.54 30.52 595.62 30.04C595.10 29.76 593.82 28.96 592.76 28.26C591.50 27.41 590.39 26.79 589.52 26.42C585.72 24.82 584.64 24.40 584.12 24.31C583.14 24.16 579.98 23.41 578.62 23.02C575.34 22.06 573.94 21.94 565.25 21.82C564.32 21.81 562.77 21.75 561.81 21.70C560.83 21.64 559.67 21.65 559.16 21.72C558.08 21.85 551.03 21.69 549.56 21.49C549.01 21.42 548.20 21.31 547.75 21.25C547.27 21.19 546.69 21.19 546.33 21.26C545.99 21.32 544.55 21.41 543.14 21.45C540.31 21.54 539.89 21.63 539.50 22.28C539.16 22.84 539.19 125.58 539.53 126.21C539.79 126.68 540.28 126.87 541.24 126.88C541.62 126.88 542.16 126.94 542.44 127.01C543.76 127.36 563.92 127.39 570.84 127.06ZM161.62 125.68C161.62 125.40 162.30 125.17 163.40 125.07C164.22 125.00 164.41 124.94 164.75 124.63C164.99 124.40 165.39 124.21 165.84 124.11C166.22 124.02 166.69 123.82 166.88 123.66C167.37 123.25 167.98 123.05 168.16 123.24C168.39 123.47 168.11 123.79 167.44 124.04C167.11 124.16 166.68 124.39 166.49 124.55C166.24 124.76 165.91 124.87 165.33 124.93C164.75 124.99 164.46 125.09 164.29 125.27C163.89 125.72 163.42 125.88 162.51 125.88C161.79 125.88 161.62 125.84 161.62 125.68ZM704.62 118.45C704.62 118.19 705.66 117.30 706.15 117.14C706.43 117.04 706.83 116.72 707.23 116.26C707.85 115.55 708.90 114.88 709.39 114.88C710.00 114.88 708.85 116.20 707.72 116.81C707.36 117.01 706.88 117.38 706.66 117.63C706.02 118.37 704.62 118.93 704.62 118.45ZM371.43 116.61C371.34 116.47 371.58 116.19 373.12 114.62C373.71 114.02 374.55 113.08 375.00 112.51C375.45 111.94 376.04 111.27 376.31 111.01C377.38 110.01 378.51 108.73 378.76 108.22C378.91 107.93 379.41 107.15 379.87 106.50C380.34 105.85 381.10 104.58 381.56 103.69C382.03 102.79 382.45 102.01 382.50 101.94C382.55 101.87 382.71 101.50 382.85 101.12C382.99 100.74 383.42 99.75 383.81 98.93C384.71 97.05 385.34 95.42 385.58 94.38C385.91 92.93 386.74 92.13 387.72 92.31C388.27 92.41 388.88 93.00 388.88 93.43C388.88 94.08 387.95 96.48 387.10 98.03C386.62 98.91 386.03 100.07 385.79 100.60C385.27 101.72 384.34 103.30 383.94 103.75C383.78 103.92 383.46 104.37 383.22 104.75C382.98 105.13 382.46 105.80 382.07 106.25C381.67 106.70 381.22 107.33 381.05 107.65C380.76 108.21 376.81 112.30 373.99 114.94C372.90 115.96 371.56 116.83 371.43 116.61ZM55.84 55.87C56.03 55.79 56.55 55.71 57.00 55.67C58.32 55.58 58.53 55.17 58.05 53.57C57.59 52.05 57.17 50.96 56.44 49.44C56.07 48.68 55.70 47.73 55.62 47.31C55.41 46.27 53.63 41.24 53.11 40.22C52.97 39.94 52.75 39.36 52.62 38.95C51.93 36.61 49.88 32.00 49.47 31.85C49.01 31.68 48.62 32.35 48.25 33.93C48.11 34.52 47.83 35.33 47.63 35.74C47.43 36.14 47.19 36.75 47.11 37.08C47.03 37.41 46.84 37.94 46.68 38.25C46.53 38.56 46.33 39.07 46.25 39.38C46.17 39.69 45.91 40.33 45.69 40.81C45.46 41.29 45.20 42.02 45.12 42.43C45.04 42.84 44.78 43.53 44.55 43.97C44.32 44.41 44.12 44.87 44.12 44.99C44.12 45.11 43.93 45.57 43.70 46.01C43.47 46.45 43.13 47.35 42.96 48.00C42.78 48.67 42.31 49.84 41.89 50.69C41.32 51.83 41.13 52.36 41.08 52.91C41.04 53.33 40.91 53.81 40.75 54.07C40.41 54.62 40.49 55.05 41.00 55.36C41.33 55.56 41.64 55.58 44.15 55.53C47.94 55.45 48.72 55.47 50.31 55.67C51.12 55.78 52.25 55.82 53.06 55.79C53.87 55.75 54.57 55.78 54.75 55.86C55.16 56.03 55.41 56.03 55.84 55.87ZM184.98 51.88C185.40 51.75 186.09 51.60 186.53 51.56C187.85 51.41 188.15 51.03 187.62 50.12C187.48 49.88 187.17 49.29 186.94 48.80C185.81 46.46 184.41 44.37 182.68 42.45C182.06 41.75 181.37 40.93 181.15 40.62C180.37 39.54 179.43 38.40 178.56 37.50C176.10 34.95 175.08 33.96 173.97 33.08C173.30 32.54 172.75 32.06 172.75 32.02C172.75 31.93 171.34 30.85 169.80 29.75C168.48 28.81 167.32 28.13 165.20 27.07C164.09 26.51 162.92 25.89 162.59 25.70C161.98 25.34 159.36 24.38 157.25 23.75C156.60 23.55 155.72 23.27 155.31 23.13C153.35 22.44 151.72 22.14 148.93 21.94C144.20 21.59 143.10 21.57 141.06 21.79C140.03 21.90 138.30 22.05 137.21 22.13C136.12 22.21 134.99 22.35 134.71 22.45C134.43 22.55 133.63 22.72 132.94 22.82C131.54 23.03 129.85 23.51 129.00 23.94C128.17 24.36 126.65 24.94 125.94 25.11C125.59 25.20 125.09 25.40 124.81 25.56C124.54 25.72 124.02 25.93 123.67 26.04C123.04 26.22 121.49 27.00 120.62 27.57C120.38 27.73 119.87 27.94 119.48 28.04C118.74 28.23 117.94 28.71 116.99 29.55C116.67 29.83 116.08 30.26 115.68 30.50C115.28 30.74 114.76 31.13 114.51 31.38C114.26 31.62 113.81 32.01 113.50 32.24C113.19 32.48 112.59 33.00 112.17 33.40C111.74 33.80 111.35 34.13 111.29 34.13C111.15 34.13 108.46 36.80 107.80 37.58C107.52 37.91 106.83 38.86 106.25 39.69C105.68 40.51 105.03 41.41 104.81 41.69C104.59 41.96 104.20 42.61 103.94 43.12C103.68 43.64 103.08 44.75 102.61 45.59C102.14 46.43 101.64 47.53 101.49 48.03C101.34 48.53 101.08 49.20 100.92 49.53C100.55 50.27 100.54 50.76 100.91 51.09C101.43 51.58 102.11 51.65 105.94 51.65C107.93 51.65 110.03 51.69 110.59 51.75C111.36 51.84 111.91 51.82 112.78 51.67C113.71 51.52 114.12 51.51 114.88 51.62C115.58 51.73 116.57 51.73 118.81 51.61C122.58 51.42 123.78 51.41 127.12 51.57C128.60 51.64 132.88 51.68 136.62 51.67C140.37 51.65 146.31 51.65 149.81 51.66C157.00 51.68 163.33 51.68 174.44 51.65C181.42 51.64 182.15 51.66 183.06 51.87C183.61 51.99 184.10 52.10 184.14 52.11C184.18 52.12 184.56 52.02 184.98 51.88ZM299.38 51.71C309.69 51.74 315.15 51.74 316.50 51.72C317.22 51.70 318.54 51.72 319.44 51.75C320.33 51.78 323.14 51.76 325.69 51.69C328.23 51.63 331.10 51.59 332.06 51.60C333.02 51.61 342.81 51.64 353.81 51.66C364.81 51.68 374.30 51.74 374.90 51.80C375.85 51.89 376.08 51.87 376.80 51.63C377.45 51.41 377.77 51.37 378.31 51.44C379.27 51.56 379.68 51.30 379.59 50.64C379.51 50.05 377.72 46.98 376.50 45.31C376.26 44.98 375.61 44.08 375.06 43.31C374.51 42.54 373.77 41.55 373.40 41.11C373.04 40.67 372.47 39.98 372.13 39.56C370.37 37.43 369.21 36.12 368.56 35.56C368.17 35.22 367.53 34.65 367.14 34.31C365.85 33.15 364.60 32.19 361.41 29.88C360.32 29.09 358.92 28.21 358.00 27.75C357.69 27.59 357.23 27.29 356.97 27.07C356.72 26.85 355.79 26.37 354.91 26.01C354.03 25.64 352.76 25.09 352.08 24.78C351.41 24.47 350.37 24.06 349.77 23.87C349.17 23.67 348.22 23.34 347.64 23.13C346.18 22.59 343.87 22.15 341.74 22.00C340.75 21.93 339.37 21.82 338.67 21.75C335.50 21.45 333.53 21.45 331.74 21.74C330.80 21.89 329.26 22.06 328.30 22.12C327.24 22.18 326.20 22.33 325.62 22.49C325.11 22.63 324.08 22.89 323.34 23.06C322.60 23.23 321.59 23.53 321.09 23.73C320.60 23.93 319.99 24.13 319.75 24.19C319.51 24.24 319.06 24.41 318.75 24.57C318.44 24.72 317.93 24.91 317.62 24.99C316.98 25.16 314.87 26.16 314.31 26.56C313.73 26.98 312.23 27.70 311.47 27.92C311.04 28.05 310.46 28.37 309.92 28.78C309.45 29.15 308.51 29.83 307.84 30.29C307.16 30.76 306.38 31.36 306.09 31.63C304.99 32.64 304.04 33.41 303.56 33.70C303.29 33.86 302.58 34.54 302.00 35.21C301.42 35.88 300.62 36.74 300.24 37.12C299.28 38.07 297.98 39.58 297.56 40.26C297.37 40.56 297.00 41.07 296.75 41.38C296.17 42.10 295.62 43.00 294.77 44.62C294.40 45.35 293.98 46.09 293.85 46.28C293.72 46.47 293.45 47.10 293.25 47.69C293.05 48.28 292.69 49.09 292.44 49.49C291.64 50.81 291.93 52.04 292.98 51.80C293.23 51.74 296.11 51.70 299.38 51.71ZM713.05 51.69C713.39 51.58 714.05 51.50 714.51 51.50C715.43 51.50 715.75 51.33 715.75 50.84C715.75 50.43 714.36 47.71 713.57 46.56C713.19 46.01 712.61 45.15 712.29 44.65C711.96 44.14 711.32 43.28 710.88 42.72C710.43 42.17 709.65 41.18 709.16 40.51C708.31 39.39 705.22 36.04 704.25 35.19C704.02 34.98 703.51 34.53 703.13 34.18C702.75 33.83 702.16 33.34 701.81 33.10C701.47 32.85 701.05 32.50 700.88 32.31C700.70 32.13 700.31 31.80 700.00 31.59C699.69 31.38 699.11 30.91 698.71 30.55C698.31 30.19 697.58 29.69 697.08 29.43C696.59 29.17 695.79 28.71 695.31 28.39C693.96 27.51 692.42 26.66 691.66 26.38C691.28 26.23 690.74 25.98 690.45 25.82C689.91 25.51 686.99 24.35 685.97 24.04C685.65 23.95 685.00 23.70 684.53 23.50C679.55 21.38 667.78 21.01 660.88 22.75C656.30 23.91 653.86 24.76 652.62 25.63C652.44 25.76 651.94 25.94 651.52 26.04C651.09 26.14 650.61 26.34 650.46 26.48C650.31 26.62 649.93 26.84 649.62 26.97C649.32 27.11 648.84 27.36 648.58 27.54C648.31 27.73 647.96 27.87 647.81 27.87C647.52 27.88 646.11 28.77 645.44 29.37C645.08 29.70 643.76 30.58 642.91 31.07C642.69 31.19 642.31 31.54 642.06 31.84C641.82 32.13 641.31 32.57 640.94 32.81C640.57 33.04 640.20 33.35 640.13 33.49C640.05 33.63 639.73 33.89 639.40 34.06C638.78 34.38 637.78 35.42 636.42 37.16C635.98 37.73 635.34 38.52 635.00 38.94C633.13 41.20 632.48 42.10 631.67 43.62C631.28 44.35 630.70 45.33 630.37 45.81C629.62 46.94 629.32 47.52 629.06 48.43C628.94 48.83 628.71 49.45 628.55 49.80C627.94 51.12 628.18 51.41 630.01 51.57C630.73 51.63 635.70 51.68 641.06 51.67C646.42 51.66 658.07 51.66 666.94 51.67C684.70 51.69 687.50 51.67 692.37 51.50C695.21 51.41 695.82 51.42 696.62 51.59C697.44 51.76 697.91 51.77 700.12 51.65C701.86 51.56 703.43 51.55 705.00 51.63C706.27 51.70 708.34 51.74 709.60 51.73C710.85 51.72 711.92 51.75 711.96 51.80C712.09 51.92 712.38 51.89 713.05 51.69Z"/><path fill="none" style="stroke:var(--logo-ink,#A8722E)" stroke-width="1.15" stroke-linecap="round" d="M27.5 107C28 117 33 124.5 41 126.6C47 128.3 55 128.6 62 127C70 125 76 119 80.5 111.5M146 126C158 126 172 122 183 114.5M350 127C358 126.5 366 122.5 374 114.5M686 127C694 126.5 701 122.5 708 115"/></g><g id="ad-sub"><path style="fill:var(--logo-ink,#A8722E)" fill-rule="evenodd" d="M313.12 182.12C311.70 182.03 311.56 181.99 310.81 181.51C310.54 181.33 310.09 181.08 309.82 180.94C308.93 180.48 308.63 179.61 309.18 179.06C309.63 178.61 310.29 178.64 311.07 179.15C311.65 179.52 311.79 179.55 313.62 179.70C317.03 179.99 318.17 179.91 319.46 179.32C320.67 178.77 321.04 177.48 320.21 176.70C319.52 176.05 317.34 175.47 315.06 175.31C312.18 175.12 309.95 174.01 309.02 172.31C308.77 171.85 308.75 169.93 309.00 169.19C309.24 168.44 310.92 166.81 311.64 166.63C311.94 166.55 312.58 166.37 313.06 166.22C314.61 165.75 317.24 165.76 318.77 166.23C321.42 167.06 322.63 168.24 321.71 169.10C321.31 169.48 321.01 169.45 319.74 168.89C317.65 167.95 314.93 167.76 313.05 168.41C311.92 168.80 311.76 168.93 311.38 169.75C310.93 170.76 311.18 171.63 312.07 172.15C312.52 172.41 314.79 172.93 316.06 173.06C316.53 173.11 317.06 173.20 317.22 173.26C317.39 173.33 318.01 173.46 318.61 173.57C319.76 173.77 321.66 174.57 322.11 175.05C322.25 175.19 322.54 175.70 322.76 176.17C323.51 177.76 323.09 179.04 321.21 180.90C320.70 181.39 318.79 181.96 317.06 182.12C315.59 182.26 315.17 182.26 313.12 182.12ZM332.25 182.13C331.43 182.06 331.02 181.95 330.43 181.66C330.02 181.45 329.43 181.21 329.13 181.13C328.30 180.90 326.60 178.94 325.83 177.31C325.50 176.63 325.32 173.33 325.54 172.17C326.25 168.41 329.71 165.87 334.11 165.88C336.86 165.88 339.18 166.53 340.38 167.64C341.73 168.88 340.02 170.07 338.23 169.13C337.85 168.92 337.28 168.72 336.98 168.68C336.68 168.63 336.14 168.51 335.77 168.41C334.75 168.13 331.47 168.55 330.66 169.07C329.58 169.76 328.76 170.55 328.51 171.13C327.53 173.41 327.61 176.20 328.70 177.49C329.25 178.14 330.77 179.08 331.88 179.45C332.86 179.77 333.08 179.80 334.81 179.79C336.93 179.78 337.54 179.66 338.44 179.07C339.46 178.41 340.04 178.40 340.72 179.03C341.48 179.74 340.70 180.61 338.59 181.43C336.63 182.20 335.12 182.36 332.25 182.13ZM377.16 182.11C375.53 181.84 373.89 180.65 372.34 178.61C371.72 177.79 371.12 175.76 371.12 174.44C371.12 171.21 371.68 169.76 373.56 168.06C375.66 166.18 377.87 165.57 381.47 165.88C383.92 166.09 386.62 167.43 386.62 168.42C386.62 169.53 385.58 169.80 384.12 169.06C383.52 168.76 382.95 168.58 382.34 168.50C381.84 168.44 381.14 168.32 380.77 168.24C380.05 168.09 378.00 168.32 376.64 168.70C374.84 169.22 373.75 171.48 373.75 174.73C373.75 176.95 374.68 178.50 376.48 179.27C377.44 179.69 377.44 179.69 379.99 179.71C382.55 179.73 382.55 179.73 383.72 179.23C385.42 178.50 386.14 178.56 386.56 179.45C387.00 180.37 386.49 180.89 384.50 181.55C382.59 182.19 379.17 182.45 377.16 182.11ZM419.04 181.26C418.42 180.70 417.79 180.08 417.65 179.88C417.50 179.68 416.74 178.82 415.97 177.98C415.20 177.13 414.40 176.21 414.20 175.94C414.00 175.66 413.35 174.96 412.76 174.37C412.17 173.79 411.19 172.73 410.58 172.03C409.40 170.67 408.98 170.40 408.66 170.83C408.51 171.02 408.49 171.66 408.57 174.75C408.71 180.62 408.30 182.35 406.89 181.86C406.10 181.59 406.07 181.43 406.05 177.61C406.04 175.38 405.98 173.87 405.87 173.35C405.66 172.29 405.88 168.00 406.19 167.06C406.45 166.27 406.87 165.88 407.46 165.88C407.97 165.88 408.30 166.18 409.42 167.66C409.80 168.16 410.94 169.38 411.96 170.38C412.99 171.37 414.24 172.69 414.76 173.29C415.27 173.90 415.94 174.70 416.25 175.07C416.56 175.44 417.05 175.91 417.35 176.12C417.64 176.33 418.08 176.78 418.32 177.12C418.78 177.76 419.18 178.00 419.41 177.77C419.55 177.62 419.60 176.23 419.66 170.88C419.70 166.91 419.77 166.45 420.38 166.12C420.74 165.93 421.33 166.17 421.56 166.62C421.92 167.32 422.08 168.63 421.99 170.12C421.94 170.92 421.92 173.47 421.95 175.81C422.01 181.51 421.90 182.04 420.66 182.21C420.18 182.28 420.12 182.24 419.04 181.26ZM455.45 181.99C455.27 181.84 454.97 181.44 454.79 181.08C454.62 180.73 454.34 180.26 454.17 180.04C454.01 179.82 453.76 179.38 453.62 179.06C453.21 178.10 451.72 176.58 450.75 176.13C449.63 175.62 448.26 175.43 446.82 175.60C445.29 175.77 445.35 175.67 445.18 178.47C445.10 179.76 444.99 180.93 444.93 181.06C444.60 181.94 443.69 182.15 442.98 181.52C442.58 181.16 442.58 181.16 442.48 179.47C442.43 178.54 442.33 177.33 442.26 176.79C442.12 175.82 442.20 174.68 442.48 173.37C442.65 172.61 442.70 169.68 442.57 168.36C442.44 167.06 442.70 166.32 443.42 165.94C443.87 165.70 443.96 165.70 446.50 166.01C447.40 166.12 448.09 166.12 449.33 166.00C451.10 165.85 451.41 165.87 452.94 166.32C453.49 166.47 454.21 166.67 454.53 166.76C455.24 166.94 456.25 167.94 456.67 168.88C457.01 169.64 457.12 171.79 456.84 172.32C456.66 172.66 455.27 174.03 454.36 174.76C454.05 175.02 453.98 175.14 454.04 175.39C454.18 175.93 455.53 178.04 456.31 178.94C457.54 180.34 457.62 180.48 457.62 181.09C457.62 181.87 457.23 182.25 456.40 182.25C455.96 182.25 455.69 182.17 455.45 181.99ZM466.72 182.06C463.96 181.63 462.44 180.80 461.25 179.06C460.82 178.44 460.82 178.44 460.65 175.19C460.42 170.93 460.56 167.06 460.96 166.53C461.49 165.82 462.30 165.87 462.70 166.64C462.88 167.00 462.91 167.62 462.93 171.56C462.96 177.14 463.07 177.66 464.57 178.91C465.60 179.77 466.20 179.91 468.55 179.86C470.44 179.81 470.44 179.81 471.51 179.30C472.77 178.69 473.15 178.27 473.52 177.10C473.79 176.24 473.79 176.25 473.77 170.94C473.76 168.90 473.81 167.24 473.89 166.95C474.30 165.41 475.78 165.61 476.11 167.26C476.31 168.25 476.34 173.40 476.15 175.34C475.89 178.03 475.46 179.15 474.23 180.32C472.49 181.97 469.94 182.56 466.72 182.06ZM267.54 182.00C266.91 181.75 266.81 181.36 266.80 179.13C266.80 177.99 266.75 176.46 266.69 175.71C266.63 174.84 266.65 173.67 266.75 172.40C266.83 171.32 266.91 169.67 266.93 168.72C266.96 166.27 267.24 165.94 269.15 166.08C269.79 166.12 270.56 166.10 271.02 166.01C272.30 165.78 278.60 166.00 279.04 166.29C279.49 166.58 279.51 167.33 279.09 167.82C278.69 168.29 276.91 168.45 274.52 168.24C272.55 168.07 269.96 168.18 269.53 168.45C269.27 168.62 269.25 168.72 269.26 169.85C269.27 171.31 269.40 172.20 269.65 172.45C269.95 172.76 271.30 172.89 274.31 172.93C277.90 172.97 278.53 173.12 278.70 173.95C278.76 174.25 278.70 174.41 278.46 174.70C278.15 175.06 278.13 175.06 276.67 175.09C275.85 175.11 274.46 175.19 273.56 175.27C272.67 175.35 271.45 175.44 270.85 175.46C270.16 175.50 269.72 175.58 269.63 175.68C269.55 175.78 269.48 176.54 269.46 177.57C269.43 179.95 268.95 179.74 274.49 179.84C278.92 179.92 278.92 179.92 279.27 180.24C279.98 180.90 279.75 181.73 278.78 181.99C278.20 182.15 267.93 182.16 267.54 182.00ZM283.00 181.86C282.36 181.57 281.75 181.04 281.75 180.77C281.75 180.67 281.92 180.32 282.12 180.00C282.33 179.68 282.55 179.14 282.61 178.80C282.79 177.82 282.70 169.08 282.50 168.18C282.31 167.30 282.38 166.92 282.82 166.39C283.33 165.79 283.82 165.69 285.16 165.94C286.01 166.10 286.60 166.13 287.43 166.06C289.40 165.91 292.41 166.12 293.94 166.52C294.94 166.77 296.85 168.05 297.72 169.05C298.71 170.17 299.26 172.89 299.03 175.45C298.86 177.38 298.58 178.03 297.53 179.00C297.14 179.36 296.39 180.06 295.88 180.55C294.40 181.96 293.55 182.12 287.38 182.12C283.81 182.12 283.53 182.10 283.00 181.86ZM390.81 181.95C389.75 181.55 389.42 180.74 389.95 179.82C390.30 179.22 390.31 179.12 390.29 177.81C390.27 177.06 390.27 175.57 390.28 174.50C390.30 172.09 390.29 171.78 390.20 169.31C390.12 167.17 390.19 166.72 390.67 166.27C391.17 165.80 391.66 165.74 393.07 165.96C394.20 166.15 394.59 166.15 396.21 166.02C399.40 165.75 401.48 165.77 402.00 166.07C402.60 166.42 402.78 167.10 402.42 167.60C401.95 168.23 401.67 168.26 397.36 168.18C392.38 168.09 392.72 167.93 392.62 170.40C392.58 171.31 392.59 172.19 392.64 172.34C392.84 172.90 393.09 172.93 396.88 172.94C400.04 172.94 400.48 172.96 400.84 173.16C401.34 173.43 401.53 173.77 401.48 174.29C401.41 175.02 401.05 175.09 396.96 175.23C394.06 175.34 393.29 175.40 393.05 175.56C392.61 175.85 392.36 176.87 392.40 178.19C392.46 179.85 392.14 179.75 397.41 179.85C401.53 179.93 401.75 179.95 402.08 180.20C402.71 180.67 402.63 181.53 401.93 181.82C401.25 182.11 391.52 182.21 390.81 181.95ZM244.10 181.78C243.59 181.20 243.56 181.01 243.55 178.06C243.54 175.77 243.50 175.03 243.33 174.39C243.15 173.74 243.13 173.44 243.24 172.71C243.30 172.21 243.39 170.86 243.44 169.69C243.53 167.23 243.66 166.45 244.04 166.19C244.36 165.96 245.21 165.95 245.58 166.16C245.95 166.37 247.17 167.91 247.62 168.75C247.82 169.13 248.38 170.06 248.87 170.81C249.35 171.57 249.94 172.51 250.18 172.91C250.42 173.31 250.99 174.09 251.43 174.66C251.88 175.22 252.37 175.85 252.51 176.04C252.91 176.56 253.25 176.45 253.61 175.69C253.77 175.34 254.23 174.69 254.63 174.23C255.02 173.77 255.67 172.79 256.07 172.04C256.46 171.30 256.94 170.49 257.12 170.25C257.30 170.01 257.61 169.53 257.81 169.19C259.12 166.88 260.64 165.72 261.64 166.26C262.00 166.45 262.09 166.78 262.25 168.45C262.33 169.27 262.48 170.30 262.58 170.75C262.71 171.32 262.74 171.85 262.69 172.52C262.64 173.10 262.67 173.69 262.75 174.01C262.86 174.40 262.86 175.04 262.75 176.55C262.66 177.66 262.58 179.05 262.55 179.64C262.48 181.27 262.10 182.00 261.30 182.00C260.21 182.00 259.61 180.61 259.86 178.60C259.98 177.64 259.96 177.15 259.79 175.75C259.68 174.82 259.58 173.60 259.57 173.04C259.57 172.48 259.51 171.97 259.46 171.92C259.28 171.75 256.97 174.49 256.66 175.23C256.56 175.48 256.33 175.88 256.14 176.12C255.96 176.36 255.59 176.91 255.31 177.33C253.81 179.67 253.59 179.86 252.69 179.70C252.11 179.59 251.16 178.46 250.16 176.71C249.06 174.78 246.68 171.75 246.39 171.93C246.13 172.09 245.85 177.45 246.00 179.22C246.13 180.68 245.99 181.30 245.41 181.75C245.02 182.06 244.35 182.07 244.10 181.78ZM358.85 181.87C358.36 181.59 358.30 181.21 358.05 177.10C357.93 175.18 358.20 175.31 354.20 175.31C352.41 175.30 350.18 175.25 349.24 175.20C346.74 175.04 346.66 175.17 346.63 179.15C346.62 180.72 346.41 181.41 345.87 181.69C345.60 181.83 345.44 181.84 345.21 181.74C344.65 181.48 344.54 181.08 344.45 178.91C344.40 177.80 344.32 176.62 344.27 176.29C344.14 175.44 344.33 167.76 344.49 167.14C344.80 166.00 345.67 165.53 346.31 166.17C346.75 166.62 346.87 167.20 347.03 169.94C347.19 172.44 347.19 172.44 347.61 172.65C348.20 172.94 357.38 172.98 357.83 172.69C358.10 172.51 358.11 172.44 358.15 169.72C358.18 167.19 358.21 166.90 358.44 166.50C358.90 165.72 359.84 165.69 360.33 166.44C360.53 166.75 360.54 167.31 360.53 173.48C360.52 180.23 360.47 181.08 360.05 181.72C359.85 182.02 359.24 182.10 358.85 181.87ZM432.02 181.80C431.14 181.43 431.10 181.20 431.00 174.65C430.91 168.93 430.91 168.85 430.64 168.58C430.38 168.33 430.23 168.31 427.72 168.25C425.36 168.19 425.02 168.16 424.64 167.94C423.77 167.43 423.83 166.79 424.78 166.38C425.59 166.04 428.51 165.83 431.12 165.93C432.33 165.97 433.85 166.00 434.50 165.97C437.79 165.87 439.43 165.93 439.77 166.16C440.49 166.65 440.47 167.56 439.72 167.96C439.37 168.16 438.98 168.19 436.75 168.19C435.34 168.19 434.07 168.24 433.92 168.29C433.42 168.46 433.38 168.86 433.47 172.69C433.61 178.08 433.51 181.01 433.18 181.45C432.84 181.91 432.51 182.01 432.02 181.80ZM481.29 181.85C480.67 181.55 480.57 180.95 480.61 177.68C480.64 175.19 480.61 174.49 480.43 173.65C480.24 172.77 480.23 172.53 480.37 171.79C480.46 171.32 480.57 169.93 480.61 168.71C480.69 166.53 480.69 166.47 481.00 166.23C481.46 165.85 482.41 165.96 483.24 166.49C483.81 166.86 483.96 167.06 484.71 168.48C485.17 169.35 486.10 170.88 486.77 171.89C487.44 172.89 488.11 173.96 488.24 174.26C488.38 174.57 488.74 175.15 489.04 175.56C489.83 176.66 490.23 176.64 490.82 175.49C490.98 175.17 491.39 174.61 491.72 174.24C492.45 173.43 493.24 172.22 494.13 170.55C494.49 169.87 494.99 169.06 495.25 168.75C495.50 168.44 495.78 168.05 495.87 167.88C496.11 167.43 497.25 166.25 497.65 166.05C498.11 165.81 498.67 165.83 498.99 166.09C499.31 166.36 499.57 168.56 499.46 170.19C499.43 170.74 499.44 171.57 499.49 172.04C499.59 173.00 499.45 178.07 499.26 180.17C499.13 181.67 498.97 182.00 498.35 182.00C497.32 182.00 497.26 181.73 497.12 176.56C496.99 171.76 496.96 171.38 496.62 171.38C496.34 171.38 495.76 172.07 495.27 172.99C495.06 173.37 494.72 173.86 494.50 174.06C494.28 174.27 493.79 174.97 493.41 175.62C493.03 176.27 492.49 177.08 492.22 177.43C491.95 177.78 491.55 178.34 491.33 178.68C490.64 179.78 489.54 179.86 488.96 178.87C488.83 178.67 488.43 178.15 488.07 177.73C487.70 177.31 487.18 176.57 486.92 176.08C486.65 175.60 486.17 174.89 485.83 174.51C485.24 173.83 484.28 172.44 483.84 171.63C483.70 171.37 483.55 171.25 483.41 171.27C483.22 171.31 483.18 171.51 483.11 172.63C483.07 173.35 482.97 174.36 482.90 174.88C482.81 175.52 482.80 176.49 482.87 177.86C483.00 180.36 482.90 181.32 482.44 181.72C482.09 182.02 481.73 182.06 481.29 181.85ZM303.16 181.45C302.81 181.15 302.81 181.15 302.72 177.98C302.56 172.30 302.58 167.54 302.76 167.09C303.13 166.15 303.70 165.90 304.46 166.37C304.98 166.69 305.12 167.22 305.13 168.88C305.13 169.60 305.18 170.54 305.25 170.97C305.34 171.49 305.34 172.18 305.25 173.09C305.18 173.83 305.10 175.89 305.07 177.66C305.03 179.54 304.96 180.97 304.88 181.12C304.53 181.78 303.73 181.93 303.16 181.45ZM293.11 179.27C295.05 178.60 295.36 178.35 296.01 176.96C296.71 175.46 296.60 172.03 295.82 170.69C295.08 169.43 293.44 168.55 291.46 168.36C289.83 168.21 285.93 168.23 285.57 168.40C285.02 168.65 284.94 169.21 285.10 171.72C285.18 173.06 285.20 174.91 285.14 176.38C285.10 177.72 285.10 178.96 285.16 179.14C285.34 179.71 285.59 179.75 288.88 179.71C291.94 179.67 291.94 179.67 293.11 179.27ZM449.67 173.63C450.09 173.56 450.84 173.45 451.33 173.39C452.40 173.25 453.65 172.72 454.06 172.23C454.54 171.66 454.71 170.64 454.45 169.95C454.19 169.28 453.50 168.63 453.03 168.61C452.17 168.57 451.63 168.50 450.88 168.35C449.77 168.13 446.32 168.14 445.78 168.36C445.31 168.56 445.30 168.61 445.13 170.31C444.99 171.79 445.11 173.01 445.43 173.36C445.74 173.71 448.23 173.86 449.67 173.63Z"/></g><g id="ad-flame"><g transform="translate(706 -47) scale(1.04)"><path style="fill:var(--flame-gold,url(#adfg))" d="M21 0C12 12 2 24 4 36C6 46 14 52 22 51C14 47 10 40 11 31C12 20 17 10 21 0Z"/><path style="fill:var(--flame-navy,url(#adfn))" d="M21 0C28 10 36 20 35 31C34 42 26 48 18 50C25 45 29 38 28 30C27 21 23 12 21 0Z"/><path style="fill:var(--flame-gold,url(#adfg2))" d="M27.5 27C30 34 28.5 42 22 47.5C25.5 41 26.5 34 27.5 27Z"/></g></g></defs></svg>
+
+<div id="root"><div class="loading"><span class="spin"></span></div></div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+var D=document, W=window;
+var $=function(s,c){return (c||D).querySelector(s)}, $$=function(s,c){return Array.prototype.slice.call((c||D).querySelectorAll(s))};
+var IMG = /\/hq\/?/.test(location.pathname) ? '../img/' : 'img/';
+var ico = function(n,cls){return '<svg class="i '+(cls||'')+'"><use href="#i-'+n+'"/></svg>'};
+var esc = function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+
+/* =============== i18n =============== */
+var L = {
+ nl:{
+  overview:"Overzicht",requests:"Aanvragen",agenda:"Agenda",clients:"Organisaties",team:"Team",settings:"Instellingen",logout:"Uitloggen",manage:"Beheer",
+  login:"Inloggen",signup:"Account aanmaken",email:"E-mailadres",password:"Wachtwoord",name:"Naam",fn:"Functie",
+  welcome:"Welkom bij <em>Aedes Dei HQ</em>",welcomeSub:"Het platform voor aanvragen, afspraken en uw team.",
+  setupT:"Welkom. <em>Laten we beginnen.</em>",setupSub:"Maak het eerste account aan. Dit wordt het eigenaarsaccount van Aedes Dei HQ.",setupBtn:"Account aanmaken en starten",
+  inviteT:"U bent <em>uitgenodigd</em>",inviteSub:"Maak uw account aan om toegang te krijgen tot Aedes Dei HQ.",
+  signupNote:"Nieuwe accounts worden actief zodra een beheerder ze goedkeurt.",pendingMsg:"Uw account is aangevraagd. U kunt inloggen zodra een beheerder het heeft goedgekeurd.",
+  pwHint:"Minimaal 8 tekens",
+  demoBanner:"Voorbeeldweergave. De echte HQ werkt zodra de website online staat. Hier ziet u het platform met voorbeeldgegevens.",openDemo:"Bekijk de demo",
+  quote:"Preventieve zorg.<br><em>Voor een gezonde toekomst.</em>",
+  morning:"Goedemorgen",afternoon:"Goedemiddag",evening:"Goedenavond",
+  t_new:"Nieuwe aanvragen",t_week:"Afspraken deze week",t_wait:"Wacht op antwoord",t_part:"Deelnemers deze maand",
+  h_new:"vanaf website en e-mail",h_week:"gepland",h_wait:"open gesprekken",h_part:"in geplande onderzoeken",
+  upcoming:"Komende afspraken",latest:"Laatste aanvragen",viewAll:"Alles bekijken",noUpcoming:"Geen afspraken gepland",noUpcomingS:"Plan een afspraak vanuit een aanvraag of via + Nieuw.",
+  noReq:"Geen aanvragen",noReqS:"Aanvragen via de website en info@aedesdei.nl verschijnen hier vanzelf.",
+  today:"Vandaag",tomorrow:"Morgen",
+  f_all:"Alle",f_new:"Nieuw",f_open:"Open",f_replied:"Beantwoord",f_scheduled:"Ingepland",f_closed:"Afgerond",f_declined:"Afgewezen",
+  s_new:"Nieuw",s_open:"Open",s_replied:"Beantwoord",s_scheduled:"Ingepland",s_closed:"Afgerond",s_declined:"Afgewezen",
+  src_website:"Website",src_email:"E-mail",src_manual:"Handmatig",
+  pickReq:"Kies een aanvraag",pickReqS:"Selecteer links een aanvraag om de details en het gesprek te zien.",
+  company:"Organisatie",contact:"Contactpersoon",phone:"Telefoon",employees:"Medewerkers",package:"Pakket",location:"Locatie",received:"Ontvangen",assignee:"Behandelaar",nobody:"Niemand",
+  plan:"Afspraak inplannen",makeOrg:"Organisatie aanmaken",status:"Status",
+  reply:"Antwoord",note:"Interne notitie",template:"Sjabloon",chooseTpl:"Kies een sjabloon…",send:"Versturen",saveNote:"Notitie opslaan",
+  replyPh:"Schrijf uw antwoord…",notePh:"Alleen zichtbaar voor het team…",markAs:"Daarna markeren als",
+  sentOk:"Antwoord verstuurd",noteOk:"Notitie opgeslagen",
+  mailOff:"E-mail is nog niet gekoppeld. Antwoorden versturen kan zodra de koppeling actief is (Instellingen).",
+  showMore:"Toon volledig bericht",
+  newBtn:"Nieuw",newAppt:"Afspraak",newReq:"Aanvraag",newOrg:"Organisatie",
+  month:"Maand",week:"Week",list:"Lijst",everyone:"Iedereen",
+  apptT:"Afspraak",apptNew:"Nieuwe afspraak",title:"Titel",type:"Soort",date:"Datum",start:"Begin",end:"Einde",address:"Adres",participants:"Aantal deelnemers",staff:"Team",notes:"Notities",
+  loc_client:"Bij de organisatie",loc_home:"Aan huis",loc_clinic:"In de praktijk",loc_online:"Online",
+  ty_pmo_basis:"PMO Basis",ty_pmo_standaard:"PMO Standaard",ty_pmo_uitgebreid:"PMO Uitgebreid",ty_intake:"Kennismaking",ty_advice:"Adviesgesprek",ty_other:"Overig",
+  st_planned:"Gepland",st_done:"Afgerond",st_cancelled:"Geannuleerd",
+  notify:"Stuur een bevestiging per e-mail naar de contactpersoon",notifyUpd:"Stuur de wijziging per e-mail naar de contactpersoon",
+  save:"Opslaan",cancel:"Annuleren",del:"Verwijderen",close:"Sluiten",edit:"Bewerken",confirmDel:"Weet u het zeker? Klik nogmaals om te verwijderen.",
+  saved:"Opgeslagen",deleted:"Verwijderd",
+  orgNew:"Nieuwe organisatie",kvk:"KvK-nummer",noOrg:"Nog geen organisaties",noOrgS:"Maak een organisatie aan vanuit een aanvraag of via + Nieuw.",orgReq:"aanvragen",orgAppt:"afspraken",history:"Geschiedenis",
+  members:"Teamleden",invite:"Teamlid uitnodigen",role:"Rol",lastSeen:"Laatst actief",never:"Nog nooit",
+  r_owner:"Eigenaar",r_admin:"Beheerder",r_member:"Medewerker",u_active:"Actief",u_pending:"Wacht op goedkeuring",u_disabled:"Gedeactiveerd",
+  approve:"Goedkeuren",disable:"Deactiveren",enable:"Activeren",pendingT:"Wachten op goedkeuring",openInv:"Open uitnodigingen",inviteLink:"Uitnodigingslink",copied:"Gekopieerd",copy:"Kopiëren",
+  invSent:"Uitnodiging verstuurd",invMade:"Uitnodiging aangemaakt. Deel de link hieronder.",revoke:"Intrekken",expires:"verloopt",
+  profile:"Mijn profiel",colour:"Kleur in agenda",changePw:"Wachtwoord wijzigen",curPw:"Huidig wachtwoord",newPw:"Nieuw wachtwoord",
+  mailT:"E-mail koppeling",mailOn:"Gekoppeld met info@aedesdei.nl",mailNo:"Nog niet gekoppeld",lastSync:"Laatst opgehaald",syncNow:"Nu ophalen",testMail:"Stuur testmail",
+  cronT:"Cron-URL voor TransIP",cronHelp:"Voeg deze link eenmalig toe in TransIP → Webhosting → Cronjobs (elke 10 minuten). Deel hem niet.",mailHelp:"Nieuwe e-mails in info@aedesdei.nl worden elke 10 minuten opgehaald en verschijnen als aanvraag. Antwoorden vanuit HQ worden verstuurd vanaf info@aedesdei.nl.",
+  calSync:"Agenda synchroniseren",calHelp:"Voeg deze link toe in Apple Agenda, Google Agenda of Outlook (abonneren via URL). Afspraken verschijnen dan automatisch in uw eigen agenda. Deel deze link niet.",resetLink:"Nieuwe link maken",
+  tpls:"Antwoordsjablonen",tplHelp:"Gebruik {naam}, {organisatie}, {pakket} en {afzender}. Ze worden automatisch ingevuld.",addTpl:"Sjabloon toevoegen",
+  activity:"Activiteit",lang:"Taal",
+  synced:"Inbox opgehaald",nothingNew:"Geen nieuwe e-mails",
+  errGeneric:"Er ging iets mis. Probeer het opnieuw.",
+  manualReq:"Nieuwe aanvraag",subject:"Onderwerp",message:"Bericht",
+  allDay:"",participantsS:"deelnemers",at:"om",
+  search:"Zoek aanvragen, organisaties…",noResults:"Geen resultaten",
+  linkReq:"Gekoppelde aanvraag",openReq:"Open aanvraag"
+ },
+ en:{
+  overview:"Overview",requests:"Requests",agenda:"Calendar",clients:"Organisations",team:"Team",settings:"Settings",logout:"Sign out",manage:"Manage",
+  login:"Sign in",signup:"Create account",email:"Email address",password:"Password",name:"Name",fn:"Job title",
+  welcome:"Welcome to <em>Aedes Dei HQ</em>",welcomeSub:"The platform for requests, appointments and your team.",
+  setupT:"Welcome. <em>Let’s get started.</em>",setupSub:"Create the first account. This becomes the owner account of Aedes Dei HQ.",setupBtn:"Create account and start",
+  inviteT:"You’re <em>invited</em>",inviteSub:"Create your account to get access to Aedes Dei HQ.",
+  signupNote:"New accounts become active once an administrator approves them.",pendingMsg:"Your account has been requested. You can sign in once an administrator approves it.",
+  pwHint:"At least 8 characters",
+  demoBanner:"Preview. The real HQ works once the website is online. This shows the platform with sample data.",openDemo:"Open the demo",
+  quote:"Preventive care.<br><em>For a healthy future.</em>",
+  morning:"Good morning",afternoon:"Good afternoon",evening:"Good evening",
+  t_new:"New requests",t_week:"Appointments this week",t_wait:"Awaiting reply",t_part:"Participants this month",
+  h_new:"from website and email",h_week:"scheduled",h_wait:"open conversations",h_part:"in scheduled examinations",
+  upcoming:"Upcoming appointments",latest:"Latest requests",viewAll:"View all",noUpcoming:"No appointments scheduled",noUpcomingS:"Schedule one from a request or via + New.",
+  noReq:"No requests",noReqS:"Requests from the website and info@aedesdei.nl appear here automatically.",
+  today:"Today",tomorrow:"Tomorrow",
+  f_all:"All",f_new:"New",f_open:"Open",f_replied:"Replied",f_scheduled:"Scheduled",f_closed:"Done",f_declined:"Declined",
+  s_new:"New",s_open:"Open",s_replied:"Replied",s_scheduled:"Scheduled",s_closed:"Done",s_declined:"Declined",
+  src_website:"Website",src_email:"Email",src_manual:"Manual",
+  pickReq:"Choose a request",pickReqS:"Select a request on the left to see the details and conversation.",
+  company:"Organisation",contact:"Contact person",phone:"Phone",employees:"Employees",package:"Package",location:"Location",received:"Received",assignee:"Handled by",nobody:"Nobody",
+  plan:"Schedule appointment",makeOrg:"Create organisation",status:"Status",
+  reply:"Reply",note:"Internal note",template:"Template",chooseTpl:"Choose a template…",send:"Send",saveNote:"Save note",
+  replyPh:"Write your reply…",notePh:"Only visible to the team…",markAs:"Then mark as",
+  sentOk:"Reply sent",noteOk:"Note saved",
+  mailOff:"Email isn’t connected yet. You can send replies once the connection is active (Settings).",
+  showMore:"Show full message",
+  newBtn:"New",newAppt:"Appointment",newReq:"Request",newOrg:"Organisation",
+  month:"Month",week:"Week",list:"List",everyone:"Everyone",
+  apptT:"Appointment",apptNew:"New appointment",title:"Title",type:"Type",date:"Date",start:"Start",end:"End",address:"Address",participants:"Participants",staff:"Team",notes:"Notes",
+  loc_client:"At the organisation",loc_home:"At home",loc_clinic:"At the clinic",loc_online:"Online",
+  ty_pmo_basis:"PMO Basis",ty_pmo_standaard:"PMO Standaard",ty_pmo_uitgebreid:"PMO Uitgebreid",ty_intake:"Introduction",ty_advice:"Advice session",ty_other:"Other",
+  st_planned:"Planned",st_done:"Done",st_cancelled:"Cancelled",
+  notify:"Email a confirmation to the contact person",notifyUpd:"Email the change to the contact person",
+  save:"Save",cancel:"Cancel",del:"Delete",close:"Close",edit:"Edit",confirmDel:"Are you sure? Click again to delete.",
+  saved:"Saved",deleted:"Deleted",
+  orgNew:"New organisation",kvk:"Chamber of Commerce no.",noOrg:"No organisations yet",noOrgS:"Create one from a request or via + New.",orgReq:"requests",orgAppt:"appointments",history:"History",
+  members:"Team members",invite:"Invite team member",role:"Role",lastSeen:"Last active",never:"Never",
+  r_owner:"Owner",r_admin:"Administrator",r_member:"Staff",u_active:"Active",u_pending:"Awaiting approval",u_disabled:"Deactivated",
+  approve:"Approve",disable:"Deactivate",enable:"Activate",pendingT:"Awaiting approval",openInv:"Open invitations",inviteLink:"Invitation link",copied:"Copied",copy:"Copy",
+  invSent:"Invitation sent",invMade:"Invitation created. Share the link below.",revoke:"Revoke",expires:"expires",
+  profile:"My profile",colour:"Calendar colour",changePw:"Change password",curPw:"Current password",newPw:"New password",
+  mailT:"Email connection",mailOn:"Connected to info@aedesdei.nl",mailNo:"Not connected yet",lastSync:"Last checked",syncNow:"Check now",testMail:"Send test email",
+  cronT:"Cron URL for TransIP",cronHelp:"Add this link once in TransIP → Web hosting → Cronjobs (every 10 minutes). Don’t share it.",mailHelp:"New emails in info@aedesdei.nl are checked every 10 minutes and appear as requests. Replies from HQ are sent from info@aedesdei.nl.",
+  calSync:"Calendar sync",calHelp:"Add this link in Apple Calendar, Google Calendar or Outlook (subscribe by URL). Appointments then appear in your own calendar automatically. Don’t share this link.",resetLink:"Create new link",
+  tpls:"Reply templates",tplHelp:"Use {naam}, {organisatie}, {pakket} and {afzender}. They are filled in automatically.",addTpl:"Add template",
+  activity:"Activity",lang:"Language",
+  synced:"Inbox checked",nothingNew:"No new emails",
+  errGeneric:"Something went wrong. Please try again.",
+  manualReq:"New request",subject:"Subject",message:"Message",
+  allDay:"",participantsS:"participants",at:"at",
+  search:"Search requests, organisations…",noResults:"No results",
+  linkReq:"Linked request",openReq:"Open request"
+ }
+};
+var lang='nl';
+try{var sl=localStorage.getItem('adhq-lang'); if(sl==='en'||sl==='nl') lang=sl;}catch(e){}
+function t(k){return (L[lang]&&L[lang][k]!=null)?L[lang][k]:(L.nl[k]!=null?L.nl[k]:k)}
+var LOCALE=function(){return lang==='en'?'en-GB':'nl-NL'};
+
+var TYPES=[["pmo-basis","#8C7B6B"],["pmo-standaard","#25394B"],["pmo-uitgebreid","#A8874F"],["intake","#5E7B6F"],["advice","#6B6F9C"],["other","#9C6B5E"]];
+var TCOL={}; TYPES.forEach(function(x){TCOL[x[0]]=x[1]});
+var tyName=function(k){return t('ty_'+String(k||'other').replace(/-/g,'_'))};
+var STAT=["new","open","replied","scheduled","closed","declined"];
+
+var DEFAULT_TPL={
+ nl:[
+  {id:"t1",name:"Meer informatie nodig",text:"Beste {naam},\n\nHartelijk dank voor uw aanvraag namens {organisatie}. Om u een passend voorstel te kunnen doen, horen wij graag:\n\n- het aantal medewerkers dat deelneemt\n- de gewenste periode\n- de locatie van het onderzoek\n\nMet vriendelijke groet,\n{afzender}\nMedisch Centrum Aedes Dei"},
+  {id:"t2",name:"Kennismaking voorstellen",text:"Beste {naam},\n\nDank voor uw interesse in een preventief medisch onderzoek ({pakket}). Graag plannen wij een korte kennismaking om de wensen van {organisatie} te bespreken.\n\nWelke dag en tijd komt u goed uit?\n\nMet vriendelijke groet,\n{afzender}\nMedisch Centrum Aedes Dei"},
+  {id:"t3",name:"Afspraak bevestigd",text:"Beste {naam},\n\nHierbij bevestigen wij de afspraak. U ontvangt de details in een aparte e-mail. Heeft u vragen, dan kunt u deze e-mail beantwoorden.\n\nMet vriendelijke groet,\n{afzender}\nMedisch Centrum Aedes Dei"},
+  {id:"t4",name:"Bedankt en afronding",text:"Beste {naam},\n\nHartelijk dank voor de prettige samenwerking. De medewerkers van {organisatie} ontvangen hun resultaten op vertrouwelijke wijze.\n\nMet vriendelijke groet,\n{afzender}\nMedisch Centrum Aedes Dei"}
+ ],
+ en:[
+  {id:"t1",name:"More information needed",text:"Dear {naam},\n\nThank you for your request on behalf of {organisatie}. To prepare a suitable proposal, we would like to know:\n\n- the number of participating employees\n- the preferred period\n- the location of the examination\n\nKind regards,\n{afzender}\nMedisch Centrum Aedes Dei"},
+  {id:"t2",name:"Suggest an introduction",text:"Dear {naam},\n\nThank you for your interest in a preventive medical examination ({pakket}). We would be happy to schedule a short introduction to discuss the needs of {organisatie}.\n\nWhich day and time suit you?\n\nKind regards,\n{afzender}\nMedisch Centrum Aedes Dei"},
+  {id:"t3",name:"Appointment confirmed",text:"Dear {naam},\n\nWe hereby confirm the appointment. You will receive the details in a separate email. If you have any questions, simply reply to this email.\n\nKind regards,\n{afzender}\nMedisch Centrum Aedes Dei"}
+ ]
+};
+
+/* =============== state & API =============== */
+var S={}, TOKEN='', DEMO=false;
+try{TOKEN=localStorage.getItem('adhq-token')||''}catch(e){}
+function saveToken(tk){TOKEN=tk||'';try{tk?localStorage.setItem('adhq-token',tk):localStorage.removeItem('adhq-token')}catch(e){}}
+
+function api(method,path,body){
+  if(DEMO) return Promise.resolve(mock(method,path,body));
+  return fetch('/api/'+path,{method:method,headers:Object.assign({'content-type':'application/json'},TOKEN?{authorization:'Bearer '+TOKEN}:{}),body:body?JSON.stringify(body):undefined})
+   .then(function(r){return r.json().catch(function(){return {error:'server',message:t('errGeneric')}}).then(function(j){
+      if(r.status===401 && path!=='login'){saveToken('');renderAuth('login');throw j}
+      if(!r.ok) throw j; return j;})});
+}
+function fail(e){toast((e&&e.message)||t('errGeneric'),true)}
+
+/* ---------- demo data + mock API (used when no backend is reachable, e.g. in the preview) ---------- */
+function iso(d){return d.toISOString().slice(0,10)}
+function addD(n){var d=new Date();d.setDate(d.getDate()+n);return iso(d)}
+function ago(h){return new Date(Date.now()-h*3600e3).toISOString()}
+function demoData(){
+  var me={id:"u1",name:"Stefania Cian",email:"info@aedesdei.nl",role:"owner",title:"Arts & oprichter",color:"#25394B",status:"active",lastLogin:ago(0),calToken:"demo"};
+  var users=[me,{id:"u2",name:"Anna de Vries",email:"anna@aedesdei.nl",role:"admin",title:"Praktijkmanager",color:"#B99A6B",status:"active",lastLogin:ago(5)},{id:"u3",name:"Mark Jansen",email:"mark@aedesdei.nl",role:"member",title:"Verpleegkundige",color:"#5E7B6F",status:"active",lastLogin:ago(30)},{id:"u4",name:"Lisa Bakker",email:"lisa@aedesdei.nl",role:"member",title:"Doktersassistent",color:"#9C6B5E",status:"pending",lastLogin:""}];
+  var R={};
+  R.K7Q2MX={id:"K7Q2MX",source:"website",status:"new",unread:true,company:"Van Dijk Logistiek B.V.",name:"Jeroen van Dijk",email:"j.vandijk@vandijklogistiek.nl",phone:"+31 6 1234 5678",employees:"101-250",package:"Standaard",location:"Op locatie",message:"Wij willen graag voor ons magazijnpersoneel een PMO laten uitvoeren in het voorjaar. Kunt u een offerte sturen?",received:ago(2),thread:[{dir:"out",at:ago(2),by:"system",auto:true,text:"Beste Jeroen van Dijk,\n\nHartelijk dank voor uw aanvraag bij Medisch Centrum Aedes Dei. Wij nemen zo snel mogelijk contact met u op."}],notes:[]};
+  R.P4LW8N={id:"P4LW8N",source:"email",status:"new",unread:true,company:"",name:"Sanne Visser",email:"sanne.visser@gemeente-voorbeeld.nl",subject:"Vraag over preventief onderzoek",message:"Goedemiddag,\n\nNamens de afdeling HR van onze gemeente ben ik op zoek naar een partner voor preventief medisch onderzoek voor ongeveer 60 medewerkers. Is het ook mogelijk om dit bij medewerkers thuis te doen?\n\nMet vriendelijke groet,\nSanne Visser",received:ago(20),thread:[{dir:"in",at:ago(20),from:"sanne.visser@gemeente-voorbeeld.nl",fromName:"Sanne Visser",subject:"Vraag over preventief onderzoek",text:"Goedemiddag,\n\nNamens de afdeling HR van onze gemeente ben ik op zoek naar een partner voor preventief medisch onderzoek voor ongeveer 60 medewerkers. Is het ook mogelijk om dit bij medewerkers thuis te doen?\n\nMet vriendelijke groet,\nSanne Visser"}],notes:[]};
+  R.H2TZ9R={id:"H2TZ9R",source:"website",status:"replied",assignee:"u2",company:"Studio Noord Architecten",name:"Eva Smit",email:"eva@studionoord.nl",phone:"020 123 4567",employees:"1-25",package:"Basis",location:"Graag bespreken",message:"Kleine organisatie, 18 medewerkers. Wat zijn de mogelijkheden?",received:ago(50),thread:[{dir:"out",at:ago(30),by:"u2",text:"Beste Eva,\n\nHartelijk dank voor uw aanvraag namens Studio Noord Architecten. Graag plannen wij een korte kennismaking. Welke dag komt u goed uit?\n\nMet vriendelijke groet,\nAnna de Vries"}],notes:[{id:"n1",by:"u2",at:ago(29),text:"Belt volgende week terug, voorkeur voor dinsdag."}]};
+  R.M8VC3D={id:"M8VC3D",source:"website",status:"scheduled",assignee:"u1",company:"Brouwer Techniek",name:"Peter Brouwer",email:"p.brouwer@brouwertechniek.nl",employees:"26-100",package:"Uitgebreid",location:"Op locatie",message:"Graag PMO Uitgebreid voor 45 medewerkers.",received:ago(120),thread:[],notes:[],appts:["a1"]};
+  R.Z6NB4Q={id:"Z6NB4Q",source:"email",status:"closed",company:"Hof & Partners",name:"Marieke Hof",email:"m.hof@hofpartners.nl",subject:"Bedankt",message:"Dank voor de fijne samenwerking!",received:ago(400),thread:[],notes:[]};
+  var A={};
+  A.a1={id:"a1",title:"PMO Uitgebreid · Brouwer Techniek",type:"pmo-uitgebreid",date:addD(1),start:"08:30",end:"12:30",location:"client",address:"Industrieweg 12, Utrecht",company:"Brouwer Techniek",contactName:"Peter Brouwer",contactEmail:"p.brouwer@brouwertechniek.nl",participants:45,staff:["u1","u3"],status:"planned",requestId:"M8VC3D"};
+  A.a2={id:"a2",title:"Kennismaking · Studio Noord",type:"intake",date:addD(3),start:"10:00",end:"10:45",location:"online",company:"Studio Noord Architecten",contactName:"Eva Smit",participants:0,staff:["u2"],status:"planned",requestId:"H2TZ9R"};
+  A.a3={id:"a3",title:"PMO Standaard · Hof & Partners",type:"pmo-standaard",date:addD(0),start:"13:00",end:"16:00",location:"client",address:"Keizersgracht 100, Amsterdam",company:"Hof & Partners",participants:22,staff:["u1","u2"],status:"planned"};
+  A.a4={id:"a4",title:"Adviesgesprekken · Hof & Partners",type:"advice",date:addD(6),start:"09:00",end:"12:00",location:"clinic",company:"Hof & Partners",participants:12,staff:["u1"],status:"planned"};
+  A.a5={id:"a5",title:"PMO aan huis · J. de Boer",type:"pmo-uitgebreid",date:addD(8),start:"14:00",end:"15:00",location:"home",address:"Amstelveen",participants:1,staff:["u3"],status:"planned"};
+  A.a6={id:"a6",title:"PMO Basis · Bakkerij Mulder",type:"pmo-basis",date:addD(-5),start:"09:00",end:"11:00",location:"client",company:"Bakkerij Mulder",participants:14,staff:["u3"],status:"done"};
+  var C={c1:{id:"c1",name:"Brouwer Techniek",contact:"Peter Brouwer",email:"p.brouwer@brouwertechniek.nl",phone:"030 765 4321",address:"Industrieweg 12, Utrecht",employees:"45"},c2:{id:"c2",name:"Hof & Partners",contact:"Marieke Hof",email:"m.hof@hofpartners.nl",address:"Keizersgracht 100, Amsterdam",employees:"22"},c3:{id:"c3",name:"Bakkerij Mulder",contact:"Henk Mulder",phone:"0251 22 33 44",employees:"14"}};
+  R.M8VC3D.clientId="c1"; R.Z6NB4Q.clientId="c2"; A.a1.clientId="c1"; A.a3.clientId="c2"; A.a4.clientId="c2"; A.a6.clientId="c3";
+  return {me:me,users:users,requests:R,appts:A,clients:C,settings:{templates:null},mail:{ready:true,sync:{at:ago(.1),error:""}},
+    activity:[{at:ago(.1),by:"system",what:"E-mail: 1 nieuw"},{at:ago(2),by:"website",what:"Nieuwe aanvraag van Van Dijk Logistiek B.V."},{at:ago(29),by:"Anna de Vries",what:"Antwoord verstuurd aan eva@studionoord.nl"},{at:ago(48),by:"Stefania Cian",what:"Afspraak gepland: PMO Uitgebreid · Brouwer Techniek"}],
+    invites:[{token:"d3m0",email:"jasper@aedesdei.nl",name:"Jasper",role:"member",exp:Date.now()+9*864e5}]};
+}
+function code6(){var a="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",s="";for(var i=0;i<6;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
+function mock(m,p,b){
+  b=b||{}; var x;
+  if(p==='status') return {needsSetup:false,mail:true};
+  if(p==='boot') return S.__demo||(S.__demo=demoData());
+  if(p==='login'||p==='setup') return {token:'demo',me:demoData().me};
+  if(p==='me'){Object.assign(S.me,b.name?{name:b.name}:{},'title' in b?{title:b.title}:{},b.color?{color:b.color}:{});return {me:S.me}}
+  if((x=p.match(/^requests\/(\w+)\/reply$/))){var r=S.requests[x[1]];r.thread.push({dir:'out',at:new Date().toISOString(),by:S.me.id,text:b.text});r.status=b.status||'replied';r.unread=false;return {request:r}}
+  if((x=p.match(/^requests\/(\w+)$/))){var q=S.requests[x[1]]; if(m==='DELETE'){delete S.requests[x[1]];return {ok:1}}
+    ['status','assignee','clientId'].forEach(function(k){if(k in b)q[k]=b[k]}); if('unread' in b)q.unread=b.unread; if(b.note){q.notes.push({id:'n'+Date.now(),by:S.me.id,at:new Date().toISOString(),text:b.note})} return {request:q}}
+  if(p==='requests'){var id=code6();var nr=Object.assign({id:id,source:'manual',status:'open',received:new Date().toISOString(),thread:[],notes:[],assignee:S.me.id},b);return {request:nr}}
+  if(p==='appts'){var a=Object.assign({id:'a'+Date.now(),status:'planned',staff:[]},b);var rq=null;if(a.requestId&&S.requests[a.requestId]){rq=S.requests[a.requestId];rq.status='scheduled'}return {appt:a,mailed:!!b.notify,request:rq}}
+  if((x=p.match(/^appts\/(\w+)$/))){if(m==='DELETE')return {ok:1};return {appt:Object.assign({},S.appts[x[1]],b),mailed:!!b.notify}}
+  if(p==='clients') return {client:Object.assign({id:'c'+Date.now()},b)};
+  if((x=p.match(/^clients\/(\w+)$/))){if(m==='DELETE')return {ok:1};return {client:Object.assign({},S.clients[x[1]],b)}}
+  if(p==='team/invite'){var inv={token:'d'+Date.now(),email:b.email,name:b.name,role:b.role||'member',exp:Date.now()+14*864e5};return {invite:inv,link:location.origin+'/hq/#invite/'+inv.token,mailed:true}}
+  if((x=p.match(/^team\/invite\/(\w+)$/))) return {ok:1};
+  if((x=p.match(/^team\/(\w+)$/))){if(m==='DELETE')return {ok:1};var u=S.users.filter(function(u){return u.id===x[1]})[0];return {user:Object.assign({},u,b)}}
+  if(p==='settings') return {settings:{templates:b.templates}};
+  if(p==='mail/sync') return {ok:true,created:0,appended:0,requests:S.requests};
+  if(p==='mail/test') return {ok:true};
+  return {};
+}
+
+/* =============== helpers =============== */
+function toast(msg,bad){var el=D.createElement('div');el.className='toast'+(bad?' bad':'');el.innerHTML=(bad?'':ico('check'))+esc(msg);$('#toasts').appendChild(el);setTimeout(function(){el.style.transition='opacity .3s';el.style.opacity=0;setTimeout(function(){el.remove()},300)},3200)}
+function initials(n){return String(n||'?').split(/\s+/).filter(Boolean).slice(0,2).map(function(w){return w[0]}).join('').toUpperCase()}
+function av(u,sm){u=u||{};return '<span class="av'+(sm?' sm':'')+'" style="background:'+esc(u.color||'#8C7B6B')+'" title="'+esc(u.name||'')+'">'+esc(initials(u.name))+'</span>'}
+function userById(id){return (S.users||[]).filter(function(u){return u.id===id})[0]}
+function fmtD(d,o){if(!d)return '';var x=/^\d{4}-\d{2}-\d{2}$/.test(d)?new Date(d+'T12:00:00'):new Date(d);return x.toLocaleDateString(LOCALE(),o||{day:'numeric',month:'short'})}
+function fmtDT(s){if(!s)return '';var d=new Date(s);return d.toLocaleDateString(LOCALE(),{day:'numeric',month:'short'})+' '+d.toLocaleTimeString(LOCALE(),{hour:'2-digit',minute:'2-digit'})}
+function rel(s){if(!s)return '';var d=new Date(s),diff=(Date.now()-d)/1000;if(diff<60)return lang==='en'?'just now':'zojuist';if(diff<3600)return Math.floor(diff/60)+(lang==='en'?' min ago':' min geleden');if(diff<86400&&d.getDate()===new Date().getDate())return d.toLocaleTimeString(LOCALE(),{hour:'2-digit',minute:'2-digit'});if(diff<172800)return lang==='en'?'yesterday':'gisteren';return fmtD(s)}
+function todayISO(){return iso(new Date())}
+function reqTitle(r){return r.company||r.name||r.email||'—'}
+function pill(s){return '<span class="pill st-'+s+'">'+esc(t('s_'+s))+'</span>'}
+function reqList(){return Object.keys(S.requests||{}).map(function(k){return S.requests[k]}).sort(function(a,b){return (b.updated||b.received||'')>(a.updated||a.received||'')?1:-1})}
+function apptList(){return Object.keys(S.appts||{}).map(function(k){return S.appts[k]}).sort(function(a,b){return (a.date+a.start)>(b.date+b.start)?1:-1})}
+function fillTpl(txt,r){return String(txt).replace(/\{naam\}/g,(r.name||'').split(' ')[0]||r.name||'').replace(/\{organisatie\}/g,r.company||'uw organisatie').replace(/\{pakket\}/g,r.package?('PMO '+r.package):'PMO').replace(/\{afzender\}/g,S.me.name)}
+function templates(){return (S.settings&&S.settings.templates)||DEFAULT_TPL[lang]||DEFAULT_TPL.nl}
+function isAdmin(){return S.me&&(S.me.role==='owner'||S.me.role==='admin')}
+function copyText(txt,input){try{navigator.clipboard.writeText(txt).then(function(){toast(t('copied'))},function(){input&&input.select()})}catch(e){input&&input.select()}}
+
+/* =============== AUTH SCREENS =============== */
+var authMode='login', inviteTok=null, inviteInfo=null;
+function renderAuth(mode,info){
+  authMode=mode||authMode;
+  var root=$('#root');
+  var title=authMode==='setup'?t('setupT'):authMode==='invite'?t('inviteT'):t('welcome');
+  var sub=authMode==='setup'?t('setupSub'):authMode==='invite'?t('inviteSub'):t('welcomeSub');
+  var showSign=authMode==='signup'||authMode==='setup'||authMode==='invite';
+  root.innerHTML='<div class="auth">'+
+   '<aside class="auth-art"><img src="'+IMG+'reception.jpg" alt=""><div class="wm"><svg class="lgx" viewBox="0 -52 752 247" role="img" aria-label="Aedes Dei Medisch Centrum"><use href="#ad-letters"/><use href="#ad-flame"/><use href="#ad-sub"/></svg><small>HQ</small></div><blockquote>'+t('quote')+'</blockquote><div class="foot">Aedes Dei HQ</div></aside>'+
+   '<main class="auth-main"><form class="auth-card" id="authf" novalidate>'+
+    '<div style="display:flex;justify-content:space-between;align-items:center"><span class="lbl" style="letter-spacing:.24em;text-transform:uppercase;color:var(--gold-ink)">HQ</span><div class="seg" id="alang"><button type="button" data-l="nl" class="'+(lang==='nl'?'on':'')+'">NL</button><button type="button" data-l="en" class="'+(lang==='en'?'on':'')+'">EN</button></div></div>'+
+    '<h1>'+title+'</h1><p class="sub">'+sub+'</p>'+
+    (DEMO?'<div class="demo-banner">'+ico('globe')+'<span>'+t('demoBanner')+'</span></div>':'')+
+    (authMode==='login'||authMode==='signup'?'<div class="tabs"><button type="button" data-m="login" class="'+(authMode==='login'?'on':'')+'">'+t('login')+'</button><button type="button" data-m="signup" class="'+(authMode==='signup'?'on':'')+'">'+t('signup')+'</button></div>':'')+
+    (showSign?'<div class="f"><label for="a-name">'+t('name')+'</label><input class="in" id="a-name" autocomplete="name" value="'+esc(info&&info.name||'')+'"></div>':'')+
+    '<div class="f"><label for="a-email">'+t('email')+'</label><input class="in" id="a-email" type="email" autocomplete="email" value="'+esc(info&&info.email||'')+'"'+(authMode==='invite'?' readonly':'')+'></div>'+
+    '<div class="f"><label for="a-pw">'+t('password')+'</label><input class="in" id="a-pw" type="password" autocomplete="'+(showSign?'new-password':'current-password')+'" placeholder="'+(showSign?t('pwHint'):'')+'"></div>'+
+    '<p class="err" id="a-err"></p>'+
+    '<button class="btn p lg" type="submit" id="a-go">'+(authMode==='setup'?t('setupBtn'):showSign?t('signup'):t('login'))+'</button>'+
+    (DEMO?'<button class="btn g lg" type="button" id="a-demo">'+t('openDemo')+'</button>':'')+
+    (authMode==='signup'?'<p class="muted" style="font-size:12.5px;margin:0">'+t('signupNote')+'</p>':'')+
+   '</form></main></div>';
+  $$('#alang button').forEach(function(b){b.onclick=function(){setLang(b.getAttribute('data-l'));renderAuth(authMode,info)}});
+  $$('.tabs button').forEach(function(b){b.onclick=function(){renderAuth(b.getAttribute('data-m'))}});
+  if($('#a-demo')) $('#a-demo').onclick=function(){saveToken('demo');boot()};
+  $('#authf').onsubmit=function(e){
+    e.preventDefault(); var er=$('#a-err'); er.textContent='';
+    if(DEMO){saveToken('demo');boot();return}
+    var body={email:$('#a-email').value.trim(),password:$('#a-pw').value};
+    if($('#a-name')) body.name=$('#a-name').value.trim();
+    var path=authMode==='setup'?'setup':authMode==='login'?'login':'signup';
+    if(authMode==='invite') body.invite=inviteTok;
+    var btn=$('#a-go'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>';
+    api('POST',path,body).then(function(j){
+      if(j.pending){er.style.color='var(--ok)';er.textContent=t('pendingMsg');btn.disabled=false;btn.textContent=t('signup');return}
+      saveToken(j.token); if(authMode==='invite'){history.replaceState(null,'',location.pathname+'#overview')} boot();
+    }).catch(function(j){er.textContent=(j&&j.message)||t('errGeneric');btn.disabled=false;btn.textContent=authMode==='setup'?t('setupBtn'):showSign?t('signup'):t('login')});
+  };
+}
+function setLang(l){lang=l;try{localStorage.setItem('adhq-lang',l)}catch(e){}D.documentElement.lang=l}
+
+/* =============== APP SHELL =============== */
+var view='overview', selReq=null, calMode='month', calDate=new Date(), calWho=null, reqFilter='all', composeMode='reply';
+var NAV=[['overview','home'],['requests','inbox'],['agenda','cal'],['clients','org']];
+var NAV2=[['team','team'],['settings','set']];
+function newCount(){return reqList().filter(function(r){return r.status==='new'||r.unread}).length}
+function shell(){
+  var nc=newCount();
+  var navHtml=function(arr){return arr.map(function(n){return '<a href="#'+n[0]+'" data-v="'+n[0]+'" class="'+(view===n[0]||(view==='request'&&n[0]==='requests')?'on':'')+'">'+ico(n[1])+'<span>'+t(n[0])+'</span>'+(n[0]==='requests'&&nc?'<span class="badge num">'+nc+'</span>':'')+'</a>'}).join('')};
+  $('#root').innerHTML='<div class="app">'+
+   '<aside class="side"><div class="wm"><svg class="lgs" viewBox="0 -52 752 192" role="img" aria-label="Aedes Dei"><use href="#ad-letters"/><use href="#ad-flame"/></svg><small>HQ</small></div>'+
+   '<nav class="nav">'+navHtml(NAV)+'</nav><div class="sect">'+t('manage')+'</div><nav class="nav">'+navHtml(NAV2)+'</nav><div class="sp"></div>'+
+   '<div class="langs"><button data-l="nl" class="'+(lang==='nl'?'on':'')+'">NL</button><button data-l="en" class="'+(lang==='en'?'on':'')+'">EN</button></div>'+
+   '<div class="me">'+av(S.me)+'<div class="nm"><b>'+esc(S.me.name)+'</b><span>'+esc(t('r_'+S.me.role))+'</span></div><button class="iconbtn" id="logout" title="'+t('logout')+'" aria-label="'+t('logout')+'">'+ico('out')+'</button></div></aside>'+
+   '<section class="main"><header class="top"><div class="tt"><h2 id="vt"></h2><div class="sub" id="vs"></div></div>'+
+   '<div class="search"><svg class="i"><use href="#i-search"/></svg><input class="in" id="q" placeholder="'+t('search')+'" autocomplete="off" aria-label="'+t('search')+'"><div class="sres" id="sres" hidden></div></div>'+
+   '<div class="menuwrap"><button class="btn p" id="newbtn">'+ico('plus')+'<span>'+t('newBtn')+'</span></button><div class="dropdown" id="newmenu" hidden><button data-n="appt">'+ico('cal')+t('newAppt')+'</button><button data-n="req">'+ico('inbox')+t('newReq')+'</button><button data-n="org">'+ico('org')+t('newOrg')+'</button></div></div>'+
+   '</header><div class="view" id="view"></div></section>'+
+   '<nav class="tabbar">'+NAV.concat(NAV2).map(function(n){return '<a href="#'+n[0]+'" data-v="'+n[0]+'" class="'+(view===n[0]||(view==='request'&&n[0]==='requests')?'on':'')+'">'+ico(n[1])+'<span>'+t(n[0])+'</span>'+(n[0]==='requests'&&nc?'<span class="badge">'+nc+'</span>':'')+'</a>'}).join('')+'</nav>'+
+  '</div>';
+  $$('[data-v]').forEach(function(a){a.onclick=function(e){e.preventDefault();go(a.getAttribute('data-v'))}});
+  $$('.langs button').forEach(function(b){b.onclick=function(){setLang(b.getAttribute('data-l'));shell();render()}});
+  $('#logout').onclick=function(){saveToken('');S={};boot()};
+  var nb=$('#newbtn'),nm=$('#newmenu');
+  nb.onclick=function(e){e.stopPropagation();nm.hidden=!nm.hidden};
+  D.addEventListener('click',function(){nm.hidden=true;$('#sres')&&($('#sres').hidden=true)});
+  $$('#newmenu button').forEach(function(b){b.onclick=function(){nm.hidden=true;var n=b.getAttribute('data-n');if(n==='appt')apptModal(null,{});if(n==='req')reqModal();if(n==='org')orgModal()}});
+  var q=$('#q'),sr=$('#sres');
+  q.oninput=function(){var v=q.value.trim().toLowerCase();if(v.length<2){sr.hidden=true;return}
+    var res=[];reqList().forEach(function(r){if([r.company,r.name,r.email,r.subject,r.message].join(' ').toLowerCase().indexOf(v)>=0)res.push('<a href="#" data-r="'+r.id+'">'+esc(reqTitle(r))+'<small>'+esc(t('requests'))+' · '+esc(r.name||r.email||'')+'</small></a>')});
+    Object.keys(S.clients||{}).forEach(function(k){var c=S.clients[k];if([c.name,c.contact,c.email].join(' ').toLowerCase().indexOf(v)>=0)res.push('<a href="#" data-c="'+c.id+'">'+esc(c.name)+'<small>'+esc(t('clients'))+'</small></a>')});
+    apptList().forEach(function(a){if([a.title,a.company,a.contactName].join(' ').toLowerCase().indexOf(v)>=0)res.push('<a href="#" data-a="'+a.id+'">'+esc(a.title)+'<small>'+esc(fmtD(a.date,{weekday:'short',day:'numeric',month:'short'}))+' · '+a.start+'</small></a>')});
+    sr.innerHTML=res.slice(0,12).join('')||'<div class="empty">'+t('noResults')+'</div>';sr.hidden=false;
+    $$('a',sr).forEach(function(a){a.onclick=function(e){e.preventDefault();sr.hidden=true;q.value='';
+      if(a.dataset.r){selReq=a.dataset.r;go('requests')} else if(a.dataset.c){go('clients');orgDetail(a.dataset.c)} else apptModal(S.appts[a.dataset.a])}});
+  };
+  q.onclick=function(e){e.stopPropagation()};
+}
+function go(v,noHash){
+  view=v; if(!noHash){try{history.replaceState(null,'','#'+v)}catch(e){}}
+  $$('[data-v]').forEach(function(a){a.classList.toggle('on',a.getAttribute('data-v')===v)});
+  render();
+}
+function setTitle(a,b){$('#vt').textContent=a;$('#vs').textContent=b||''}
+function render(){
+  var v=$('#view'); if(!v) return; v.className='view';
+  if(view==='overview') vOverview(v);
+  else if(view==='requests') vRequests(v);
+  else if(view==='agenda') vAgenda(v);
+  else if(view==='clients') vClients(v);
+  else if(view==='team') vTeam(v);
+  else if(view==='settings') vSettings(v);
+  else vOverview(v);
+}
+function refreshBadges(){var nc=newCount();$$('.nav a[data-v=requests] .badge, .tabbar a[data-v=requests] .badge').forEach(function(b){b.remove()});if(nc){$$('.nav a[data-v=requests], .tabbar a[data-v=requests]').forEach(function(a){var s=D.createElement('span');s.className='badge num';s.textContent=nc;a.appendChild(s)})}}
+
+/* =============== OVERVIEW =============== */
+function weekRange(){var d=new Date();var day=(d.getDay()+6)%7;var s=new Date(d);s.setDate(d.getDate()-day);var e=new Date(s);e.setDate(s.getDate()+6);return [iso(s),iso(e)]}
+function vOverview(v){
+  setTitle(t('overview'), new Date().toLocaleDateString(LOCALE(),{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
+  var h=new Date().getHours(), greet=h<12?t('morning'):h<18?t('afternoon'):t('evening');
+  var rs=reqList(), as=apptList().filter(function(a){return a.status!=='cancelled'});
+  var wr=weekRange(), ym=todayISO().slice(0,7);
+  var nNew=rs.filter(function(r){return r.status==='new'}).length;
+  var nWeek=as.filter(function(a){return a.date>=wr[0]&&a.date<=wr[1]}).length;
+  var nWait=rs.filter(function(r){return r.status==='open'||(r.status==='new')}).length;
+  var nPart=as.filter(function(a){return a.date.slice(0,7)===ym}).reduce(function(s,a){return s+(a.participants||0)},0);
+  var up=as.filter(function(a){return a.date>=todayISO()&&a.status==='planned'}).slice(0,7);
+  var upHtml='', lastDay='';
+  up.forEach(function(a){
+    var dl=a.date===todayISO()?t('today'):a.date===addD(1)?t('tomorrow'):fmtD(a.date,{weekday:'long',day:'numeric',month:'long'});
+    if(dl!==lastDay){upHtml+='<div class="dayhdr">'+esc(dl)+'</div>';lastDay=dl}
+    upHtml+='<div class="tl-item" data-a="'+a.id+'"><div class="t num">'+a.start+'<small>'+a.end+'</small></div><div class="bar" style="background:'+(TCOL[a.type]||'#999')+'"></div><div><b>'+esc(a.title)+'</b><span>'+esc(t('loc_'+a.location))+(a.participants?' · '+a.participants+' '+t('participantsS'):'')+'</span></div></div>';
+  });
+  var latest=rs.slice(0,6).map(function(r){return '<div class="row" data-r="'+r.id+'">'+(r.unread?'<span class="av sm" style="background:var(--gold)">'+esc(initials(reqTitle(r)))+'</span>':'<span class="av sm" style="background:#cfc5b8">'+esc(initials(reqTitle(r)))+'</span>')+'<div class="main-t"><b>'+esc(reqTitle(r))+'</b><span>'+esc(r.name&&r.company?r.name+' · ':'')+esc((r.message||r.subject||'').slice(0,90))+'</span></div>'+pill(r.status)+'</div>'}).join('');
+  v.innerHTML='<div class="hello"><div><h1>'+esc(greet)+', <em>'+esc(String(S.me.name).split(' ')[0])+'</em></h1><p>'+esc(t('welcomeSub'))+'</p></div></div>'+
+   (DEMO?'<div class="callout">'+ico('globe')+'<div>'+t('demoBanner')+'</div></div>':'')+
+   '<div class="tiles">'+
+    '<a href="#requests" class="card tile hl" data-go="requests"><span class="k">'+t('t_new')+'</span><span class="v">'+nNew+'</span><span class="h">'+t('h_new')+'</span></a>'+
+    '<a href="#agenda" class="card tile" data-go="agenda"><span class="k">'+t('t_week')+'</span><span class="v">'+nWeek+'</span><span class="h">'+t('h_week')+'</span></a>'+
+    '<a href="#requests" class="card tile" data-go="requests" data-f="open"><span class="k">'+t('t_wait')+'</span><span class="v">'+nWait+'</span><span class="h">'+t('h_wait')+'</span></a>'+
+    '<div class="card tile"><span class="k">'+t('t_part')+'</span><span class="v">'+nPart+'</span><span class="h">'+t('h_part')+'</span></div>'+
+   '</div>'+
+   '<div class="dash"><div class="card"><div class="card-h"><h3>'+t('upcoming')+'</h3><button class="btn q" data-go="agenda">'+t('viewAll')+ico('right')+'</button></div><div class="tl">'+(upHtml||'<div class="empty"><b>'+t('noUpcoming')+'</b>'+t('noUpcomingS')+'</div>')+'</div></div>'+
+   '<div class="stack"><div class="card"><div class="card-h"><h3>'+t('latest')+'</h3><button class="btn q" data-go="requests">'+t('viewAll')+ico('right')+'</button></div><div class="rows">'+(latest||'<div class="empty"><b>'+t('noReq')+'</b>'+t('noReqS')+'</div>')+'</div></div>'+
+   miniCal()+'</div></div>';
+  $$('[data-go]',v).forEach(function(b){b.onclick=function(e){e.preventDefault();if(b.dataset.f)reqFilter=b.dataset.f;go(b.dataset.go)}});
+  $$('[data-r]',v).forEach(function(b){b.onclick=function(){selReq=b.dataset.r;go('requests')}});
+  $$('[data-a]',v).forEach(function(b){b.onclick=function(){apptModal(S.appts[b.dataset.a])}});
+  $$('.mc-d[data-d]',v).forEach(function(b){b.onclick=function(){calDate=new Date(b.dataset.d+'T12:00:00');calMode='week';go('agenda')}});
+}
+function miniCal(){
+  var d=new Date(), y=d.getFullYear(), m=d.getMonth(), first=new Date(y,m,1), off=(first.getDay()+6)%7, days=new Date(y,m+1,0).getDate();
+  var has={}; apptList().forEach(function(a){if(a.status!=='cancelled')has[a.date]=(has[a.date]||0)+1});
+  var dows=[];for(var i=0;i<7;i++){var x=new Date(2024,0,1+i);dows.push(x.toLocaleDateString(LOCALE(),{weekday:'narrow'}))}
+  var cells='';for(i=0;i<off;i++)cells+='<span></span>';
+  for(i=1;i<=days;i++){var ds=iso(new Date(y,m,i,12));cells+='<button class="mc-d'+(ds===todayISO()?' td':'')+(has[ds]?' has':'')+'" data-d="'+ds+'">'+i+'</button>'}
+  return '<div class="card"><div class="card-h"><h3 style="text-transform:capitalize">'+d.toLocaleDateString(LOCALE(),{month:'long',year:'numeric'})+'</h3></div><div class="card-b"><div class="mc">'+dows.map(function(w){return '<span class="mc-w">'+w+'</span>'}).join('')+cells+'</div></div></div>'+
+   '<style>.mc{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}.mc-w{font-size:11px;color:var(--muted);font-weight:700;padding-bottom:4px}.mc-d{height:34px;border-radius:9px;font-size:13px;font-weight:500;color:var(--navy);position:relative;font-variant-numeric:tabular-nums}.mc-d:hover{background:var(--beige-2)}.mc-d.td{background:var(--navy);color:var(--cream)}.mc-d.has::after{content:"";position:absolute;bottom:4px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--gold)}</style>';
+}
+
+/* =============== REQUESTS =============== */
+function vRequests(v){
+  setTitle(t('requests'), newCount()?(newCount()+' '+t('f_new').toLowerCase()):'');
+  v.className='view full-h';
+  var rs=reqList(), counts={all:rs.length};
+  STAT.forEach(function(s){counts[s]=rs.filter(function(r){return r.status===s}).length});
+  var list=rs.filter(function(r){return reqFilter==='all'||r.status===reqFilter});
+  v.innerHTML='<div class="inbox'+(selReq?' has-sel':'')+'">'+
+   '<div class="card ilist"><div class="filters">'+['all'].concat(STAT).map(function(s){return '<button data-f="'+s+'" class="'+(reqFilter===s?'on':'')+'">'+t('f_'+s)+'<span class="c">'+counts[s]+'</span></button>'}).join('')+'</div>'+
+   '<div style="display:flex;justify-content:flex-end;padding:6px 10px;border-bottom:1px solid var(--line-2)"><button class="btn q" id="syncb" title="'+t('syncNow')+'">'+ico('sync')+'<span style="font-size:12.5px">'+t('syncNow')+'</span></button></div>'+
+   '<div class="scroll">'+(list.map(function(r){
+     return '<div class="ritem'+(r.unread?' unread':'')+(r.id===selReq?' on':'')+'" data-r="'+r.id+'" tabindex="0"><div class="l1"><b>'+esc(reqTitle(r))+'</b><time>'+esc(rel(r.updated||r.received))+'</time></div><div class="l2">'+esc((r.company&&r.name?r.name+' · ':'')+(r.message||r.subject||''))+'</div><div class="l3">'+pill(r.status)+'<span class="src">'+t('src_'+(r.source||'manual'))+'</span>'+(r.assignee&&userById(r.assignee)?'<span style="margin-left:auto">'+av(userById(r.assignee),1)+'</span>':'')+'</div></div>'}).join('')||'<div class="empty"><b>'+t('noReq')+'</b>'+t('noReqS')+'</div>')+'</div></div>'+
+   '<div class="card detail" id="detail"></div></div>';
+  $$('.filters button',v).forEach(function(b){b.onclick=function(){reqFilter=b.dataset.f;vRequests(v)}});
+  $$('.ritem',v).forEach(function(b){b.onclick=function(){selReq=b.dataset.r;vRequests(v)};b.onkeydown=function(e){if(e.key==='Enter')b.click()}});
+  $('#syncb').onclick=function(){var b=this;b.disabled=true;b.innerHTML='<span class="spin"></span>';api('POST','mail/sync').then(function(j){S.requests=j.requests||S.requests;toast(j.created||j.appended?t('synced')+': '+(j.created||0)+' / '+(j.appended||0):t('nothingNew'));refreshBadges();vRequests(v)}).catch(function(e){fail(e);b.disabled=false;b.innerHTML=ico('sync')})};
+  reqDetail();
+}
+function reqDetail(){
+  var el=$('#detail'); if(!el) return;
+  var r=selReq&&S.requests[selReq];
+  if(!r){el.innerHTML='<div class="empty" style="margin:auto"><b>'+t('pickReq')+'</b>'+t('pickReqS')+'</div>';return}
+  if(r.unread){r.unread=false;api('PATCH','requests/'+r.id,{unread:false,status:r.status==='new'?'new':r.status}).catch(function(){});refreshBadges()}
+  var facts=[['company',r.company],['contact',r.name],['email',r.email?'<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>':''],['phone',r.phone?'<a href="tel:'+esc(r.phone)+'">'+esc(r.phone)+'</a>':''],['employees',r.employees],['package',r.package?'PMO '+r.package:''],['location',r.location],['received',fmtDT(r.received)]];
+  var items=[];
+  if(r.message&&r.source!=='email') items.push({dir:'in',at:r.received,fromName:r.name,from:r.email,text:r.message,subject:r.subject});
+  (r.thread||[]).forEach(function(x){items.push(x)});
+  (r.notes||[]).forEach(function(n){items.push({note:1,at:n.at,by:n.by,text:n.text,id:n.id})});
+  items.sort(function(a,b){return (a.at||'')>(b.at||'')?1:-1});
+  var th=items.map(function(x){
+    var long=(x.text&&x.text.length>1400)||!!x.full;
+    var body=esc(x.text&&x.text.length>1400?x.text.slice(0,1400)+'…':x.text);
+    if(x.note){var u=userById(x.by)||{};return '<div class="msg note"><div class="mh">'+ico('note')+'<b>'+esc(u.name||'')+'</b><span>'+esc(fmtDT(x.at))+'</span></div>'+body+'</div>'}
+    var who=x.dir==='in'?(x.fromName||x.from||''):(x.by==='system'?'Aedes Dei (automatisch)':(userById(x.by)||{}).name||'Aedes Dei');
+    return '<div class="msg '+x.dir+(x.auto?' auto':'')+'"><div class="mh"><b>'+esc(who)+'</b><span>'+esc(fmtDT(x.at))+'</span></div>'+body+(long?'<a href="#" class="more" data-full="'+encodeURIComponent(x.full||x.text)+'">'+t('showMore')+'</a>':'')+'</div>';
+  }).join('');
+  var tpls=templates();
+  el.innerHTML='<div class="dh"><button class="iconbtn back" id="backb" aria-label="Back">'+ico('left')+'</button><div class="who"><h3>'+esc(reqTitle(r))+'</h3><div class="meta">AD-'+esc(r.id)+' · '+t('src_'+(r.source||'manual'))+' · '+esc(rel(r.received))+'</div></div>'+
+   '<div class="acts"><select class="in" id="rst" style="width:auto" aria-label="'+t('status')+'">'+STAT.map(function(s){return '<option value="'+s+'"'+(r.status===s?' selected':'')+'>'+t('s_'+s)+'</option>'}).join('')+'</select>'+
+   '<select class="in" id="ras" style="width:auto" aria-label="'+t('assignee')+'"><option value="">'+t('assignee')+': '+t('nobody')+'</option>'+(S.users||[]).filter(function(u){return u.status==='active'}).map(function(u){return '<option value="'+u.id+'"'+(r.assignee===u.id?' selected':'')+'>'+esc(u.name)+'</option>'}).join('')+'</select>'+
+   '<button class="btn g" id="rplan">'+ico('cal')+t('plan')+'</button>'+(!r.clientId&&r.company?'<button class="btn s" id="rorg">'+ico('org')+t('makeOrg')+'</button>':'')+(isAdmin()?'<button class="iconbtn" id="rdel" title="'+t('del')+'">'+ico('trash')+'</button>':'')+'</div></div>'+
+   '<div class="scroll"><div class="facts">'+facts.filter(function(f){return f[1]}).map(function(f){return '<div><span>'+t(f[0])+'</span><b>'+(f[0]==='email'||f[0]==='phone'?f[1]:esc(f[1]))+'</b></div>'}).join('')+'</div>'+
+   ((r.appts||[]).length?'<div class="callout ok">'+ico('cal')+'<div>'+(r.appts||[]).map(function(id){var a=S.appts[id];return a?'<a href="#" data-a="'+a.id+'" style="display:block">'+esc(a.title)+' · '+esc(fmtD(a.date,{weekday:'short',day:'numeric',month:'long'}))+' '+a.start+'</a>':''}).join('')+'</div></div>':'')+
+   '<div class="thread">'+th+'</div></div>'+
+   '<div class="composer">'+(!S.mail.ready&&composeMode==='reply'?'<div class="callout" style="margin:0">'+ico('mail')+'<div>'+t('mailOff')+'</div></div>':'')+
+   '<div class="bar"><div class="seg"><button data-cm="reply" class="'+(composeMode==='reply'?'on':'')+'">'+t('reply')+'</button><button data-cm="note" class="'+(composeMode==='note'?'on':'')+'">'+t('note')+'</button></div>'+
+   (composeMode==='reply'?'<select class="in" id="rtpl" style="width:auto;flex:1;min-width:160px"><option value="">'+t('chooseTpl')+'</option>'+tpls.map(function(x,i){return '<option value="'+i+'">'+esc(x.name)+'</option>'}).join('')+'</select>':'')+'</div>'+
+   '<textarea class="in" id="rtext" placeholder="'+(composeMode==='reply'?t('replyPh'):t('notePh'))+'"></textarea>'+
+   '<div class="bar">'+(composeMode==='reply'?'<span class="muted" style="font-size:12.5px">'+t('markAs')+'</span><select class="in" id="rafter" style="width:auto"><option value="replied">'+t('s_replied')+'</option><option value="open">'+t('s_open')+'</option><option value="closed">'+t('s_closed')+'</option><option value="declined">'+t('s_declined')+'</option></select>':'')+'<span style="flex:1"></span>'+
+   '<button class="btn p" id="rsend">'+(composeMode==='reply'?ico('send')+t('send'):ico('note')+t('saveNote'))+'</button></div></div>';
+  var sc=$('.scroll',el); sc.scrollTop=sc.scrollHeight;
+  $('#backb').onclick=function(){selReq=null;vRequests($('#view'))};
+  $$('[data-cm]',el).forEach(function(b){b.onclick=function(){composeMode=b.dataset.cm;reqDetail()}});
+  $$('.more',el).forEach(function(a){a.onclick=function(e){e.preventDefault();a.parentNode.lastChild.previousSibling;var m=a.closest('.msg');m.innerHTML=m.querySelector('.mh').outerHTML+esc(decodeURIComponent(a.dataset.full))}});
+  $$('[data-a]',el).forEach(function(a){a.onclick=function(e){e.preventDefault();apptModal(S.appts[a.dataset.a])}});
+  if($('#rtpl')) $('#rtpl').onchange=function(){var x=tpls[this.value];if(x)$('#rtext').value=fillTpl(x.text,r)};
+  $('#rst').onchange=function(){patchReq(r.id,{status:this.value})};
+  $('#ras').onchange=function(){patchReq(r.id,{assignee:this.value})};
+  $('#rplan').onclick=function(){apptModal(null,{requestId:r.id,title:(r.package?'PMO '+r.package:tyName('intake'))+' · '+reqTitle(r),type:r.package?'pmo-'+String(r.package).toLowerCase():'intake',company:r.company,contactName:r.name,contactEmail:r.email,contactPhone:r.phone,location:/huis|home/i.test(r.location||'')?'home':'client',clientId:r.clientId||''})};
+  if($('#rorg')) $('#rorg').onclick=function(){orgModal(null,{name:r.company,contact:r.name,email:r.email,phone:r.phone,employees:r.employees},r.id)};
+  if($('#rdel')) $('#rdel').onclick=confirmBtn($('#rdel'),function(){api('DELETE','requests/'+r.id).then(function(){delete S.requests[r.id];selReq=null;toast(t('deleted'));vRequests($('#view'))}).catch(fail)});
+  $('#rsend').onclick=function(){
+    var txt=$('#rtext').value.trim(); if(!txt) return; var b=this; b.disabled=true;
+    var p=composeMode==='reply'?api('POST','requests/'+r.id+'/reply',{text:txt,status:$('#rafter').value}):api('PATCH','requests/'+r.id,{note:txt});
+    p.then(function(j){S.requests[r.id]=j.request;toast(composeMode==='reply'?t('sentOk'):t('noteOk'));vRequests($('#view'))}).catch(function(e){fail(e);b.disabled=false});
+  };
+}
+function patchReq(id,body){return api('PATCH','requests/'+id,body).then(function(j){S.requests[id]=j.request;toast(t('saved'));refreshBadges();if(view==='requests')vRequests($('#view'))}).catch(fail)}
+function confirmBtn(btn,fn){var armed=false;return function(){if(!armed){armed=true;btn.classList.add('d');toast(t('confirmDel'));setTimeout(function(){armed=false;btn.classList.remove('d')},3500);return}fn()}}
+
+/* =============== AGENDA =============== */
+function vAgenda(v){
+  setTitle(t('agenda'),'');
+  var label = calMode==='month'?calDate.toLocaleDateString(LOCALE(),{month:'long',year:'numeric'}):calMode==='week'?weekLabel():t('list');
+  var staff=(S.users||[]).filter(function(u){return u.status==='active'});
+  v.innerHTML='<div class="cal-top"><button class="iconbtn" id="cprev" aria-label="Previous">'+ico('left')+'</button><button class="iconbtn" id="cnext" aria-label="Next">'+ico('right')+'</button><button class="btn s" id="ctoday">'+t('today')+'</button><h3>'+esc(label)+'</h3><span class="sp"></span>'+
+   '<div class="seg"><button data-cm="month" class="'+(calMode==='month'?'on':'')+'">'+t('month')+'</button><button data-cm="week" class="'+(calMode==='week'?'on':'')+'">'+t('week')+'</button><button data-cm="list" class="'+(calMode==='list'?'on':'')+'">'+t('list')+'</button></div></div>'+
+   '<div class="who-f" style="margin-bottom:14px"><button data-w="" class="'+(!calWho?'on':'')+'">'+'<span class="dot" style="background:conic-gradient(var(--navy) 0 50%,var(--gold) 0)"></span>'+t('everyone')+'</button>'+staff.map(function(u){return '<button data-w="'+u.id+'" class="'+(calWho===u.id?'on':'')+'"><span class="dot" style="background:'+esc(u.color)+'"></span>'+esc(u.name.split(' ')[0])+'</button>'}).join('')+'</div>'+
+   '<div id="calbody"></div><div class="legend">'+TYPES.map(function(x){return '<span><i style="background:'+x[1]+'"></i>'+esc(tyName(x[0]))+'</span>'}).join('')+'</div>';
+  $('#cprev').onclick=function(){shiftCal(-1)};$('#cnext').onclick=function(){shiftCal(1)};$('#ctoday').onclick=function(){calDate=new Date();vAgenda(v)};
+  $$('[data-cm]',v).forEach(function(b){b.onclick=function(){calMode=b.dataset.cm;vAgenda(v)}});
+  $$('[data-w]',v).forEach(function(b){b.onclick=function(){calWho=b.dataset.w||null;vAgenda(v)}});
+  var cb=$('#calbody');
+  if(calMode==='month') monthView(cb); else if(calMode==='week') weekView(cb); else listView(cb);
+}
+function shiftCal(n){if(calMode==='month')calDate=new Date(calDate.getFullYear(),calDate.getMonth()+n,1,12);else calDate=new Date(calDate.getFullYear(),calDate.getMonth(),calDate.getDate()+7*n,12);vAgenda($('#view'))}
+function weekStart(d){var x=new Date(d);x.setHours(12,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+function weekLabel(){var s=weekStart(calDate),e=new Date(s);e.setDate(s.getDate()+6);return fmtD(iso(s),{day:'numeric',month:'short'})+' – '+fmtD(iso(e),{day:'numeric',month:'short',year:'numeric'})}
+function visAppts(){return apptList().filter(function(a){return !calWho||(a.staff||[]).indexOf(calWho)>=0})}
+function evColor(a){return TCOL[a.type]||'#8C7B6B'}
+function monthView(el){
+  var y=calDate.getFullYear(),m=calDate.getMonth(),first=new Date(y,m,1,12),start=new Date(first);start.setDate(1-((first.getDay()+6)%7));
+  var by={};visAppts().forEach(function(a){(by[a.date]=by[a.date]||[]).push(a)});
+  var h='';for(var i=0;i<7;i++){var x=new Date(2024,0,1+i);h+='<div class="dow">'+x.toLocaleDateString(LOCALE(),{weekday:'short'})+'</div>'}
+  for(i=0;i<42;i++){var d=new Date(start);d.setDate(start.getDate()+i);var ds=iso(d);var evs=by[ds]||[];
+    if(i===35&&d.getMonth()!==m)break;
+    h+='<div class="mday'+(d.getMonth()!==m?' out':'')+(ds===todayISO()?' today':'')+'" data-d="'+ds+'"><span class="dn">'+d.getDate()+'</span>'+evs.slice(0,3).map(function(a){return '<button class="ev'+(a.status==='cancelled'?' cx':'')+'" data-a="'+a.id+'" style="background:'+evColor(a)+'">'+a.start+' '+esc(a.title)+'</button>'}).join('')+(evs.length>3?'<span class="more-ev">+'+(evs.length-3)+'</span>':'')+'</div>'}
+  el.innerHTML='<div class="month">'+h+'</div>';
+  $$('.mday',el).forEach(function(c){c.onclick=function(){apptModal(null,{date:c.dataset.d})}});
+  $$('.ev',el).forEach(function(b){b.onclick=function(e){e.stopPropagation();apptModal(S.appts[b.dataset.a])}});
+}
+function weekView(el){
+  var s=weekStart(calDate),H0=7,H1=20,PX=48,days=[];
+  for(var i=0;i<7;i++){var d=new Date(s);d.setDate(s.getDate()+i);days.push(iso(d))}
+  var by={};visAppts().forEach(function(a){(by[a.date]=by[a.date]||[]).push(a)});
+  var hgt=(H1-H0)*PX;
+  var h='<div></div>'+days.map(function(ds){var d=new Date(ds+'T12:00:00');return '<div class="wk-h'+(ds===todayISO()?' today':'')+'">'+d.toLocaleDateString(LOCALE(),{weekday:'short'})+'<b>'+d.getDate()+'</b></div>'}).join('');
+  var times='';for(var hh=H0;hh<=H1;hh++)times+='<span style="top:'+((hh-H0)*PX)+'px">'+String(hh).padStart(2,'0')+':00</span>';
+  h+='<div class="wk-times" style="height:'+hgt+'px">'+times+'</div>';
+  var nowM=new Date().getHours()*60+new Date().getMinutes();
+  days.forEach(function(ds){
+    var evs=(by[ds]||[]).slice().sort(function(a,b){return a.start>b.start?1:-1});
+    // simple overlap lanes
+    var lanes=[];evs.forEach(function(a){var placed=false;for(var l=0;l<lanes.length;l++){if(lanes[l]<=a.start){lanes[l]=a.end;a._l=l;placed=true;break}}if(!placed){a._l=lanes.length;lanes.push(a.end)}});
+    var n=Math.max(1,lanes.length);
+    h+='<div class="wk-col'+(ds===todayISO()?' today':'')+'" data-d="'+ds+'" style="height:'+hgt+'px">'+
+     (ds===todayISO()&&nowM>H0*60&&nowM<H1*60?'<div class="now-line" style="top:'+((nowM-H0*60)/60*PX)+'px"></div>':'')+
+     evs.map(function(a){var sm=toMin(a.start),em=toMin(a.end||a.start);var top=Math.max(0,(sm-H0*60)/60*PX),ht=Math.max(22,(em-sm)/60*PX-2);
+      return '<div class="wk-ev" data-a="'+a.id+'" style="top:'+top+'px;height:'+ht+'px;background:'+evColor(a)+';left:calc('+(a._l*100/n)+'% + 3px);width:calc('+(100/n)+'% - 6px);right:auto'+(a.status==='cancelled'?';opacity:.45':'')+'"><b>'+esc(a.title)+'</b>'+a.start+'–'+a.end+'</div>'}).join('')+'</div>';
+  });
+  el.innerHTML='<div class="week-wrap"><div class="week">'+h+'</div></div>';
+  $$('.wk-col',el).forEach(function(c){c.onclick=function(e){if(e.target!==c)return;var y=e.offsetY;var mins=Math.round((H0*60+y/PX*60)/30)*30;var st=pad(Math.floor(mins/60))+':'+pad(mins%60);var en=pad(Math.floor((mins+60)/60))+':'+pad(mins%60);apptModal(null,{date:c.dataset.d,start:st,end:en})}});
+  $$('.wk-ev',el).forEach(function(b){b.onclick=function(e){e.stopPropagation();apptModal(S.appts[b.dataset.a])}});
+  var ww=$('.week-wrap',el); var vw=$('#view'); var firstTop=8*PX; vw.scrollTop=0;
+}
+function pad(n){return String(n).padStart(2,'0')}
+function toMin(s){var p=String(s||'0:0').split(':');return (+p[0])*60+(+p[1]||0)}
+function listView(el){
+  var as=visAppts().filter(function(a){return a.date>=addD(-30)});
+  if(!as.length){el.innerHTML='<div class="card"><div class="empty"><b>'+t('noUpcoming')+'</b>'+t('noUpcomingS')+'</div></div>';return}
+  var h='',last='';
+  as.forEach(function(a){var dl=fmtD(a.date,{weekday:'long',day:'numeric',month:'long',year:'numeric'});if(dl!==last){h+='<div class="dayhdr">'+esc(dl)+'</div>';last=dl}
+    h+='<div class="tl-item" data-a="'+a.id+'"><div class="t num">'+a.start+'<small>'+a.end+'</small></div><div class="bar" style="background:'+evColor(a)+'"></div><div style="display:flex;gap:12px;align-items:center;min-width:0"><div style="flex:1;min-width:0"><b>'+esc(a.title)+'</b><span>'+esc(tyName(a.type))+' · '+esc(t('loc_'+a.location))+(a.address?' · '+esc(a.address):'')+(a.participants?' · '+a.participants+' '+t('participantsS'):'')+'</span></div><div class="avs">'+(a.staff||[]).map(function(id){return av(userById(id),1)}).join('')+'</div>'+(a.status!=='planned'?'<span class="pill '+(a.status==='done'?'st-closed':'st-declined')+'">'+t('st_'+a.status)+'</span>':'')+'</div></div>'});
+  el.innerHTML='<div class="card tl">'+h+'</div>';
+  $$('[data-a]',el).forEach(function(b){b.onclick=function(){apptModal(S.appts[b.dataset.a])}});
+}
+
+/* =============== MODALS =============== */
+function modal(title,bodyHtml,footHtml){
+  var ov=D.createElement('div');ov.className='ov';ov.innerHTML='<div class="modal" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="modal-h"><h3>'+esc(title)+'</h3><button class="iconbtn" data-x aria-label="'+t('close')+'">'+ico('x')+'</button></div><div class="modal-b">'+bodyHtml+'</div><div class="modal-f">'+footHtml+'</div></div>';
+  D.body.appendChild(ov);
+  var close=function(){ov.remove();D.removeEventListener('keydown',kd)};
+  var kd=function(e){if(e.key==='Escape')close()};D.addEventListener('keydown',kd);
+  ov.addEventListener('mousedown',function(e){if(e.target===ov)close()});
+  $('[data-x]',ov).onclick=close;
+  var f=$('input,select,textarea',ov); if(f) setTimeout(function(){f.focus()},50);
+  return {el:ov,close:close};
+}
+function apptModal(a,pre){
+  var isNew=!a; a=a||Object.assign({title:'',type:'intake',date:todayISO(),start:'09:00',end:'10:00',location:'client',staff:[S.me.id],participants:0,status:'planned'},pre||{});
+  var staff=(S.users||[]).filter(function(u){return u.status==='active'});
+  var req=a.requestId&&S.requests[a.requestId];
+  var body='<div class="f"><label for="m-title">'+t('title')+'</label><input class="in" id="m-title" value="'+esc(a.title)+'"></div>'+
+   '<div class="f"><span class="lbl">'+t('type')+'</span><div class="typesel">'+TYPES.map(function(x){return '<span><input type="radio" name="m-type" id="ty-'+x[0]+'" value="'+x[0]+'"'+(a.type===x[0]?' checked':'')+'><label for="ty-'+x[0]+'"><i style="background:'+x[1]+'"></i>'+esc(tyName(x[0]))+'</label></span>'}).join('')+'</div></div>'+
+   '<div class="grid3"><div class="f"><label for="m-date">'+t('date')+'</label><input class="in" type="date" id="m-date" value="'+esc(a.date)+'"></div><div class="f"><label for="m-start">'+t('start')+'</label><input class="in" type="time" id="m-start" value="'+esc(a.start)+'" step="900"></div><div class="f"><label for="m-end">'+t('end')+'</label><input class="in" type="time" id="m-end" value="'+esc(a.end)+'" step="900"></div></div>'+
+   '<div class="grid2"><div class="f"><label for="m-loc">'+t('location')+'</label><select class="in" id="m-loc">'+['client','home','clinic','online'].map(function(k){return '<option value="'+k+'"'+(a.location===k?' selected':'')+'>'+t('loc_'+k)+'</option>'}).join('')+'</select></div><div class="f"><label for="m-addr">'+t('address')+'</label><input class="in" id="m-addr" value="'+esc(a.address||'')+'"></div></div>'+
+   '<div class="grid2"><div class="f"><label for="m-co">'+t('company')+'</label><input class="in" id="m-co" list="m-orgs" value="'+esc(a.company||'')+'"><datalist id="m-orgs">'+Object.keys(S.clients||{}).map(function(k){return '<option value="'+esc(S.clients[k].name)+'">'}).join('')+'</datalist></div><div class="f"><label for="m-part">'+t('participants')+'</label><input class="in num" type="number" min="0" id="m-part" value="'+(a.participants||0)+'"></div></div>'+
+   '<div class="grid2"><div class="f"><label for="m-cn">'+t('contact')+'</label><input class="in" id="m-cn" value="'+esc(a.contactName||'')+'"></div><div class="f"><label for="m-ce">'+t('email')+'</label><input class="in" type="email" id="m-ce" value="'+esc(a.contactEmail||'')+'"></div></div>'+
+   '<div class="f"><span class="lbl">'+t('staff')+'</span><div class="chips">'+staff.map(function(u){return '<span><input type="checkbox" id="st-'+u.id+'" value="'+u.id+'"'+((a.staff||[]).indexOf(u.id)>=0?' checked':'')+'><label for="st-'+u.id+'">'+av(u,1)+esc(u.name)+'</label></span>'}).join('')+'</div></div>'+
+   (!isNew?'<div class="f"><label for="m-st">'+t('status')+'</label><select class="in" id="m-st">'+['planned','done','cancelled'].map(function(k){return '<option value="'+k+'"'+(a.status===k?' selected':'')+'>'+t('st_'+k)+'</option>'}).join('')+'</select></div>':'')+
+   '<div class="f"><label for="m-notes">'+t('notes')+'</label><textarea class="in" id="m-notes">'+esc(a.notes||'')+'</textarea></div>'+
+   (req?'<div class="callout info" style="margin:0">'+ico('inbox')+'<div><b>'+t('linkReq')+'</b><a href="#" id="m-req">'+esc(reqTitle(req))+' · AD-'+req.id+'</a></div></div>':'')+
+   '<label class="check"><input type="checkbox" id="m-notify"'+(isNew&&a.contactEmail?' checked':'')+'> '+(isNew?t('notify'):t('notifyUpd'))+'</label><p class="err" id="m-err"></p>';
+  var foot=(!isNew?'<button class="btn d" id="m-del">'+ico('trash')+t('del')+'</button>':'')+'<span class="sp"></span><button class="btn s" data-x2>'+t('cancel')+'</button><button class="btn p" id="m-save">'+t('save')+'</button>';
+  var M=modal(isNew?t('apptNew'):t('apptT'),body,foot);
+  $('[data-x2]',M.el).onclick=M.close;
+  if($('#m-req',M.el)) $('#m-req',M.el).onclick=function(e){e.preventDefault();M.close();selReq=req.id;go('requests')};
+  $('#m-co',M.el).onchange=function(){var nm=this.value;var c=Object.keys(S.clients||{}).map(function(k){return S.clients[k]}).filter(function(c){return c.name===nm})[0];if(c){if(!$('#m-cn',M.el).value)$('#m-cn',M.el).value=c.contact||'';if(!$('#m-ce',M.el).value)$('#m-ce',M.el).value=c.email||'';if(!$('#m-addr',M.el).value)$('#m-addr',M.el).value=c.address||''}};
+  $$('input[name=m-type]',M.el).forEach(function(r){r.onchange=function(){var ti=$('#m-title',M.el);if(!ti.value||TYPES.some(function(x){return ti.value.indexOf(tyName(x[0]))===0})){var co=$('#m-co',M.el).value;ti.value=tyName(r.value)+(co?' · '+co:'')}}});
+  $('#m-start',M.el).onchange=function(){var e=$('#m-end',M.el);if(toMin(e.value)<=toMin(this.value)){var m=toMin(this.value)+60;e.value=pad(Math.floor(m/60)%24)+':'+pad(m%60)}};
+  if($('#m-del',M.el)) $('#m-del',M.el).onclick=confirmBtn($('#m-del',M.el),function(){api('DELETE','appts/'+a.id).then(function(){delete S.appts[a.id];M.close();toast(t('deleted'));render()}).catch(fail)});
+  $('#m-save',M.el).onclick=function(){
+    var tyEl=$('input[name=m-type]:checked',M.el);
+    var co=$('#m-co',M.el).value.trim(), cl=Object.keys(S.clients||{}).map(function(k){return S.clients[k]}).filter(function(c){return c.name===co})[0];
+    var b={title:$('#m-title',M.el).value.trim()||(tyName(tyEl?tyEl.value:'other')+(co?' · '+co:'')),type:tyEl?tyEl.value:'other',date:$('#m-date',M.el).value,start:$('#m-start',M.el).value,end:$('#m-end',M.el).value,location:$('#m-loc',M.el).value,address:$('#m-addr',M.el).value,company:co,clientId:cl?cl.id:(a.clientId||''),participants:$('#m-part',M.el).value,contactName:$('#m-cn',M.el).value,contactEmail:$('#m-ce',M.el).value,
+      staff:$$('.chips input:checked',M.el).map(function(i){return i.value}),notes:$('#m-notes',M.el).value,notify:$('#m-notify',M.el).checked,lang:lang,requestId:a.requestId||''};
+    if($('#m-st',M.el)) b.status=$('#m-st',M.el).value;
+    if(!b.date||!b.start||!b.end){$('#m-err',M.el).textContent=t('errGeneric');return}
+    if(toMin(b.end)<=toMin(b.start)){var m2=toMin(b.start)+60;b.end=pad(Math.floor(m2/60)%24)+':'+pad(m2%60)}
+    var btn=this;btn.disabled=true;
+    (isNew?api('POST','appts',b):api('PATCH','appts/'+a.id,b)).then(function(j){
+      S.appts[j.appt.id]=j.appt; if(j.request) S.requests[j.request.id]=j.request;
+      M.close(); toast(t('saved')+(j.mailed?' · ✉':'')); if(j.mailError) toast(j.mailError,true); render();
+    }).catch(function(e){btn.disabled=false;$('#m-err',M.el).textContent=(e&&e.message)||t('errGeneric')});
+  };
+}
+function reqModal(){
+  var body='<div class="grid2"><div class="f"><label for="q-co">'+t('company')+'</label><input class="in" id="q-co"></div><div class="f"><label for="q-n">'+t('contact')+'</label><input class="in" id="q-n"></div><div class="f"><label for="q-e">'+t('email')+'</label><input class="in" type="email" id="q-e"></div><div class="f"><label for="q-p">'+t('phone')+'</label><input class="in" id="q-p"></div><div class="f"><label for="q-pk">'+t('package')+'</label><select class="in" id="q-pk"><option value=""></option><option>Basis</option><option>Standaard</option><option>Uitgebreid</option></select></div><div class="f"><label for="q-em">'+t('employees')+'</label><input class="in" id="q-em"></div></div><div class="f"><label for="q-s">'+t('subject')+'</label><input class="in" id="q-s"></div><div class="f"><label for="q-m">'+t('message')+'</label><textarea class="in" id="q-m"></textarea></div>';
+  var M=modal(t('manualReq'),body,'<span class="sp"></span><button class="btn s" data-x2>'+t('cancel')+'</button><button class="btn p" id="q-save">'+t('save')+'</button>');
+  $('[data-x2]',M.el).onclick=M.close;
+  $('#q-save',M.el).onclick=function(){var b={company:$('#q-co',M.el).value,name:$('#q-n',M.el).value,email:$('#q-e',M.el).value,phone:$('#q-p',M.el).value,package:$('#q-pk',M.el).value,employees:$('#q-em',M.el).value,subject:$('#q-s',M.el).value,message:$('#q-m',M.el).value};
+    if(!b.company&&!b.name)return; api('POST','requests',b).then(function(j){S.requests[j.request.id]=j.request;M.close();selReq=j.request.id;go('requests')}).catch(fail)};
+}
+function orgModal(c,pre,fromReq){
+  var isNew=!c; c=c||Object.assign({},pre||{});
+  var F=[['name','name'],['contact','contact'],['email','email'],['phone','phone'],['address','address'],['employees','employees'],['kvk','kvk']];
+  var body='<div class="grid2">'+F.map(function(f){return '<div class="f'+(f[0]==='address'?' full':'')+'"><label for="o-'+f[0]+'">'+t(f[1]==='name'?'company':f[1])+'</label><input class="in" id="o-'+f[0]+'" value="'+esc(c[f[0]]||'')+'"></div>'}).join('')+'</div><div class="f"><label for="o-notes">'+t('notes')+'</label><textarea class="in" id="o-notes">'+esc(c.notes||'')+'</textarea></div>';
+  var M=modal(isNew?t('orgNew'):c.name,body,(!isNew&&isAdmin()?'<button class="btn d" id="o-del">'+ico('trash')+t('del')+'</button>':'')+'<span class="sp"></span><button class="btn s" data-x2>'+t('cancel')+'</button><button class="btn p" id="o-save">'+t('save')+'</button>');
+  $('[data-x2]',M.el).onclick=M.close;
+  if($('#o-del',M.el)) $('#o-del',M.el).onclick=confirmBtn($('#o-del',M.el),function(){api('DELETE','clients/'+c.id).then(function(){delete S.clients[c.id];M.close();toast(t('deleted'));render()}).catch(fail)});
+  $('#o-save',M.el).onclick=function(){var b={};F.forEach(function(f){b[f[0]]=$('#o-'+f[0],M.el).value});b.notes=$('#o-notes',M.el).value;if(!b.name)return;if(fromReq)b.requestId=fromReq;
+    (isNew?api('POST','clients',b):api('PATCH','clients/'+c.id,b)).then(function(j){S.clients[j.client.id]=j.client;if(fromReq&&S.requests[fromReq])S.requests[fromReq].clientId=j.client.id;M.close();toast(t('saved'));render()}).catch(fail)};
+}
+
+/* =============== ORGANISATIONS =============== */
+function orgStats(c){var rq=reqList().filter(function(r){return r.clientId===c.id||(r.company&&r.company===c.name)});var ap=apptList().filter(function(a){return a.clientId===c.id||(a.company&&a.company===c.name)});return {rq:rq,ap:ap}}
+function vClients(v){
+  var cs=Object.keys(S.clients||{}).map(function(k){return S.clients[k]}).sort(function(a,b){return a.name.localeCompare(b.name)});
+  setTitle(t('clients'),cs.length+'');
+  v.innerHTML=cs.length?'<div class="cgrid">'+cs.map(function(c){var s=orgStats(c);var next=s.ap.filter(function(a){return a.date>=todayISO()&&a.status==='planned'})[0];
+    return '<div class="card ccard" data-c="'+c.id+'" tabindex="0"><h4>'+esc(c.name)+'</h4><div class="kv">'+(c.contact?'<span>'+esc(c.contact)+'</span>':'')+(c.email?'<span>'+esc(c.email)+'</span>':'')+(c.address?'<span>'+esc(c.address)+'</span>':'')+'</div>'+
+     (next?'<div class="pill st-scheduled" style="align-self:flex-start">'+esc(fmtD(next.date,{day:'numeric',month:'short'}))+' · '+esc(tyName(next.type))+'</div>':'')+
+     '<div class="stats"><span><b class="num">'+s.rq.length+'</b>'+t('orgReq')+'</span><span><b class="num">'+s.ap.length+'</b>'+t('orgAppt')+'</span>'+(c.employees?'<span><b class="num">'+esc(c.employees)+'</b>'+t('employees').toLowerCase()+'</span>':'')+'</div></div>'}).join('')+'</div>'
+   :'<div class="card"><div class="empty"><b>'+t('noOrg')+'</b>'+t('noOrgS')+'</div></div>';
+  $$('[data-c]',v).forEach(function(b){b.onclick=function(){orgDetail(b.dataset.c)};b.onkeydown=function(e){if(e.key==='Enter')b.click()}});
+}
+function orgDetail(id){
+  var c=S.clients[id]; if(!c) return; var s=orgStats(c);
+  var body='<div class="facts" style="margin:0">'+[['contact',c.contact],['email',c.email],['phone',c.phone],['address',c.address],['employees',c.employees],['kvk',c.kvk]].filter(function(f){return f[1]}).map(function(f){return '<div><span>'+t(f[0])+'</span><b>'+esc(f[1])+'</b></div>'}).join('')+'</div>'+
+   (c.notes?'<div class="msg note" style="max-width:none">'+esc(c.notes)+'</div>':'')+
+   '<div class="lbl">'+t('history')+'</div><div class="card" style="overflow:hidden">'+
+   s.ap.map(function(a){return '<div class="row" data-a="'+a.id+'"><span class="av sm" style="background:'+evColor(a)+'">'+ico('cal')+'</span><div class="main-t"><b>'+esc(a.title)+'</b><span>'+esc(fmtD(a.date,{weekday:'short',day:'numeric',month:'long',year:'numeric'}))+' · '+a.start+'</span></div></div>'}).join('')+
+   s.rq.map(function(r){return '<div class="row" data-r="'+r.id+'"><span class="av sm" style="background:#cfc5b8">'+ico('inbox')+'</span><div class="main-t"><b>'+esc(r.subject||r.package&&('PMO '+r.package)||'AD-'+r.id)+'</b><span>'+esc(fmtD(r.received))+'</span></div>'+pill(r.status)+'</div>'}).join('')+
+   ((s.ap.length+s.rq.length)?'':'<div class="empty">—</div>')+'</div>';
+  var M=modal(c.name,body,'<button class="btn s" id="od-appt">'+ico('cal')+t('plan')+'</button><span class="sp"></span><button class="btn p" id="od-edit">'+ico('edit')+t('edit')+'</button>');
+  $('#od-edit',M.el).onclick=function(){M.close();orgModal(c)};
+  $('#od-appt',M.el).onclick=function(){M.close();apptModal(null,{company:c.name,clientId:c.id,contactName:c.contact,contactEmail:c.email,address:c.address,title:tyName('intake')+' · '+c.name})};
+  $$('[data-a]',M.el).forEach(function(b){b.onclick=function(){M.close();apptModal(S.appts[b.dataset.a])}});
+  $$('[data-r]',M.el).forEach(function(b){b.onclick=function(){M.close();selReq=b.dataset.r;go('requests')}});
+}
+
+/* =============== TEAM =============== */
+function vTeam(v){
+  var us=S.users||[], pend=us.filter(function(u){return u.status==='pending'}), rest=us.filter(function(u){return u.status!=='pending'});
+  setTitle(t('team'),rest.filter(function(u){return u.status==='active'}).length+' '+t('members').toLowerCase());
+  var adm=isAdmin();
+  var row=function(u){return '<tr><td><div class="person">'+av(u)+'<div><b>'+esc(u.name)+(u.id===S.me.id?' <span class="muted" style="font-weight:400">('+(lang==='en'?'you':'jij')+')</span>':'')+'</b><span>'+esc(u.title||u.email)+'</span></div></div></td><td class="muted">'+esc(u.email)+'</td><td>'+(adm&&u.id!==S.me.id&&u.role!=='owner'?'<select class="in" data-role="'+u.id+'" style="width:auto">'+['admin','member'].map(function(r){return '<option value="'+r+'"'+(u.role===r?' selected':'')+'>'+t('r_'+r)+'</option>'}).join('')+'</select>':'<span class="role">'+t('r_'+u.role)+'</span>')+'</td><td class="muted">'+(u.status==='disabled'?'<span class="pill st-declined">'+t('u_disabled')+'</span>':esc(u.lastLogin?rel(u.lastLogin):t('never')))+'</td><td style="text-align:right">'+
+    (adm&&u.id!==S.me.id&&u.role!=='owner'?(u.status==='disabled'?'<button class="btn q" data-st="'+u.id+'" data-to="active">'+t('enable')+'</button>':'<button class="btn q d" data-st="'+u.id+'" data-to="disabled">'+t('disable')+'</button>'):'')+'</td></tr>'};
+  v.innerHTML=(pend.length&&adm?'<div class="card" style="margin-bottom:16px"><div class="card-h"><h3>'+t('pendingT')+'</h3></div><div class="rows">'+pend.map(function(u){return '<div class="row" style="cursor:default">'+av(u)+'<div class="main-t"><b>'+esc(u.name)+'</b><span>'+esc(u.email)+' · '+esc(rel(u.created))+'</span></div><button class="btn p" data-st="'+u.id+'" data-to="active">'+ico('check')+t('approve')+'</button><button class="btn q d" data-del="'+u.id+'">'+ico('x')+'</button></div>'}).join('')+'</div></div>':'')+
+   '<div class="card"><div class="card-h"><h3>'+t('members')+'</h3>'+(adm?'<button class="btn p" id="invb">'+ico('plus')+t('invite')+'</button>':'')+'</div><div class="tw"><table class="table"><thead><tr><th>'+t('name')+'</th><th>'+t('email')+'</th><th>'+t('role')+'</th><th>'+t('lastSeen')+'</th><th></th></tr></thead><tbody>'+rest.map(row).join('')+'</tbody></table></div></div>'+
+   (adm&&(S.invites||[]).length?'<div class="card" style="margin-top:16px"><div class="card-h"><h3>'+t('openInv')+'</h3></div><div class="rows">'+S.invites.map(function(i){return '<div class="row" style="cursor:default"><span class="av sm" style="background:#cfc5b8">'+ico('mail')+'</span><div class="main-t"><b>'+esc(i.name||i.email)+'</b><span>'+esc(i.email)+' · '+t('r_'+i.role)+' · '+t('expires')+' '+esc(fmtD(new Date(i.exp).toISOString()))+'</span></div><button class="btn q d" data-rv="'+i.token+'">'+t('revoke')+'</button></div>'}).join('')+'</div></div>':'');
+  $$('[data-role]',v).forEach(function(s){s.onchange=function(){teamPatch(s.dataset.role,{role:s.value})}});
+  $$('[data-st]',v).forEach(function(b){b.onclick=function(){teamPatch(b.dataset.st,{status:b.dataset.to})}});
+  $$('[data-del]',v).forEach(function(b){b.onclick=confirmBtn(b,function(){api('DELETE','team/'+b.dataset.del).then(function(){S.users=S.users.filter(function(u){return u.id!==b.dataset.del});vTeam(v)}).catch(fail)})});
+  $$('[data-rv]',v).forEach(function(b){b.onclick=function(){api('DELETE','team/invite/'+b.dataset.rv).then(function(){S.invites=S.invites.filter(function(i){return i.token!==b.dataset.rv});vTeam(v)}).catch(fail)}});
+  if($('#invb')) $('#invb').onclick=inviteModal;
+}
+function teamPatch(id,b){api('PATCH','team/'+id,b).then(function(j){S.users=S.users.map(function(u){return u.id===id?Object.assign({},u,j.user):u});toast(t('saved'));vTeam($('#view'))}).catch(fail)}
+function inviteModal(){
+  var body='<div class="grid2"><div class="f"><label for="i-n">'+t('name')+'</label><input class="in" id="i-n"></div><div class="f"><label for="i-e">'+t('email')+'</label><input class="in" type="email" id="i-e"></div></div><div class="f"><label for="i-r">'+t('role')+'</label><select class="in" id="i-r"><option value="member">'+t('r_member')+'</option><option value="admin">'+t('r_admin')+'</option></select></div><div id="i-out"></div>';
+  var M=modal(t('invite'),body,'<span class="sp"></span><button class="btn s" data-x2>'+t('close')+'</button><button class="btn p" id="i-go">'+ico('send')+t('invite')+'</button>');
+  $('[data-x2]',M.el).onclick=M.close;
+  $('#i-go',M.el).onclick=function(){var b=this;b.disabled=true;api('POST','team/invite',{name:$('#i-n',M.el).value,email:$('#i-e',M.el).value,role:$('#i-r',M.el).value}).then(function(j){
+    S.invites=[j.invite].concat(S.invites||[]);
+    $('#i-out',M.el).innerHTML='<div class="callout ok" style="margin:0">'+ico('check')+'<div><b>'+(j.mailed?t('invSent'):t('invMade'))+'</b></div></div><div class="f"><label>'+t('inviteLink')+'</label><div class="copy"><input class="in" readonly id="i-link" value="'+esc(j.link)+'"><button class="btn s" id="i-copy">'+ico('copy')+t('copy')+'</button></div></div>';
+    $('#i-copy',M.el).onclick=function(){copyText(j.link,$('#i-link',M.el))};
+    b.hidden=true; if(view==='team')vTeam($('#view'));
+  }).catch(function(e){b.disabled=false;fail(e)})};
+}
+
+/* =============== SETTINGS =============== */
+function vSettings(v){
+  setTitle(t('settings'),'');
+  var me=S.me, adm=isAdmin(), sync=(S.mail&&S.mail.sync)||{};
+  var calUrl=DEMO?location.origin+'/api/cal/••••••.ics':location.origin+'/api/cal/'+me.calToken+'.ics';
+  var COLS=["#25394B","#B99A6B","#8C7B6B","#5E7B6F","#9C6B5E","#6B6F9C","#3F6E8C","#A0845C"];
+  var tpls=templates();
+  v.innerHTML='<div class="set-grid"><div class="stack">'+
+   '<div class="card"><div class="card-h"><h3>'+t('profile')+'</h3></div><div class="card-b" style="display:flex;flex-direction:column;gap:14px">'+
+    '<div class="grid2"><div class="f"><label for="p-n">'+t('name')+'</label><input class="in" id="p-n" value="'+esc(me.name)+'"></div><div class="f"><label for="p-t">'+t('fn')+'</label><input class="in" id="p-t" value="'+esc(me.title||'')+'"></div></div>'+
+    '<div class="f"><span class="lbl">'+t('colour')+'</span><div class="chips">'+COLS.map(function(c){return '<span><input type="radio" name="p-c" id="pc-'+c.slice(1)+'" value="'+c+'"'+(me.color===c?' checked':'')+'><label for="pc-'+c.slice(1)+'" style="padding:5px"><span class="av sm" style="background:'+c+'"></span></label></span>'}).join('')+'</div></div>'+
+    '<div class="f"><span class="lbl">'+t('lang')+'</span><div class="seg" id="p-l"><button data-l="nl" class="'+(lang==='nl'?'on':'')+'">Nederlands</button><button data-l="en" class="'+(lang==='en'?'on':'')+'">English</button></div></div>'+
+    '<div><button class="btn p" id="p-save">'+t('save')+'</button></div>'+
+    '<hr style="border:0;border-top:1px solid var(--line-2);margin:4px 0"><div class="lbl" style="font-size:13px;color:var(--navy)">'+t('changePw')+'</div>'+
+    '<div class="grid2"><div class="f"><label for="p-o">'+t('curPw')+'</label><input class="in" type="password" id="p-o" autocomplete="current-password"></div><div class="f"><label for="p-w">'+t('newPw')+'</label><input class="in" type="password" id="p-w" autocomplete="new-password" placeholder="'+t('pwHint')+'"></div></div><div><button class="btn s" id="p-pw">'+t('changePw')+'</button></div>'+
+   '</div></div>'+
+   '<div class="card"><div class="card-h"><h3>'+t('calSync')+'</h3></div><div class="card-b" style="display:flex;flex-direction:column;gap:12px"><p class="muted" style="margin:0;font-size:13.5px">'+t('calHelp')+'</p><div class="copy"><input class="in" readonly id="cal-url" value="'+esc(calUrl)+'"><button class="btn s" id="cal-copy">'+ico('copy')+t('copy')+'</button></div><div><button class="btn q" id="cal-reset">'+ico('sync')+t('resetLink')+'</button></div></div></div>'+
+   '</div><div class="stack">'+
+   '<div class="card"><div class="card-h"><h3>'+t('mailT')+'</h3></div><div class="card-b" style="display:flex;flex-direction:column;gap:12px"><span class="status-dot'+(S.mail.ready?' ok':'')+'">'+(S.mail.ready?t('mailOn'):t('mailNo'))+'</span><p class="muted" style="margin:0;font-size:13.5px">'+t('mailHelp')+'</p>'+
+    (sync.at?'<p style="margin:0;font-size:13px">'+t('lastSync')+': <b>'+esc(rel(sync.at))+'</b></p>':'')+(sync.error?'<div class="callout" style="margin:0">'+ico('mail')+'<div>'+esc(sync.error)+'</div></div>':'')+
+    (adm&&S.cronUrl?'<div class="f"><label>'+t('cronT')+'</label><p class="muted" style="margin:0;font-size:12.5px">'+t('cronHelp')+'</p><div class="copy"><input class="in" readonly id="cron-url" value="'+esc(S.cronUrl)+'"><button class="btn s" id="cron-copy">'+ico('copy')+t('copy')+'</button></div></div>':'')+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn s" id="m-sync"'+(S.mail.ready?'':' disabled')+'>'+ico('sync')+t('syncNow')+'</button><button class="btn s" id="m-test"'+(S.mail.ready?'':' disabled')+'>'+ico('mail')+t('testMail')+'</button></div></div></div>'+
+   (adm?'<div class="card"><div class="card-h"><h3>'+t('tpls')+'</h3><button class="btn q" id="tpl-add">'+ico('plus')+t('addTpl')+'</button></div><div class="card-b"><p class="muted" style="margin:0 0 12px;font-size:13px">'+t('tplHelp')+'</p><div id="tpl-list">'+tpls.map(tplRow).join('')+'</div><button class="btn p" id="tpl-save">'+t('save')+'</button></div></div>':'')+
+   (adm&&(S.activity||[]).length?'<div class="card"><div class="card-h"><h3>'+t('activity')+'</h3></div><div>'+S.activity.slice(0,25).map(function(a){return '<div class="act"><time>'+esc(fmtDT(a.at))+'</time><span><b>'+esc(a.by)+'</b> · '+esc(a.what)+'</span></div>'}).join('')+'</div></div>':'')+
+   '</div></div>';
+  $$('#p-l button',v).forEach(function(b){b.onclick=function(){setLang(b.dataset.l);shell();go('settings')}});
+  $('#p-save').onclick=function(){var c=$('input[name=p-c]:checked',v);api('PATCH','me',{name:$('#p-n').value,title:$('#p-t').value,color:c?c.value:me.color}).then(function(j){S.me=Object.assign(S.me,j.me);S.users=S.users.map(function(u){return u.id===S.me.id?Object.assign(u,j.me):u});toast(t('saved'));shell();go('settings')}).catch(fail)};
+  $('#p-pw').onclick=function(){api('PATCH','me',{password:$('#p-o').value,newPassword:$('#p-w').value}).then(function(j){if(j.token)saveToken(j.token);$('#p-o').value='';$('#p-w').value='';toast(t('saved'))}).catch(fail)};
+  $('#cal-copy').onclick=function(){copyText($('#cal-url').value,$('#cal-url'))};
+  $('#cal-reset').onclick=function(){api('PATCH','me',{resetCal:true}).then(function(j){S.me.calToken=j.me.calToken;vSettings(v);toast(t('saved'))}).catch(fail)};
+  if($('#m-sync')) $('#m-sync').onclick=function(){var b=this;b.disabled=true;api('POST','mail/sync').then(function(j){S.requests=j.requests||S.requests;S.mail.sync={at:new Date().toISOString()};toast(j.created||j.appended?t('synced'):t('nothingNew'));refreshBadges();vSettings(v)}).catch(function(e){fail(e);b.disabled=false})};
+  if($('#cron-copy')) $('#cron-copy').onclick=function(){copyText($('#cron-url').value,$('#cron-url'))};
+  if($('#m-test')) $('#m-test').onclick=function(){api('POST','mail/test').then(function(){toast('✓ '+S.me.email)}).catch(fail)};
+  if($('#tpl-add')) $('#tpl-add').onclick=function(){$('#tpl-list').insertAdjacentHTML('beforeend',tplRow({id:'',name:'',text:''}));bindTplDel()};
+  if($('#tpl-save')) $('#tpl-save').onclick=function(){var arr=$$('.tpl',v).map(function(x){return {id:x.dataset.id,name:$('input',x).value,text:$('textarea',x).value}}).filter(function(x){return x.name&&x.text});api('PATCH','settings',{templates:arr}).then(function(j){S.settings.templates=j.settings.templates;toast(t('saved'))}).catch(fail)};
+  bindTplDel();
+}
+function tplRow(x){return '<div class="tpl" data-id="'+esc(x.id)+'"><div style="display:flex;gap:8px"><input class="in" value="'+esc(x.name)+'" aria-label="'+t('title')+'"><button class="iconbtn" data-tdel aria-label="'+t('del')+'">'+ico('trash')+'</button></div><textarea class="in" rows="5" aria-label="'+t('message')+'">'+esc(x.text)+'</textarea></div>'}
+function bindTplDel(){$$('[data-tdel]').forEach(function(b){b.onclick=function(){b.closest('.tpl').remove()}})}
+
+/* =============== BOOT =============== */
+function boot(){
+  var h=location.hash.replace('#','');
+  var inv=h.match(/^invite\/([a-f0-9]{32}|d\d+)$/);
+  api('GET','status').catch(function(){return null}).then(function(st){
+    if(!st||st.error){DEMO=true}
+    if(inv&&!DEMO){inviteTok=inv[1];return api('GET','invite/'+inviteTok).then(function(i){inviteInfo=i;renderAuth('invite',i)}).catch(function(e){renderAuth('login');toast((e&&e.message)||t('errGeneric'),true)})}
+    if(st&&st.needsSetup){renderAuth('setup');return}
+    if(!TOKEN||(DEMO&&TOKEN!=='demo')){renderAuth('login');return}
+    if(!DEMO&&TOKEN==='demo'){saveToken('');renderAuth('login');return}
+    return api('GET','boot').then(function(j){
+      S=j; S.settings=S.settings||{}; S.mail=S.mail||{ready:false,sync:{}};
+      if(['overview','requests','agenda','clients','team','settings'].indexOf(h)>=0) view=h;
+      var rm=h.match(/^r\/([A-Z0-9]{6})$/); if(rm){view='requests';selReq=rm[1]}
+      shell(); render();
+    }).catch(function(){renderAuth('login')});
+  });
+}
+D.documentElement.lang=lang;
+boot();
+// keep data fresh while open (every 60 s, only when the tab is visible)
+setInterval(function(){if(DEMO||!TOKEN||D.hidden||!S.me||$('.ov'))return;api('GET','boot').then(function(j){var keep=selReq;S=j;S.settings=S.settings||{};selReq=keep;refreshBadges();if(view!=='requests'||!$('#rtext')||!$('#rtext').value)render()}).catch(function(){})},60000);
+})();
+</script>

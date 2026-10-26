@@ -1,0 +1,12 @@
+{
+  "name": "aedesdei",
+  "private": true,
+  "type": "module",
+  "description": "Website and Aedes Dei HQ for Medisch Centrum Aedes Dei",
+  "dependencies": {
+    "@netlify/blobs": "^11.1.6",
+    "imapflow": "^1.0.190",
+    "mailparser": "^3.7.4",
+    "nodemailer": "^6.9.16"
+  }
+}
