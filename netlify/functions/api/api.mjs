@@ -28,6 +28,7 @@ async function auth(req) {
   if (!p || !p.u) return null;
   const u = await getDoc("users", p.u);
   if (!u || u.status !== "active" || (u.v || 1) !== p.v) return null;
+  if (isOwnerEmail(u.email) && u.role !== "owner") return await mutateDoc("users", u.id, (d) => ({ ...d, role: "owner" })); // owner addresses are always owners
   return u;
 }
 async function session(u) {
@@ -102,8 +103,9 @@ route("POST", /^login$/, async (req) => {
   if (await limited(ip)) return err(429, "locked", "Too many attempts. Try again in 15 minutes.");
   const b = await body(req);
   const id = await getJSON(emailKey(b.email));
-  const u = id && (await getDoc("users", id));
+  let u = id && (await getDoc("users", id));
   if (!u || !checkPw(b.password, u.pw)) { await limited(ip, true); await log(String(b.email || "").slice(0, 80), "Mislukte inlogpoging"); return err(401, "bad-login", "Email or password is incorrect."); }
+  if (isOwnerEmail(u.email) && (u.role !== "owner" || u.status === "pending")) u = await mutateDoc("users", u.id, (d) => ({ ...d, role: "owner", status: d.status === "pending" ? "active" : d.status }));
   if (u.status === "pending") return err(403, "pending", "Your account is waiting for approval.");
   if (u.status !== "active") return err(403, "disabled", "This account has been deactivated.");
   await log(u.name, "Ingelogd");
