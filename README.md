@@ -17,7 +17,7 @@ Website and **Aedes Dei HQ** for Medisch Centrum Aedes Dei. Hosted on **Netlify 
 | `MAIL_USER` | `info@aedesdei.nl` |
 | `MAIL_PASS` | mailbox password of info@aedesdei.nl (mark as secret) |
 | `AD_SECRET` | any long random text (40+ characters), signs the logins |
-| `SITE_URL` | `https://aedesdei.com` |
+| `SITE_URL` | `https://aedesdei.nl` |
 
    Then **Deploys → Trigger deploy**.
 3. Open `/hq/` and create the owner account (only possible while no accounts exist).
@@ -25,7 +25,7 @@ Website and **Aedes Dei HQ** for Medisch Centrum Aedes Dei. Hosted on **Netlify 
 ## Domains (email stays at TransIP)
 Do **not** switch name servers to Netlify DNS – the mailbox records would be lost. Use external DNS:
 
-- Netlify → **Domain management → Add a domain** → `aedesdei.com` (primary) and `aedesdei.nl` (alias, redirects to .com). Choose to keep DNS at the current provider.
+- Netlify → **Domain management → Add a domain** → `aedesdei.nl` (primary) and later `aedesdei.com` (alias, redirects to .nl). Choose to keep DNS at the current provider.
 - **aedesdei.nl at TransIP** → Domain → DNS: set `@  A  75.2.60.5` and `www  CNAME  <project>.netlify.app.` Remove other `A`/`AAAA` records for `@` and `www`. **Keep all MX, TXT (SPF/DKIM) and autodiscover records.**
 - **aedesdei.com at WordPress.com** → Upgrades → Domains → aedesdei.com → DNS records: the same two records. (Or transfer the domain to TransIP first.)
 - Netlify then issues the HTTPS certificate automatically.

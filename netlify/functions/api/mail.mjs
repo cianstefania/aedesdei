@@ -8,7 +8,7 @@ import { getJSON, setJSON, getDoc, putDoc, mutateDoc, code, now, clip, log } fro
 const E = process.env;
 const USER = () => E.MAIL_USER || "info@aedesdei.nl";
 const FROM_NAME = () => E.MAIL_FROM_NAME || "Medisch Centrum Aedes Dei";
-const SITE = () => (E.SITE_URL || E.URL || "https://aedesdei.com").replace(/\/$/, "");
+const SITE = () => (E.SITE_URL || E.URL || "https://aedesdei.nl").replace(/\/$/, "");
 export const mailReady = () => !!(USER() && E.MAIL_PASS);
 const MARK = "X-AedesDei-HQ";
 
