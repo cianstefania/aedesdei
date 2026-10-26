@@ -9,6 +9,10 @@ import { mailReady, send, mailNewRequest, mailAppt, indexMsg, syncInbox } from "
 export const config = { path: "/api/*" };
 
 const ROLES = ["owner", "admin", "member"];
+// Accounts with these email addresses are full owners as soon as they sign up (no approval needed).
+// Only they can create the very first account. Override with the OWNER_EMAILS environment variable.
+const OWNER_EMAILS = (process.env.OWNER_EMAILS || "david.mpieri@renewedtech.de,info@aedesdei.nl").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
+const isOwnerEmail = (e) => OWNER_EMAILS.includes(String(e || "").trim().toLowerCase());
 const COLORS = ["#25394B", "#B99A6B", "#8C7B6B", "#5E7B6F", "#9C6B5E", "#6B6F9C", "#3F6E8C", "#A0845C"];
 const TTL = 30 * 864e5;
 const isAdmin = (u) => u && (u.role === "owner" || u.role === "admin");
@@ -87,6 +91,7 @@ route("POST", /^setup$/, async (req) => {
   if ((await userCount()) > 0) return err(403, "done", "Setup is already complete.");
   const b = await body(req);
   if (!clip(b.name) || !validEmail(b.email) || !pwOk(b.password)) return err(400, "invalid", "Name, valid email and a password of 8+ characters are required.");
+  if (!isOwnerEmail(b.email)) return err(403, "not-owner", "This email address cannot create the first account. Use an owner address.");
   const u = { id: rid(), name: clip(b.name, 120), email: b.email.trim().toLowerCase(), role: "owner", title: clip(b.title, 120), color: COLORS[0], status: "active", v: 1, pw: hashPw(b.password), created: now(), calToken: crypto.randomBytes(18).toString("hex") };
   await putDoc("users", u.id, u); await setJSON(emailKey(u.email), u.id);
   await log(u.name, "HQ ingericht, eigenaar aangemaakt");
@@ -117,8 +122,9 @@ route("POST", /^signup$/, async (req) => {
   let inv = null;
   if (b.invite) { inv = await getJSON("inv/" + String(b.invite).replace(/[^a-f0-9]/g, "")); if (!inv || inv.exp < Date.now()) inv = null; }
   const all = await readCol("users");
-  const u = { id: rid(), name: clip(b.name, 120), email, role: inv ? inv.role : "member", title: clip(b.title, 120), color: COLORS[Object.keys(all).length % COLORS.length], status: inv ? "active" : "pending", v: 1, pw: hashPw(b.password), created: now(), calToken: crypto.randomBytes(18).toString("hex") };
+  const u = { id: rid(), name: clip(b.name, 120), email, role: isOwnerEmail(email) ? "owner" : inv ? inv.role : "member", title: clip(b.title, 120), color: COLORS[Object.keys(all).length % COLORS.length], status: inv || isOwnerEmail(email) ? "active" : "pending", v: 1, pw: hashPw(b.password), created: now(), calToken: crypto.randomBytes(18).toString("hex") };
   await putDoc("users", u.id, u); await setJSON(emailKey(email), u.id);
+  if (isOwnerEmail(email) && !inv) { await log(u.name, "Eigenaarsaccount aangemaakt"); return json(await session(u)); }
   if (inv) { await setJSON("inv/" + b.invite, { ...inv, exp: 0, used: u.id }); await log(u.name, "Account aangemaakt via uitnodiging"); return json(await session(u)); }
   await log(u.name, "Account aangevraagd (wacht op goedkeuring)");
   return json({ pending: true });
@@ -290,7 +296,6 @@ route("PATCH", /^team\/([a-z0-9]+)$/, async (req, m, me) => {
     if ("title" in b) d.title = clip(b.title, 120);
     return d;
   });
-  if (b.role === "owner" && me.role === "owner") await mutateDoc("users", me.id, (d) => ({ ...d, role: "admin" }));
   await log(me.name, `Teamlid ${u.name}: ${b.status || b.role || "bijgewerkt"}`);
   return json({ user: pub(u) });
 });
