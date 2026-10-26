@@ -505,6 +505,15 @@ tbody tr:hover{background:rgba(233,223,210,.4)}
 .duo div{border-radius:18px;overflow:hidden;aspect-ratio:auto;height:clamp(240px,34vw,460px);position:relative}
 .duo img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover}
 
+.legal{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(30px,5vw,80px);align-items:start}
+.legal-card{background:var(--white);border-radius:20px;padding:clamp(24px,3vw,36px);box-shadow:0 30px 70px -45px rgba(37,57,75,.35);position:sticky;top:120px}
+.legal-card dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px 20px;margin:20px 0 0;font-size:15px}
+.legal-card dt{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--taupe);font-weight:600;padding-top:3px}
+.legal-card dd{margin:0;color:var(--navy);overflow-wrap:anywhere}
+.tbd{font-family:var(--f-display);font-style:italic;color:var(--gold-ink)}
+.legal-text{display:flex;flex-direction:column;gap:30px}
+.legal-text h3{font-family:var(--f-display);font-size:28px;font-weight:400;margin:0 0 8px}
+.legal-text p{color:#4f4842;max-width:62ch}
 /* ---------- responsive ---------- */
 @media (max-width:1080px){
   .nav,.hdr .btn{display:none}
@@ -523,7 +532,8 @@ tbody tr:hover{background:rgba(233,223,210,.4)}
   .statement .wrap{grid-template-columns:minmax(0,1fr)}
   .statement .sub{grid-template-columns:minmax(0,1fr)}
   .statement .sub div,.statement .sub div+div{padding:20px 0}
-  .why-grid,.how-grid,.split,.contact-grid,.pkg{grid-template-columns:minmax(0,1fr)}
+  .why-grid,.how-grid,.split,.contact-grid,.pkg,.legal{grid-template-columns:minmax(0,1fr)}
+  .legal-card{position:static}
   .why-head{position:static}
   .stack{display:none}
   .step-img{display:block}
@@ -599,7 +609,6 @@ tbody tr:hover{background:rgba(233,223,210,.4)}
       <a href="#home" data-go="home" data-i18n="nav.home">Home</a>
       <a href="#over-ons" data-go="over-ons" data-i18n="nav.about">Over ons</a>
       <a href="#diensten" data-go="diensten" data-i18n="nav.services">Diensten</a>
-      <a href="#impressie" data-go="impressie" data-i18n="nav.gallery">Impressie</a>
       <a href="#contact" data-go="contact" data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="hdr-r">
@@ -622,7 +631,6 @@ tbody tr:hover{background:rgba(233,223,210,.4)}
   <a href="#home" data-go="home" data-i18n="nav.home">Home</a>
   <a href="#over-ons" data-go="over-ons" data-i18n="nav.about">Over ons</a>
   <a href="#diensten" data-go="diensten" data-i18n="nav.services">Diensten</a>
-  <a href="#impressie" data-go="impressie" data-i18n="nav.gallery">Impressie</a>
   <a href="#contact" data-go="contact"><em data-i18n="nav.contact">Contact</em></a>
   <p class="mfoot" data-i18n="tagline.short">Preventieve zorg. Voor een gezonde toekomst.</p>
 </div>
@@ -899,23 +907,41 @@ tbody tr:hover{background:rgba(233,223,210,.4)}
   </section>
 </section>
 
-<!-- ================= IMPRESSIE ================= -->
-<section class="page" data-page="impressie">
+<!-- ================= IMPRESSUM ================= -->
+<section class="page" data-page="impressum">
   <section class="phero" data-glow>
     <div class="hero-glow"></div>
     <div class="wrap phero-in">
-      <p class="crumb"><a href="#home" data-go="home">Home</a> · <span data-i18n="nav.gallery">Impressie</span></p>
-      <h1 class="rv" data-i18n="gl.title">Een plek van <em>rust</em> en zorg</h1>
-      <p class="lead rv" data-i18n="gl.lead">Een eerste indruk van ons centrum. Sleep of scroll door de beelden.</p>
+      <p class="crumb"><a href="#home" data-go="home">Home</a> · <span>Impressum</span></p>
+      <h1 class="rv">Impressum</h1>
+      <p class="lead rv" data-i18n="im.lead">Wettelijke informatie over Medisch Centrum Aedes Dei en het gebruik van deze website.</p>
     </div>
   </section>
-  <section style="padding-bottom:clamp(70px,9vw,130px)">
-    <div class="gal" id="gal" data-cursor-label="drag">
-      <figure class="rv"><div class="fr arch-s"><img src="img/reception.jpg" alt="Ontvangst" data-i18n-alt="alt.reception"></div><figcaption><b data-i18n="gl.c1">Ontvangst</b><span>01 / 05</span></figcaption></figure>
-      <figure class="rv" style="--d:.1s"><div class="fr"><img src="img/consult.jpg" alt="Adviesgesprek" data-i18n-alt="alt.consult"></div><figcaption><b data-i18n="gl.c2">Adviesgesprek</b><span>02 / 05</span></figcaption></figure>
-      <figure class="rv" style="--d:.2s"><div class="fr arch-s"><img src="img/blood.jpg" alt="Bloedafname" data-i18n-alt="alt.blood"></div><figcaption><b data-i18n="gl.c4">Bloedafname</b><span>03 / 05</span></figcaption></figure>
-      <figure class="rv" style="--d:.3s"><div class="fr"><img src="img/office.jpg" alt="Spreekkamer" data-i18n-alt="alt.office"></div><figcaption><b data-i18n="gl.c3">Spreekkamer</b><span>04 / 05</span></figcaption></figure>
-      <figure class="rv" style="--d:.4s"><div class="fr arch-s"><img src="img/lab.jpg" alt="Laboratorium" data-i18n-alt="alt.lab"></div><figcaption><b data-i18n="gl.c5">Laboratorium</b><span>05 / 05</span></figcaption></figure>
+  <section class="band" style="padding-top:0">
+    <div class="wrap legal">
+      <div class="legal-card rv">
+        <h2 class="h3" data-i18n="im.h1">Gegevens van de praktijk</h2>
+        <dl>
+          <dt data-i18n="im.name">Naam</dt><dd>Medisch Centrum Aedes Dei</dd>
+          <dt data-i18n="im.resp">Verantwoordelijk</dt><dd><span class="tbd" data-i18n="im.tbd">volgt</span></dd>
+          <dt data-i18n="im.addr">Adres</dt><dd><span class="tbd" data-i18n="im.tbd">volgt</span></dd>
+          <dt data-i18n="f.email">E-mailadres</dt><dd>info@aedesdei.nl</dd>
+          <dt data-i18n="f.phone">Telefoonnummer</dt><dd><span class="tbd" data-i18n="im.tbd">volgt</span></dd>
+          <dt data-i18n="im.kvk">KvK-nummer</dt><dd><span class="tbd" data-i18n="im.tbd">volgt</span></dd>
+          <dt data-i18n="im.vat">Btw-nummer</dt><dd><span class="tbd" data-i18n="im.tbd">volgt</span></dd>
+          <dt data-i18n="im.big">BIG-registratie</dt><dd><span class="tbd" data-i18n="im.tbd">volgt</span></dd>
+          <dt>Website</dt><dd>aedesdei.nl</dd>
+        </dl>
+      </div>
+      <div class="legal-text">
+        <article class="rv"><h3 data-i18n="im.t1">Medische informatie</h3><p data-i18n="im.p1">De informatie op deze website is algemeen van aard en vervangt geen persoonlijk medisch advies, onderzoek of behandeling. Neem bij gezondheidsklachten contact op met uw huisarts of een andere zorgverlener.</p></article>
+        <article class="rv"><h3 data-i18n="im.t2">Aansprakelijkheid</h3><p data-i18n="im.p2">Wij stellen deze website met zorg samen. Toch kunnen wij niet garanderen dat alle informatie altijd volledig, juist en actueel is. Medisch Centrum Aedes Dei is niet aansprakelijk voor schade die voortvloeit uit het gebruik van deze website of van websites waarnaar wordt verwezen.</p></article>
+        <article class="rv"><h3 data-i18n="im.t3">Auteursrecht</h3><p data-i18n="im.p3">Alle teksten, het logo en de vormgeving van deze website zijn eigendom van Medisch Centrum Aedes Dei. Overname of verspreiding is zonder schriftelijke toestemming niet toegestaan. Een deel van de foto’s is afkomstig van Unsplash en wordt gebruikt onder de Unsplash-licentie.</p></article>
+        <article class="rv"><h3 data-i18n="im.t4">Privacy</h3><p data-i18n="im.p4">Wij gaan zorgvuldig en vertrouwelijk om met persoonsgegevens, in overeenstemming met de Algemene verordening gegevensbescherming (AVG). Gegevens die u via het offerteformulier verstuurt, gebruiken wij alleen om uw aanvraag te behandelen. Onze volledige privacyverklaring volgt binnenkort.</p></article>
+        <article class="rv"><h3 data-i18n="im.t5">Klachten</h3><p data-i18n="im.p5">Bent u ergens niet tevreden over? Laat het ons weten via info@aedesdei.nl, dan zoeken wij samen naar een oplossing. Informatie over onze klachtenregeling en de geschilleninstantie waarbij wij zijn aangesloten volgt binnenkort.</p></article>
+        <article class="rv"><h3 data-i18n="im.t6">Toepasselijk recht</h3><p data-i18n="im.p6">Op het gebruik van deze website en op deze voorwaarden is Nederlands recht van toepassing.</p></article>
+        <p class="muted rv" style="font-size:13px" data-i18n="im.upd">Laatst bijgewerkt: oktober 2026</p>
+      </div>
     </div>
   </section>
 </section>
@@ -968,9 +994,9 @@ tbody tr:hover{background:rgba(233,223,210,.4)}
         <li><a href="#home" data-go="home" data-i18n="nav.home">Home</a></li>
         <li><a href="#over-ons" data-go="over-ons" data-i18n="nav.about">Over ons</a></li>
         <li><a href="#diensten" data-go="diensten" data-i18n="nav.services">Diensten</a></li>
-        <li><a href="#impressie" data-go="impressie" data-i18n="nav.gallery">Impressie</a></li>
         <li><a href="#contact" data-go="contact" data-i18n="nav.contact">Contact</a></li></ul></div>
       <div><h4 data-i18n="ft.info">Informatie</h4><ul>
+        <li><a href="#impressum" data-go="impressum">Impressum</a></li>
         <li><a href="#home" data-soon data-i18n="ft.privacy">Privacyverklaring</a></li>
         <li><a href="#home" data-soon data-i18n="ft.terms">Algemene voorwaarden</a></li>
         <li><a href="#contact" data-go="contact" data-i18n="cta.quote">Offerte aanvragen</a></li></ul></div>
@@ -995,6 +1021,13 @@ var $=function(s,c){return (c||D).querySelector(s)}, $$=function(s,c){return Arr
 
 /* ================= i18n ================= */
 var EN={
+ "im.tbd":"to follow","im.lead":"Legal information about Medisch Centrum Aedes Dei and the use of this website.","im.h1":"Practice details","im.name":"Name","im.resp":"Responsible person","im.addr":"Address","im.kvk":"Chamber of Commerce no.","im.vat":"VAT number","im.big":"BIG registration",
+ "im.t1":"Medical information","im.p1":"The information on this website is general in nature and does not replace personal medical advice, examination or treatment. If you have health complaints, please contact your GP or another healthcare provider.",
+ "im.t2":"Liability","im.p2":"We compile this website with care. Nevertheless, we cannot guarantee that all information is always complete, correct and up to date. Medisch Centrum Aedes Dei is not liable for any damage resulting from the use of this website or of websites it links to.",
+ "im.t3":"Copyright","im.p3":"All texts, the logo and the design of this website are the property of Medisch Centrum Aedes Dei. Copying or distribution without written permission is not permitted. Some of the photos come from Unsplash and are used under the Unsplash licence.",
+ "im.t4":"Privacy","im.p4":"We handle personal data carefully and confidentially, in accordance with the General Data Protection Regulation (GDPR). Information you send via the quote form is used only to handle your request. Our full privacy statement will follow shortly.",
+ "im.t5":"Complaints","im.p5":"Not satisfied with something? Let us know via info@aedesdei.nl and we will look for a solution together. Information about our complaints procedure and the disputes body we are affiliated with will follow shortly.",
+ "im.t6":"Applicable law","im.p6":"Dutch law applies to the use of this website and to these terms.","im.upd":"Last updated: October 2026",
  "nav.home":"Home","nav.about":"About us","nav.services":"Services","nav.gallery":"Impression","nav.contact":"Contact",
  "cta.quote":"Request a quote","cta.quote2":"Request a quote","cta.quote3":"Request a free quote","cta.discover":"Discover our PMO packages","cta.all":"Discover all PMO packages",
  "tagline.short":"Preventive care. For a healthy future.",
@@ -1103,7 +1136,7 @@ function buildScrub(){
 }
 
 /* ================= router ================= */
-var PAGES=['home','over-ons','diensten','impressie','contact'], cur=null, busy=false;
+var PAGES=['home','over-ons','diensten','impressum','contact'], cur=null, busy=false;
 var curtain=$('.curtain');
 function show(id, anchor, instant){
   $$('.page').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-page')===id); });
