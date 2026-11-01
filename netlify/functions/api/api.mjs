@@ -69,7 +69,7 @@ route("POST", /^request$/, async (req) => {
   const r = {
     company: clip(b.organisatie || b.company, 200), name: clip(b.naam || b.name, 200), email: clip(b.email, 200), phone: clip(b.telefoon || b.phone, 60),
     employees: clip(b.medewerkers || b.employees, 40), package: clip(b.pakket || b.package, 60), location: clip(b.locatie || b.location, 60),
-    message: clip(b.bericht || b.message, 6000), lang: b.lang === "en" ? "en" : "nl",
+    message: clip(b.bericht || b.message, 6000), lang: b.lang === "en" ? "en" : "nl", type: b.type === "question" ? "question" : "quote",
   };
   if (!r.name || !validEmail(r.email)) return err(400, "invalid", "Name and a valid email are required.");
   const ip = req.headers.get("x-nf-client-connection-ip") || "";
@@ -79,7 +79,7 @@ route("POST", /^request$/, async (req) => {
   if (++rl.n > 12) return err(429, "slow-down", "Too many requests.");
   await setJSON(rk, rl);
   let id = code(); while (await getDoc("requests", id)) id = code();
-  const doc = { id, source: "website", status: "new", unread: true, ...r, subject: "Offerteaanvraag via website", received: now(), updated: now(), thread: [], notes: [] };
+  const doc = { id, source: "website", status: "new", unread: true, ...r, subject: r.type === "question" ? "Vraag via website" : "Offerteaanvraag via website", received: now(), updated: now(), thread: [], notes: [] };
   await putDoc("requests", id, doc);
   await log("website", `Nieuwe aanvraag van ${r.company || r.name}`, id);
   const m = await mailNewRequest(doc);
