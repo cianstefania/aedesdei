@@ -33,7 +33,7 @@ export function wrap(bodyText, lang = "nl") {
   return `<!doctype html><html><body style="margin:0;background:#F8F6F2;font-family:Helvetica,Arial,sans-serif;color:#333">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F8F6F2;padding:32px 12px"><tr><td align="center">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fff;border-radius:14px;overflow:hidden">
-<tr><td style="padding:30px 36px 18px;border-bottom:1px solid #E9DFD2"><img src="${SITE()}/img/email-logo.png" width="180" alt="Aedes Dei Medisch Centrum" style="display:block;border:0;width:180px;height:auto"></td></tr>
+<tr><td style="padding:30px 36px 18px;border-bottom:1px solid #E9DFD2"><img src="${SITE()}/img/email-logo.png" width="150" alt="Aedes Dei Medisch Centrum" style="display:block;border:0;width:150px;height:auto"></td></tr>
 <tr><td style="padding:28px 36px 12px;font-size:15px;line-height:1.65">${paras}</td></tr>
 <tr><td style="padding:18px 36px 28px;font-size:12px;color:#8C7B6B;border-top:1px solid #E9DFD2">Medisch Centrum Aedes Dei · ${lang === "en" ? "Preventive care. For a healthy future." : "Preventieve zorg. Voor een gezonde toekomst."}<br><a href="${SITE()}" style="color:#8A6D42">${SITE().replace(/^https?:\/\//, "")}</a> · ${USER()}</td></tr>
 </table></td></tr></table></body></html>`;
