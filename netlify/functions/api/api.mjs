@@ -5,6 +5,7 @@ import {
   hashPw, checkPw, pwOk, sign, unsign, limited, log,
 } from "./lib.mjs";
 import { mailReady, send, mailNewRequest, mailAppt, indexMsg, syncInbox } from "./mail.mjs";
+import { notifyRequest, notifyAppt, calendarFeed, OWNER_NAME, SIGNATURE } from "./notify.mjs";
 
 export const config = { path: "/api/*" };
 
@@ -16,7 +17,8 @@ const isOwnerEmail = (e) => OWNER_EMAILS.includes(String(e || "").trim().toLower
 const COLORS = ["#25394B", "#B99A6B", "#8C7B6B", "#5E7B6F", "#9C6B5E", "#6B6F9C", "#3F6E8C", "#A0845C"];
 const TTL = 30 * 864e5;
 const isAdmin = (u) => u && (u.role === "owner" || u.role === "admin");
-const pub = (u) => u && { id: u.id, name: u.name, email: u.email, role: u.role, title: u.title || "", color: u.color, status: u.status, lastLogin: u.lastLogin || "", created: u.created };
+const pub = (u) => u && { id: u.id, name: u.name, email: u.email, role: u.role, title: u.title || "", color: u.color, status: u.status, lastLogin: u.lastLogin || "", created: u.created, notifyReq: u.notifyReq !== false, notifyAppt: u.notifyAppt !== false };
+const MAILBOX = (process.env.MAIL_USER || "info@aedesdei.nl").toLowerCase();
 const emailKey = (e) => "idx/e/" + String(e || "").trim().toLowerCase();
 const validEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(e || ""));
 const D = /^\d{4}-\d{2}-\d{2}$/, TM = /^\d{2}:\d{2}$/;
@@ -29,6 +31,7 @@ async function auth(req) {
   const u = await getDoc("users", p.u);
   if (!u || u.status !== "active" || (u.v || 1) !== p.v) return null;
   if (isOwnerEmail(u.email) && u.role !== "owner") return await mutateDoc("users", u.id, (d) => ({ ...d, role: "owner" })); // owner addresses are always owners
+  if (String(u.email).toLowerCase() === MAILBOX && !u.ownerNamed) return await mutateDoc("users", u.id, (d) => ({ ...d, name: OWNER_NAME, title: "Eigenaar", ownerNamed: true })); // the clinic account is Ciän Stefania
   return u;
 }
 async function session(u) {
@@ -155,6 +158,8 @@ route("PATCH", /^me$/, async (req, m, me) => {
     if ("color" in b && /^#[0-9a-fA-F]{6}$/.test(b.color)) d.color = b.color;
     if (b.newPassword) { d.pw = hashPw(b.newPassword); d.v = (d.v || 1) + 1; }
     if (b.resetCal) d.calToken = crypto.randomBytes(18).toString("hex");
+    if ("notifyReq" in b) d.notifyReq = !!b.notifyReq;
+    if ("notifyAppt" in b) d.notifyAppt = !!b.notifyAppt;
     return d;
   });
   const out = { me: { ...pub(u), calToken: u.calToken } };
@@ -168,6 +173,7 @@ route("POST", /^requests$/, async (req, m, me) => {
   let id = code(); while (await getDoc("requests", id)) id = code();
   const d = { id, source: "manual", status: "open", unread: false, company: clip(b.company, 200), name: clip(b.name, 200), email: clip(b.email, 200), phone: clip(b.phone, 60), employees: clip(b.employees, 40), package: clip(b.package, 60), location: clip(b.location, 60), subject: clip(b.subject, 300) || "Aanvraag", message: clip(b.message, 6000), received: now(), updated: now(), assignee: me.id, thread: [], notes: [], by: me.id };
   await putDoc("requests", id, d); await log(me.name, `Aanvraag toegevoegd: ${d.company || d.name}`, id);
+  try { await notifyRequest(d, { actorId: me.id, source: "manual" }); } catch (e) { console.error(e); }
   return json({ request: d });
 });
 route("PATCH", /^requests\/([A-Z0-9]{6})$/, async (req, m, me) => {
@@ -197,11 +203,13 @@ route("POST", /^requests\/([A-Z0-9]{6})\/reply$/, async (req, m, me) => {
   const subj0 = clip(b.subject, 300) || (lastIn && lastIn.subject ? (/^re:/i.test(lastIn.subject) ? lastIn.subject : "Re: " + lastIn.subject) : "Uw aanvraag bij Medisch Centrum Aedes Dei");
   const subject = /\[AD-[A-Z0-9]{6}\]/.test(subj0) ? subj0 : `${subj0} [AD-${r.id}]`;
   const refs = (r.thread || []).map((t) => t.msgId).filter(Boolean).slice(-10);
+  let text = clip(b.text, 20000);
+  if (!text.includes(OWNER_NAME)) text = `${text.replace(/\s+$/, "")}\n\n${SIGNATURE[r.lang === "en" ? "en" : "nl"]}`; // every reply is signed by Ciän Stefania
   let msgId;
-  try { msgId = await send({ to: r.email, subject, text: clip(b.text, 20000), lang: r.lang, inReplyTo: lastIn && lastIn.msgId, references: refs }); }
+  try { msgId = await send({ to: r.email, subject, text, lang: r.lang, inReplyTo: lastIn && lastIn.msgId, references: refs }); }
   catch (e) { return err(502, "send-failed", "Sending failed: " + String(e.message || e).slice(0, 200)); }
   await indexMsg(msgId, r.id);
-  const d = await mutateDoc("requests", r.id, (d) => { d.thread = d.thread || []; d.thread.push({ dir: "out", at: now(), by: me.id, subject, text: clip(b.text, 20000), msgId }); if (!["scheduled", "closed", "declined"].includes(d.status) || b.status) d.status = b.status || "replied"; d.unread = false; d.updated = now(); return d; });
+  const d = await mutateDoc("requests", r.id, (d) => { d.thread = d.thread || []; d.thread.push({ dir: "out", at: now(), by: me.id, subject, text, msgId }); if (!["scheduled", "closed", "declined"].includes(d.status) || b.status) d.status = b.status || "replied"; d.unread = false; d.updated = now(); return d; });
   await log(me.name, `Antwoord verstuurd aan ${r.email}`, r.id);
   return json({ request: d });
 });
@@ -223,20 +231,25 @@ route("POST", /^appts$/, async (req, m, me) => {
     try { const id = await mailAppt(a, b.lang); mailed = true; if (a.requestId) { await indexMsg(id, a.requestId); } } catch (e) { mailError = String(e.message || e).slice(0, 200); }
   }
   await log(me.name, `Afspraak gepland: ${a.title} (${a.date})`, a.id);
+  try { await notifyAppt(a, "new", { actorName: me.name }); } catch (e) { console.error(e); }
   return json({ appt: a, mailed, mailError, request: a.requestId ? await getDoc("requests", a.requestId) : null });
 });
 route("PATCH", /^appts\/([a-z0-9]+)$/, async (req, m, me) => {
   const b = await body(req);
-  const a = await mutateDoc("appts", m[1], (d) => ({ ...cleanAppt(b, d), updated: now() }));
+  const before = await getDoc("appts", m[1]);
+  const a = await mutateDoc("appts", m[1], (d) => { const n = { ...cleanAppt(b, d), updated: now() }; if (n.date !== d.date || n.start !== d.start) delete n.reminded; return n; });
   if (!a) return err(404, "not-found");
   let mailed = false, mailError = "";
   if (b.notify && validEmail(a.contactEmail)) { try { await mailAppt(a, b.lang); mailed = true; } catch (e) { mailError = String(e.message || e).slice(0, 200); } }
   await log(me.name, `Afspraak gewijzigd: ${a.title}`, a.id);
+  const keys = ["title", "date", "start", "end", "address", "location", "status", "staff", "participants", "company"];
+  if (before && keys.some((k) => JSON.stringify(before[k]) !== JSON.stringify(a[k]))) { try { await notifyAppt(a, a.status === "cancelled" && before.status !== "cancelled" ? "cancelled" : "changed", { actorName: me.name }); } catch (e) { console.error(e); } }
   return json({ appt: a, mailed, mailError });
 });
 route("DELETE", /^appts\/([a-z0-9]+)$/, async (req, m, me) => {
   const a = await getDoc("appts", m[1]);
   await delDoc("appts", m[1]); await log(me.name, `Afspraak verwijderd: ${a ? a.title : m[1]}`);
+  if (a && a.status !== "cancelled" && a.status !== "done") { try { await notifyAppt(a, "deleted", { actorName: me.name }); } catch (e) { console.error(e); } }
   return json({ ok: true });
 });
 
@@ -274,7 +287,7 @@ route("POST", /^team\/invite$/, async (req, m, me) => {
   const link = `${base}/hq/#invite/${tok}`;
   let mailed = false;
   if (mailReady() && b.send !== false) {
-    try { await send({ to: inv.email, subject: "Uitnodiging voor Aedes Dei HQ", text: `Hallo${inv.name ? " " + inv.name : ""},\n\n${me.name} nodigt je uit voor Aedes Dei HQ, het teamplatform van Medisch Centrum Aedes Dei.\n\nMaak je account aan via deze link (14 dagen geldig):\n${link}\n\nMet vriendelijke groet,\nMedisch Centrum Aedes Dei` }); mailed = true; } catch { /* link is shown in HQ anyway */ }
+    try { await send({ to: inv.email, subject: "Uitnodiging voor Aedes Dei HQ", text: `Hallo${inv.name ? " " + inv.name : ""},\n\n${me.name} nodigt je uit voor Aedes Dei HQ, het teamplatform van Medisch Centrum Aedes Dei.\n\nMaak je account aan via deze link (14 dagen geldig):\n${link}\n\n${SIGNATURE.nl}` }); mailed = true; } catch { /* link is shown in HQ anyway */ }
   }
   await log(me.name, `Uitnodiging verstuurd aan ${inv.email}`);
   return json({ invite: inv, link, mailed });
@@ -335,17 +348,11 @@ route("GET", /^cal\/([a-f0-9]{36})\.ics$/, async (req, m) => {
   const users = Object.values(await readCol("users"));
   const u = users.find((x) => x.calToken === m[1] && x.status === "active");
   if (!u) return new Response("Not found", { status: 404 });
-  const appts = Object.values(await readCol("appts")).filter((a) => a.status !== "cancelled");
-  const esc = (s) => String(s || "").replace(/[\\;,]/g, (c) => "\\" + c).replace(/\n/g, "\\n");
-  const dt = (d, t) => d.replace(/-/g, "") + "T" + t.replace(":", "") + "00";
-  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Aedes Dei HQ//NL", "CALSCALE:GREGORIAN", "X-WR-CALNAME:Aedes Dei HQ", "X-WR-TIMEZONE:Europe/Amsterdam",
-    "BEGIN:VTIMEZONE", "TZID:Europe/Amsterdam", "BEGIN:DAYLIGHT", "TZOFFSETFROM:+0100", "TZOFFSETTO:+0200", "DTSTART:19700329T020000", "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU", "END:DAYLIGHT", "BEGIN:STANDARD", "TZOFFSETFROM:+0200", "TZOFFSETTO:+0100", "DTSTART:19701025T030000", "RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU", "END:STANDARD", "END:VTIMEZONE"];
-  for (const a of appts) {
-    if (!a.date || !a.start) continue;
-    lines.push("BEGIN:VEVENT", `UID:${a.id}@aedesdei`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").slice(0, 15)}Z`, `DTSTART;TZID=Europe/Amsterdam:${dt(a.date, a.start)}`, `DTEND;TZID=Europe/Amsterdam:${dt(a.date, a.end || a.start)}`, `SUMMARY:${esc(a.title)}`, `LOCATION:${esc(a.address || a.company)}`, `DESCRIPTION:${esc([a.company, a.contactName, a.participants ? a.participants + " deelnemers" : "", a.notes].filter(Boolean).join("\n"))}`, "END:VEVENT");
-  }
-  lines.push("END:VCALENDAR");
-  return new Response(lines.join("\r\n"), { headers: { "content-type": "text/calendar; charset=utf-8", "cache-control": "no-store" } });
+  const appts = Object.values(await readCol("appts"));
+  const mine = new URL(req.url).searchParams.get("mine") === "1";
+  const list = mine ? appts.filter((a) => (a.staff || []).includes(u.id)) : appts;
+  const ics = calendarFeed(list, "Aedes Dei HQ");
+  return new Response(ics, { headers: { "content-type": "text/calendar; charset=utf-8", "content-disposition": "inline; filename=aedes-dei-hq.ics", "cache-control": "no-store" } });
 }, true);
 
 export default async (req) => {

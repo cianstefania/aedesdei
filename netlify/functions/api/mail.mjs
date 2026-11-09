@@ -4,10 +4,11 @@ import { ImapFlow } from "imapflow";
 import { simpleParser } from "mailparser";
 import crypto from "node:crypto";
 import { getJSON, setJSON, getDoc, putDoc, mutateDoc, code, now, clip, log } from "./lib.mjs";
+import { notifyRequest, notifyReply, inviteFile, SIGNATURE } from "./notify.mjs";
 
 const E = process.env;
 const USER = () => E.MAIL_USER || "info@aedesdei.nl";
-const FROM_NAME = () => E.MAIL_FROM_NAME || "Medisch Centrum Aedes Dei";
+const FROM_NAME = () => E.MAIL_FROM_NAME || "Ciän Stefania | Medisch Centrum Aedes Dei";
 const SITE = () => (E.SITE_URL || E.URL || "https://aedesdei.nl").replace(/\/$/, "");
 export const mailReady = () => !!(USER() && E.MAIL_PASS);
 const MARK = "X-AedesDei-HQ";
@@ -33,18 +34,18 @@ export function wrap(bodyText, lang = "nl") {
   return `<!doctype html><html><body style="margin:0;background:#F8F6F2;font-family:Helvetica,Arial,sans-serif;color:#333">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#F8F6F2;padding:32px 12px"><tr><td align="center">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#fff;border-radius:14px;overflow:hidden">
-<tr><td style="padding:30px 36px 18px;border-bottom:1px solid #E9DFD2"><img src="${SITE()}/img/email-logo.png" width="150" alt="Aedes Dei Medisch Centrum" style="display:block;border:0;width:150px;height:auto"></td></tr>
+<tr><td style="padding:30px 36px 18px;border-bottom:1px solid #E9DFD2"><img src="${SITE()}/img/email-logo.png" width="190" alt="Aedes Dei Medisch Centrum" style="display:block;border:0;width:190px;height:auto"></td></tr>
 <tr><td style="padding:28px 36px 12px;font-size:15px;line-height:1.65">${paras}</td></tr>
 <tr><td style="padding:18px 36px 28px;font-size:12px;color:#8C7B6B;border-top:1px solid #E9DFD2">Medisch Centrum Aedes Dei · ${lang === "en" ? "Preventive care. For a healthy future." : "Preventieve zorg. Voor een gezonde toekomst."}<br><a href="${SITE()}" style="color:#8A6D42">${SITE().replace(/^https?:\/\//, "")}</a> · ${USER()}</td></tr>
 </table></td></tr></table></body></html>`;
 }
 
 // Send one email. Returns the Message-ID. Also saves a copy in the mailbox's Sent folder (best effort).
-export async function send({ to, subject, text, lang = "nl", inReplyTo, references, cc }) {
+export async function send({ to, subject, text, lang = "nl", inReplyTo, references, cc, attachments }) {
   if (!mailReady()) throw new Error("mail-not-configured");
   const msg = {
     from: { name: FROM_NAME(), address: USER() }, to, cc, subject, text, html: wrap(text, lang),
-    headers: { [MARK]: "1" }, inReplyTo, references,
+    headers: { [MARK]: "1" }, inReplyTo, references, ...(attachments ? { attachments } : {}),
   };
   const info = await tx().sendMail(msg);
   try { await saveSent({ ...msg, messageId: info.messageId }); } catch { /* optional */ }
@@ -68,16 +69,16 @@ async function saveSent(msg) {
 const T = {
   nl: {
     confSubj: (r) => `We hebben uw aanvraag ontvangen [AD-${r.id}]`,
-    conf: (r) => `Beste ${r.name || "heer/mevrouw"},\n\nHartelijk dank voor uw aanvraag bij Medisch Centrum Aedes Dei. Wij nemen zo snel mogelijk contact met u op.\n\nUw gegevens:\n${summary(r, "nl")}\n\nMet vriendelijke groet,\nMedisch Centrum Aedes Dei`,
+    conf: (r) => `Beste ${r.name || "heer/mevrouw"},\n\nHartelijk dank voor uw aanvraag bij Medisch Centrum Aedes Dei. Wij nemen zo snel mogelijk contact met u op.\n\nUw gegevens:\n${summary(r, "nl")}\n\n${SIGNATURE.nl}`,
     apptSubj: (a) => `Bevestiging afspraak ${fmtDate(a.date, "nl")}`,
-    appt: (a) => `Beste ${a.contactName || "heer/mevrouw"},\n\nHierbij bevestigen wij de volgende afspraak:\n\n${a.title}\nDatum: ${fmtDate(a.date, "nl")}\nTijd: ${a.start}–${a.end}\nLocatie: ${a.address || locName(a.location, "nl")}${a.participants ? `\nAantal deelnemers: ${a.participants}` : ""}\n\nHeeft u vragen of wilt u de afspraak wijzigen? Beantwoord dan deze e-mail.\n\nMet vriendelijke groet,\nMedisch Centrum Aedes Dei`,
+    appt: (a) => `Beste ${a.contactName || "heer/mevrouw"},\n\nHierbij bevestigen wij de volgende afspraak:\n\n${a.title}\nDatum: ${fmtDate(a.date, "nl")}\nTijd: ${a.start}–${a.end}\nLocatie: ${a.address || locName(a.location, "nl")}${a.participants ? `\nAantal deelnemers: ${a.participants}` : ""}\n\nHeeft u vragen of wilt u de afspraak wijzigen? Beantwoord dan deze e-mail.\n\n${SIGNATURE.nl}`,
     team: (r) => `Nieuwe aanvraag via de website (AD-${r.id})\n\n${summary(r, "nl")}${r.message ? `\n\nBericht:\n${r.message}` : ""}\n\nBekijk en beantwoord in Aedes Dei HQ: ${SITE()}/hq/#r/${r.id}`,
   },
   en: {
     confSubj: (r) => `We have received your request [AD-${r.id}]`,
-    conf: (r) => `Dear ${r.name || "Sir or Madam"},\n\nThank you for your request to Medisch Centrum Aedes Dei. We will contact you as soon as possible.\n\nYour details:\n${summary(r, "en")}\n\nKind regards,\nMedisch Centrum Aedes Dei`,
+    conf: (r) => `Dear ${r.name || "Sir or Madam"},\n\nThank you for your request to Medisch Centrum Aedes Dei. We will contact you as soon as possible.\n\nYour details:\n${summary(r, "en")}\n\n${SIGNATURE.en}`,
     apptSubj: (a) => `Appointment confirmation ${fmtDate(a.date, "en")}`,
-    appt: (a) => `Dear ${a.contactName || "Sir or Madam"},\n\nWe hereby confirm the following appointment:\n\n${a.title}\nDate: ${fmtDate(a.date, "en")}\nTime: ${a.start}–${a.end}\nLocation: ${a.address || locName(a.location, "en")}${a.participants ? `\nParticipants: ${a.participants}` : ""}\n\nIf you have any questions or would like to change the appointment, simply reply to this email.\n\nKind regards,\nMedisch Centrum Aedes Dei`,
+    appt: (a) => `Dear ${a.contactName || "Sir or Madam"},\n\nWe hereby confirm the following appointment:\n\n${a.title}\nDate: ${fmtDate(a.date, "en")}\nTime: ${a.start}–${a.end}\nLocation: ${a.address || locName(a.location, "en")}${a.participants ? `\nParticipants: ${a.participants}` : ""}\n\nIf you have any questions or would like to change the appointment, simply reply to this email.\n\n${SIGNATURE.en}`,
   },
 };
 const LOC = { nl: { client: "Op locatie bij de organisatie", home: "Aan huis", clinic: "In de praktijk", online: "Online" }, en: { client: "At the organisation", home: "At home", clinic: "At the clinic", online: "Online" } };
@@ -103,13 +104,13 @@ export async function mailNewRequest(r) {
       await indexMsg(id, r.id);
       await mutateDoc("requests", r.id, (d) => { d.thread = d.thread || []; d.thread.push({ dir: "out", at: now(), by: "system", subject: T[l].confSubj(r), text: T[l].conf(r), msgId: id, auto: true }); return d; });
     }
-    await send({ to: USER(), subject: `Nieuwe aanvraag: ${r.company || r.name || "website"} [AD-${r.id}]`, text: T.nl.team(r) });
+    await notifyRequest(r, { source: "website" });
   } catch (e) { out.sent = false; out.error = String(e.message || e); }
   return out;
 }
 export async function mailAppt(a, lang = "nl") {
   const l = lang === "en" ? "en" : "nl";
-  return send({ to: a.contactEmail, subject: T[l].apptSubj(a), text: T[l].appt(a), lang: l });
+  return send({ to: a.contactEmail, subject: T[l].apptSubj(a), text: T[l].appt(a), lang: l, attachments: [inviteFile(a)] });
 }
 export const indexMsg = (msgId, reqId) => (msgId ? setJSON("idx/m/" + mhash(msgId), reqId) : null);
 
@@ -174,10 +175,12 @@ export async function syncInbox({ max = 40 } = {}) {
         if (reqId) {
           await mutateDoc("requests", reqId, (d) => { d.thread = d.thread || []; d.thread.push(entry); d.status = ["closed", "declined"].includes(d.status) ? "open" : d.status === "new" ? "new" : "open"; d.unread = true; d.updated = now(); return d; });
           appended++;
+          try { const d = await getDoc("requests", reqId); if (d) await notifyReply(d, entry); } catch (e) { console.error(e); }
         } else {
           let id = code(); while (await getDoc("requests", id)) id = code();
           await putDoc("requests", id, { id, source: "email", status: "new", unread: true, name: from.name || "", email: from.address, subject: entry.subject, message: text, company: "", phone: "", received: entry.at, updated: now(), thread: [entry], notes: [] });
           reqId = id; created++;
+          try { await notifyRequest(await getDoc("requests", id), { source: "email" }); } catch (e) { console.error(e); }
         }
         await indexMsg(p.messageId, reqId);
       }
