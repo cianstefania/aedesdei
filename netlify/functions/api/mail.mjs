@@ -41,8 +41,14 @@ export function wrap(bodyText, lang = "nl") {
 }
 
 // Send one email. Returns the Message-ID. Also saves a copy in the mailbox's Sent folder (best effort).
+// Addresses that never receive any email from the website or HQ (notifications, copies, invitations, replies).
+export const NO_MAIL = (E.NO_MAIL || "david.mpieri@renewedtech.de").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
+const addrOf = (x) => String((x && x.address) || x || "").replace(/^.*<([^>]+)>.*$/, "$1").trim().toLowerCase();
+const keep = (list) => { if (!list) return list; const arr = (Array.isArray(list) ? list : String(list).split(",")).filter((x) => addrOf(x) && !NO_MAIL.includes(addrOf(x))); return arr.length ? arr : null; };
 export async function send({ to, subject, text, lang = "nl", inReplyTo, references, cc, attachments }) {
   if (!mailReady()) throw new Error("mail-not-configured");
+  to = keep(to); cc = keep(cc) || undefined;
+  if (!to) return null; // every recipient is blocked: send nothing
   const msg = {
     from: { name: FROM_NAME(), address: USER() }, to, cc, subject, text, html: wrap(text, lang),
     headers: { [MARK]: "1" }, inReplyTo, references, ...(attachments ? { attachments } : {}),
