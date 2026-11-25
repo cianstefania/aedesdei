@@ -194,12 +194,18 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 <div class="sheet" id="sheet"></div>
 <div class="toast" id="toast"></div>
 <script src="content.js"></script>
+<script src="content-en.js"></script>
 <script>
 (function(){
 var C=window.COURSE, KEY='ad-train-v1', app=document.getElementById('app');
 var ROM=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
 var EXAM_N=25, EXAM_MIN=20, PASS=0.8, XP_CARD=2, XP_Q=10;
 var S=load();
+if(!S.lang)S.lang=/^nl/i.test(navigator.language||'nl')?'nl':'en';
+var EN=[["Fouten komen in je foutenbank, zodat je ze later kunt herhalen.", "Mistakes go into your mistakes bank so you can repeat them later."], [" modules. Gebaseerd op het Cursusboek Venapunctie, editie 2026.", " modules. Based on the Cursusboek Venapunctie, 2026 edition."], [" goed nodig. Lees de lessen nog eens en probeer opnieuw.", " correct. Review the lessons and try again."], ["Zoals een theorie-examen: oefen tot je het zeker weet.", "Like a theory exam: practise until you’re sure."], ["Gefeliciteerd, je bent geslaagd voor het eindexamen!", "Congratulations, you passed the final exam!"], ["Je voortgang wordt op dit apparaat bewaard. ", "Your progress is saved on this device. "], ["Leer, oefen en test jezelf, stap voor stap.", "Learn, practise and test yourself, step by step."], ["10 willekeurige vragen met direct uitleg", "10 random questions with instant explanations"], ["Training venapunctie<br>theorie voltooid", "Venepuncture training<br>theory completed"], ["Alle modules af: tijd voor het examen!", "All modules done: time for the exam!"], ["Venapunctie<br><em>training</em>", "Venepuncture<br><em>training</em>"], ["Rond eerst de lessen van module ", "First complete the lessons of module "], ["Opnieuw beginnen op dit apparaat", "Start over on this device"], ["Je kunt nu het eindexamen doen.", "You can now take the final exam."], ["Weer geslaagd voor deze module.", "Passed this module again."], ["Tik nogmaals om alles te wissen", "Tap again to erase everything"], ["Nog geen fouten. Goed bezig!", "No mistakes yet. Keep it up!"], ["Geen fouten om te oefenen 🎉", "No mistakes to practise 🎉"], ["Nog niet geslaagd: je hebt ", "Not passed yet: you need "], ["% van de training voltooid", "% of the training completed"], ["Rond eerst alle lessen af", "First complete all lessons"], [" willekeurige vragen · ", " random questions · "], ["Jouw <em>voortgang</em>", "Your <em>progress</em>"], [" · 80% om af te ronden", " · 80% to complete"], ["Voor op je certificaat", "For your certificate"], ["Start de moduletoets", "Start the module test"], ["Terug naar overzicht", "Back to overview"], ["Test <em>jezelf</em>", "Test <em>yourself</em>"], ["Naar de moduletoets", "Go to the module test"], ["Juist antwoord: <b>", "Correct answer: <b>"], ["Voor- en achternaam", "First and last name"], ["Rond eerst module ", "First complete module "], ["<b>Moduletoets</b>", "<b>Module test</b>"], ["Toets opnieuw doen", "Retake the test"], [" · eerst de lessen", " · lessons first"], ["<h2>Jouw naam</h2>", "<h2>Your name</h2>"], ["Bekijk resultaat", "See result"], ["Opnieuw proberen", "Try again"], ["<h3>Modules</h3>", "<h3>Modules</h3>"], ["<b>Jouw naam</b>", "<b>Your name</b>"], ["Voortgang wissen", "Reset progress"], [" oefenvragen in ", " practice questions in "], ["Voortgang gewist", "Progress reset"], [" · beste score ", " · best score "], ["Verder met les ", "Continue with lesson "], ["Helemaal juist!", "Exactly right!"], ["De tijd is om. ", "Time is up. "], ["Jouw antwoord: ", "Your answer: "], ["Niet beantwoord", "Not answered"], [" om te herhalen", " to repeat"], ["Laatste examens", "Recent exams"], ["Doe eerst les ", "First do lesson "], [" Niet helemaal", " Not quite"], ["Examen opnieuw", "Retake exam"], ["% om te slagen", "% to pass"], ["Les afgerond!", "Lesson complete!"], ["Niet geslaagd", "Not passed"], ["Moduletoets ", "Module test "], ["Les afronden", "Finish lesson"], ["Volgende les", "Next lesson"], [" is nu open.", " is now unlocked."], [" goed nodig.", " correct."], ["Goed gedaan!", "Well done!"], ["Naar module ", "Go to module "], ["Snel oefenen", "Quick practice"], ["\"p\">Geslaagd", "\"p\">Passed"], ["Instellingen", "Settings"], ["Start les 1", "Start lesson 1"], ["DAGEN REEKS", "DAY STREAK"], ["Controleren", "Check"], ["Uitstekend!", "Excellent!"], [" afgerond! ", " complete! "], ["Certificaat", "Certificate"], [" minuten · ", " minutes · "], ["<span>Les ", "<span>Lesson "], ["Eindexamen", "Final exam"], ["Foutenbank", "Mistakes bank"], ["Per module", "By module"], ["GA VERDER", "CONTINUE"], ["XP TOTAAL", "TOTAL XP"], [" · vraag ", " · question "], ["Inleveren", "Submit"], ["Geslaagd!", "Passed!"], [">MODULES<", ">MODULES<"], ["Voortgang", "Progress"], [" kaarten", " cards"], ["Doorgaan", "Continue"], ["Volgende", "Next"], ["Goed zo!", "Well done!"], ["Je hebt ", "You need "], ["Nakijken", "Review"], [">Terug<", ">Back<"], ["Oefenen", "Practice"], [">SCORE<", ">SCORE<"], [">REEKS<", ">STREAK<"], ["Juist: ", "Correct: "], [" min · ", " min · "], ["Beste: ", "Best: "], [" vragen", " questions"], ["✓ Klaar", "✓ Done"], ["Opslaan", "Save"], ["Toetsen", "Tests"], ["Bijna!", "Almost!"], ["Klaar!", "Done!"], [" vraag", " question"], [" van ", " of "], ["Leren", "Learn"], ["Top!", "Great!"]];
+function L(t){if(S.lang!=='en')return t;for(var i=0;i<EN.length;i++){if(t.indexOf(EN[i][0])>-1)t=t.split(EN[i][0]).join(EN[i][1]);}return t;}
+function setC(){C=S.lang==='en'&&window.COURSE_EN?window.COURSE_EN:window.COURSE;document.documentElement.lang=S.lang;}setC();
+
 function load(){try{var s=JSON.parse(localStorage.getItem(KEY)||'{}');}catch(e){var s={};}
   return Object.assign({lessons:{},best:{},done:{},xp:0,streak:{n:0,last:''},wrong:{},exams:[]},s);}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
@@ -233,32 +239,32 @@ function totalPct(){var t=0;C.forEach(function(_,i){t+=modPct(i)});return t/C.le
 function allQ(){var a=[];C.forEach(function(m,mi){m.quiz.forEach(function(q,qi){a.push(Object.assign({id:m.id+'-'+qi,mod:mi},q))})});return a;}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function toast(t){var e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on')},1800);}
-function chips(){return '<div class="chips"><span class="chip">'+ICO.fire+S.streak.n+'</span><span class="chip">'+ICO.star+S.xp+' XP</span></div>';}
+function chips(){return '<div class="chips"><button class="chip" data-lang aria-label="Language / Taal">'+(S.lang==='en'?'EN':'NL')+'</button><span class="chip">'+ICO.fire+S.streak.n+'</span><span class="chip">'+ICO.star+S.xp+' XP</span></div>';}
 // ---------- tabs ----------
 var tab='leren', timerId=null;
-function tabs(){return '<nav class="tabs">'+[['leren','Leren',ICO.path],['toets','Toetsen',ICO.test],['ik','Voortgang',ICO.me]].map(function(t){return '<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'">'+t[2]+t[1]+'</button>'}).join('')+'</nav>';}
-function bindTabs(){app.querySelectorAll('[data-tab]').forEach(function(b){b.onclick=function(){tab=b.dataset.tab;home();}});}
+function tabs(){return '<nav class="tabs">'+[['leren',L('Leren'),ICO.path],['toets',L('Toetsen'),ICO.test],['ik',L('Voortgang'),ICO.me]].map(function(t){return '<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'">'+t[2]+t[1]+'</button>'}).join('')+'</nav>';}
+function bindTabs(){app.querySelectorAll('[data-lang]').forEach(function(b){b.onclick=function(){S.lang=S.lang==='en'?'nl':'en';save();setC();home();toast(S.lang==='en'?'Language: English':'Taal: Nederlands');}});app.querySelectorAll('[data-tab]').forEach(function(b){b.onclick=function(){tab=b.dataset.tab;home();}});}
 function home(){clearInterval(timerId);closeSheet();({leren:vLearn,toets:vTest,ik:vMe})[tab]();bindTabs();window.scrollTo(0,0);}
 // ---------- learn (path) ----------
 function vLearn(){
   var cur=-1;for(var i=0;i<C.length;i++){if(unlocked(i)&&!modDone(i)){cur=i;break;}}
   var pct=Math.round(totalPct()*100), nd=C.filter(function(_,i){return modDone(i)}).length;
   var h='<div class="scr"><header class="top"><div class="row"><div class="brand"><img src="img/logo.png" alt="Aedes Dei Academy"></div>'+chips()+'</div>'+
-   '<h1>Venapunctie<br><em>training</em></h1><p>Leer, oefen en test jezelf, stap voor stap.</p>'+
-   '<div class="bar"><i style="width:'+pct+'%"></i></div><div class="meta"><span>'+nd+' van '+C.length+' modules</span><span>'+pct+'%</span></div></header><div class="path">';
+   L('<h1>Venapunctie<br><em>training</em></h1><p>Leer, oefen en test jezelf, stap voor stap.</p>')+
+   '<div class="bar"><i style="width:'+pct+'%"></i></div><div class="meta"><span>'+nd+L(' van ')+C.length+' modules</span><span>'+pct+'%</span></div></header><div class="path">';
   C.forEach(function(m,mi){
-    var st=modDone(mi)?'done':unlocked(mi)?'open':'lock', off=[0,-62,0,62][mi%4], p=modPct(mi), r=36, L=2*Math.PI*r;
+    var st=modDone(mi)?'done':unlocked(mi)?'open':'lock', off=[0,-62,0,62][mi%4], p=modPct(mi), r=36, LEN=2*Math.PI*r;
     if(mi) h+='<div class="conn" style="transform:translateX('+((off+[0,-62,0,62][(mi-1)%4])/2)+'px)"></div>';
-    h+='<div class="unit" style="transform:translateX('+off+'px)">'+(mi===cur?'<span class="start">'+(p>0?'GA VERDER':'START')+'</span>':'')+
+    h+='<div class="unit" style="transform:translateX('+off+'px)">'+(mi===cur?'<span class="start">'+(p>0?L('GA VERDER'):'START')+'</span>':'')+
       '<button class="node '+st+(mi===cur?' cur':'')+'" data-mod="'+mi+'" aria-label="'+esc(m.t)+'">'+
-      (st!=='lock'?'<svg class="ring" viewBox="0 0 78 78"><circle cx="39" cy="39" r="'+r+'" fill="none" stroke="#E9DFD2" stroke-width="4"/><circle cx="39" cy="39" r="'+r+'" fill="none" stroke="#B99A6B" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+(L*p)+' '+L+'"/></svg>':'')+
+      (st!=='lock'?'<svg class="ring" viewBox="0 0 78 78"><circle cx="39" cy="39" r="'+r+'" fill="none" stroke="#E9DFD2" stroke-width="4"/><circle cx="39" cy="39" r="'+r+'" fill="none" stroke="#B99A6B" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+(LEN*p)+' '+LEN+'"/></svg>':'')+
       '<span class="core">'+(st==='done'?ICO.check:st==='lock'?ICO.lock:ROM[mi])+'</span></button>'+
       '<div class="ulabel"><b>'+esc(m.t)+'</b><span>'+esc(m.s)+'</span></div></div>';
   });
   var allDone=C.every(function(_,i){return modDone(i)});
-  h+='<button class="final" data-go="exam" style="width:calc(100% - 40px);text-align:left"><span class="ic" style="color:var(--gold-l)">'+ICO.trophy+'</span><span><b>Eindexamen</b><span>'+(allDone?'Alle modules af: tijd voor het examen!':EXAM_N+' vragen · '+EXAM_MIN+' minuten · '+Math.round(PASS*100)+'% om te slagen')+'</span></span></button></div></div>'+tabs();
+  h+='<button class="final" data-go="exam" style="width:calc(100% - 40px);text-align:left"><span class="ic" style="color:var(--gold-l)">'+ICO.trophy+L('</span><span><b>Eindexamen</b><span>')+(allDone?L('Alle modules af: tijd voor het examen!'):EXAM_N+L(' vragen · ')+EXAM_MIN+L(' minuten · ')+Math.round(PASS*100)+L('% om te slagen'))+'</span></span></button></div></div>'+tabs();
   app.innerHTML=h;
-  app.querySelectorAll('[data-mod]').forEach(function(b){b.onclick=function(){var mi=+b.dataset.mod;if(!unlocked(mi)){toast('Rond eerst module '+ROM[mi-1]+' af');return;}openModule(mi);}});
+  app.querySelectorAll('[data-mod]').forEach(function(b){b.onclick=function(){var mi=+b.dataset.mod;if(!unlocked(mi)){toast(L('Rond eerst module ')+ROM[mi-1]+' af');return;}openModule(mi);}});
   app.querySelector('[data-go=exam]').onclick=function(){startQuiz('exam');};
   var c=app.querySelector('.cur');if(c&&cur>1)setTimeout(function(){c.scrollIntoView({block:'center',behavior:'smooth'})},250);
 }
@@ -267,14 +273,14 @@ function openModule(mi){
   var m=C[mi], sh=document.getElementById('sheet'), ld=lessonsDone(mi);
   var h='<div class="grab"></div><div class="kick">Module '+ROM[mi]+'</div><h2>'+esc(m.t)+'</h2><div style="color:var(--taupe);font-size:14px">'+esc(m.s)+'</div><div class="list">';
   m.lessons.forEach(function(l,li){var d=lessonDone(mi,li),lk=li>0&&!lessonDone(mi,li-1);
-    h+='<button class="li '+(d?'ok':'')+(lk?' lk':'')+'" data-l="'+li+'"><span class="dot">'+(d?ICO.check:ICO.book)+'</span><span><b>'+esc(l.t)+'</b><span>Les '+(li+1)+' · '+l.cards.length+' kaarten</span></span><span class="go">'+(lk?ICO.lock:ICO.chev)+'</span></button>';});
+    h+='<button class="li '+(d?'ok':'')+(lk?' lk':'')+'" data-l="'+li+'"><span class="dot">'+(d?ICO.check:ICO.book)+'</span><span><b>'+esc(l.t)+L('</b><span>Les ')+(li+1)+' · '+l.cards.length+L(' kaarten</span></span><span class="go">')+(lk?ICO.lock:ICO.chev)+'</span></button>';});
   var best=S.best[m.id];
-  h+='<button class="li '+(modDone(mi)?'ok':'')+(ld?'':' lk')+'" data-q><span class="dot">'+(modDone(mi)?ICO.check:ICO.quiz)+'</span><span><b>Moduletoets</b><span>'+m.quiz.length+' vragen'+(best!=null?' · beste score '+best+'/'+m.quiz.length:' · 80% om af te ronden')+'</span></span><span class="go">'+(ld?ICO.chev:ICO.lock)+'</span></button></div>';
+  h+='<button class="li '+(modDone(mi)?'ok':'')+(ld?'':' lk')+'" data-q><span class="dot">'+(modDone(mi)?ICO.check:ICO.quiz)+L('</span><span><b>Moduletoets</b><span>')+m.quiz.length+L(' vragen')+(best!=null?L(' · beste score ')+best+'/'+m.quiz.length:L(' · 80% om af te ronden'))+'</span></span><span class="go">'+(ld?ICO.chev:ICO.lock)+'</span></button></div>';
   var next=m.lessons.findIndex(function(_,li){return !lessonDone(mi,li)});
-  h+='<div style="margin-top:18px">'+(next>=0?'<button class="btn gold" data-start>'+(next?'Verder met les '+(next+1):'Start les 1')+'</button>':'<button class="btn gold" data-startq>'+(modDone(mi)?'Toets opnieuw doen':'Start de moduletoets')+'</button>')+'</div>';
+  h+='<div style="margin-top:18px">'+(next>=0?'<button class="btn gold" data-start>'+(next?L('Verder met les ')+(next+1):L('Start les 1'))+'</button>':'<button class="btn gold" data-startq>'+(modDone(mi)?L('Toets opnieuw doen'):L('Start de moduletoets'))+'</button>')+'</div>';
   sh.innerHTML=h;openSheet();
-  sh.querySelectorAll('[data-l]').forEach(function(b){b.onclick=function(){var li=+b.dataset.l;if(li>0&&!lessonDone(mi,li-1)){toast('Doe eerst les '+li);return;}lesson(mi,li);}});
-  sh.querySelector('[data-q]').onclick=function(){if(!lessonsDone(mi)){toast('Rond eerst alle lessen af');return;}startQuiz('mod',mi);};
+  sh.querySelectorAll('[data-l]').forEach(function(b){b.onclick=function(){var li=+b.dataset.l;if(li>0&&!lessonDone(mi,li-1)){toast(L('Doe eerst les ')+li);return;}lesson(mi,li);}});
+  sh.querySelector('[data-q]').onclick=function(){if(!lessonsDone(mi)){toast(L('Rond eerst alle lessen af'));return;}startQuiz('mod',mi);};
   var s1=sh.querySelector('[data-start]');if(s1)s1.onclick=function(){lesson(mi,next);};
   var s2=sh.querySelector('[data-startq]');if(s2)s2.onclick=function(){startQuiz('mod',mi);};
 }
@@ -287,7 +293,7 @@ function lesson(mi,li){
   function draw(){var c=l.cards[i];
     app.innerHTML='<div class="scr full"><div class="ph"><button class="x" data-x>'+ICO.x+'</button><div class="bar"><i style="width:'+((i+1)/l.cards.length*100)+'%"></i></div><span class="cnt">'+(i+1)+'/'+l.cards.length+'</span></div>'+
      '<div class="card"><div class="kick">Module '+ROM[mi]+' · '+esc(l.t)+'</div><h2>'+c.h+'</h2>'+(c.img?'<div class="img"><img src="img/'+c.img+'" alt=""></div>':'')+'<div class="body">'+c.b+'</div></div>'+
-     '<div class="foot" style="display:flex;gap:10px">'+(i?'<button class="btn ghost" data-prev style="width:auto;padding:15px 20px">Terug</button>':'')+'<button class="btn" data-next>'+(i<l.cards.length-1?'Doorgaan':'Les afronden')+'</button></div></div>';
+     '<div class="foot" style="display:flex;gap:10px">'+(i?L('<button class="btn ghost" data-prev style="width:auto;padding:15px 20px">Terug</button>'):'')+'<button class="btn" data-next>'+(i<l.cards.length-1?L('Doorgaan'):L('Les afronden'))+'</button></div></div>';
     window.scrollTo(0,0);app.querySelector('.scr').scrollTop=0;
     app.querySelector('[data-x]').onclick=home;
     var p=app.querySelector('[data-prev]');if(p)p.onclick=function(){i--;draw();};
@@ -299,9 +305,9 @@ function lesson(mi,li){
 }
 function lessonDoneScreen(mi,li,first){
   var m=C[mi], nextL=li+1<m.lessons.length;
-  app.innerHTML='<div class="scr full"><div class="res"><div class="medal">'+ICO.check.replace('width="22" height="22"','width="60" height="60"')+'</div><h2>Les afgerond!</h2><p>'+esc(m.lessons[li].t)+(first?' · +'+(XP_CARD*m.lessons[li].cards.length)+' XP':'')+'</p>'+
-   '<div class="kpis"><div><b>'+S.streak.n+'</b><span>DAGEN REEKS</span></div><div><b>'+S.xp+'</b><span>XP TOTAAL</span></div></div>'+
-   (nextL?'<button class="btn gold" data-a>Volgende les</button>':'<button class="btn gold" data-a>Naar de moduletoets</button>')+'<div style="height:10px"></div><button class="btn ghost" data-h>Terug naar overzicht</button></div></div>';
+  app.innerHTML='<div class="scr full"><div class="res"><div class="medal">'+ICO.check.replace('width="22" height="22"','width="60" height="60"')+L('</div><h2>Les afgerond!</h2><p>')+esc(m.lessons[li].t)+(first?' · +'+(XP_CARD*m.lessons[li].cards.length)+' XP':'')+'</p>'+
+   '<div class="kpis"><div><b>'+S.streak.n+L('</b><span>DAGEN REEKS</span></div><div><b>')+S.xp+L('</b><span>XP TOTAAL</span></div></div>')+
+   (nextL?L('<button class="btn gold" data-a>Volgende les</button>'):L('<button class="btn gold" data-a>Naar de moduletoets</button>'))+L('<div style="height:10px"></div><button class="btn ghost" data-h>Terug naar overzicht</button></div></div>');
   if(first)confetti();
   app.querySelector('[data-a]').onclick=function(){nextL?lesson(mi,li+1):startQuiz('mod',mi);};
   app.querySelector('[data-h]').onclick=home;
@@ -313,16 +319,16 @@ function startQuiz(mode,mi){
   if(mode==='mod')qs=C[mi].quiz.map(function(q,qi){return Object.assign({id:C[mi].id+'-'+qi,mod:mi},q)});
   else if(mode==='exam')qs=shuffle(allQ()).slice(0,EXAM_N);
   else if(mode==='practice')qs=shuffle(allQ()).slice(0,10);
-  else{var w=S.wrong;qs=allQ().filter(function(q){return w[q.id]});if(!qs.length){toast('Geen fouten om te oefenen 🎉');return;}qs=shuffle(qs).slice(0,15);}
+  else{var w=S.wrong;qs=allQ().filter(function(q){return w[q.id]});if(!qs.length){toast(L('Geen fouten om te oefenen 🎉'));return;}qs=shuffle(qs).slice(0,15);}
   qs=qs.map(function(q){var order=shuffle(q.a.map(function(_,k){return k}));return Object.assign({},q,{order:order})});
   var i=0,answers=[],sel=null,locked=false,end=mode==='exam'?Date.now()+EXAM_MIN*60000:0, instant=mode!=='exam';
-  var title={mod:'Moduletoets '+ROM[mi],exam:'Eindexamen',practice:'Oefenen',wrong:'Foutenbank'}[mode];
+  var title={mod:L('Moduletoets ')+ROM[mi],exam:L('Eindexamen'),practice:L('Oefenen'),wrong:L('Foutenbank')}[mode];
   function tick(){var t=app.querySelector('.timer');if(!t)return;var s=Math.max(0,Math.round((end-Date.now())/1000));t.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(s<=0){clearInterval(timerId);finish(true);}}
   function draw(){var q=qs[i];sel=null;locked=false;
     app.innerHTML='<div class="scr full"><div class="ph"><button class="x" data-x>'+ICO.x+'</button><div class="bar"><i style="width:'+(i/qs.length*100)+'%"></i></div>'+(end?'<span class="timer">--:--</span>':'<span class="cnt">'+(i+1)+'/'+qs.length+'</span>')+'</div>'+
-     '<div class="card"><div class="kick">'+title+(end?' · vraag '+(i+1)+' van '+qs.length:'')+'</div><div class="q">'+esc(q.q)+'</div><div class="opts">'+
+     '<div class="card"><div class="kick">'+title+(end?L(' · vraag ')+(i+1)+L(' van ')+qs.length:'')+'</div><div class="q">'+esc(q.q)+'</div><div class="opts">'+
      q.order.map(function(k,n){return '<button class="opt" data-k="'+k+'"><span class="k">'+'ABCD'[n]+'</span><span>'+esc(q.a[k])+'</span></button>'}).join('')+'</div></div>'+
-     '<div class="foot"><button class="btn" data-check disabled>'+(instant?'Controleren':(i<qs.length-1?'Volgende':'Inleveren'))+'</button></div></div><div class="fb" id="fb"></div>';
+     '<div class="foot"><button class="btn" data-check disabled>'+(instant?L('Controleren'):(i<qs.length-1?L('Volgende'):L('Inleveren')))+'</button></div></div><div class="fb" id="fb"></div>';
     app.querySelector('[data-x]').onclick=function(){if(confirmLeave())home();};
     app.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){if(locked)return;app.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel')});b.classList.add('sel');sel=+b.dataset.k;app.querySelector('[data-check]').disabled=false;}});
     app.querySelector('[data-check]').onclick=check;
@@ -335,7 +341,7 @@ function startQuiz(mode,mi){
     locked=true;
     app.querySelectorAll('.opt').forEach(function(o){var k=+o.dataset.k;if(k===q.c)o.classList.add('right');else if(k===sel)o.classList.add('wrong');o.classList.remove('sel');});
     var fb=document.getElementById('fb');fb.className='fb on '+(ok?'good':'nope');
-    fb.innerHTML='<h3>'+(ok?ICO.check+' '+['Goed zo!','Uitstekend!','Helemaal juist!','Top!'][Math.floor(Math.random()*4)]:ICO.x+' Niet helemaal')+'</h3><p>'+(ok?'':'Juist antwoord: <b>'+esc(q.a[q.c])+'</b>. ')+esc(q.e)+'</p><button class="btn '+(ok?'ok':'bad')+'" data-n>'+(i<qs.length-1?'Doorgaan':'Bekijk resultaat')+'</button>';
+    fb.innerHTML='<h3>'+(ok?ICO.check+' '+[L('Goed zo!'),L('Uitstekend!'),L('Helemaal juist!'),L('Top!')][Math.floor(Math.random()*4)]:ICO.x+L(' Niet helemaal'))+'</h3><p>'+(ok?'':L('Juist antwoord: <b>')+esc(q.a[q.c])+'</b>. ')+esc(q.e)+'</p><button class="btn '+(ok?'ok':'bad')+'" data-n>'+(i<qs.length-1?L('Doorgaan'):L('Bekijk resultaat'))+'</button>';
     fb.querySelector('[data-n]').onclick=next;
   }
   function next(){i++;if(i<qs.length)draw();else finish(false);}
@@ -345,19 +351,19 @@ function startQuiz(mode,mi){
     var xp=score*XP_Q/(mode==='mod'&&modDone(mi)?2:1);addXP(Math.round(xp));
     var newly=false;
     if(mode==='mod'){var id=C[mi].id;S.best[id]=Math.max(S.best[id]||0,score);if(pass&&!S.done[id]){S.done[id]=1;newly=true;}}
-    if(mode==='exam')S.exams.unshift({d:new Date().toLocaleDateString('nl-NL'),s:score,n:n,p:pass});
+    if(mode==='exam')S.exams.unshift({d:new Date().toLocaleDateString(S.lang==='en'?'en-GB':'nl-NL'),s:score,n:n,p:pass});
     save();
-    var msg=mode==='mod'?(pass?(newly?'Module '+ROM[mi]+' afgerond! '+(mi<C.length-1?'Module '+ROM[mi+1]+' is nu open.':'Je kunt nu het eindexamen doen.'):'Weer geslaagd voor deze module.'):'Je hebt '+Math.ceil(n*PASS)+' goed nodig. Lees de lessen nog eens en probeer opnieuw.')
-      :mode==='exam'?(timeout?'De tijd is om. ':'')+(pass?'Gefeliciteerd, je bent geslaagd voor het eindexamen!':'Nog niet geslaagd: je hebt '+Math.ceil(n*PASS)+' goed nodig.'):'Fouten komen in je foutenbank, zodat je ze later kunt herhalen.';
+    var msg=mode==='mod'?(pass?(newly?'Module '+ROM[mi]+L(' afgerond! ')+(mi<C.length-1?'Module '+ROM[mi+1]+L(' is nu open.'):L('Je kunt nu het eindexamen doen.')):L('Weer geslaagd voor deze module.')):L('Je hebt ')+Math.ceil(n*PASS)+L(' goed nodig. Lees de lessen nog eens en probeer opnieuw.'))
+      :mode==='exam'?(timeout?L('De tijd is om. '):'')+(pass?L('Gefeliciteerd, je bent geslaagd voor het eindexamen!'):L('Nog niet geslaagd: je hebt ')+Math.ceil(n*PASS)+L(' goed nodig.')):L('Fouten komen in je foutenbank, zodat je ze later kunt herhalen.');
     var wrong=answers.filter(function(a){return !a.ok});
     app.innerHTML='<div class="scr full"><div class="res"><div class="medal'+(pass||mode==='practice'||mode==='wrong'?'':' fail')+'">'+score+'/'+n+'</div>'+
-      '<h2>'+(pass?(mode==='exam'?'Geslaagd!':'Goed gedaan!'):(mode==='exam'||mode==='mod')?'Bijna!':'Klaar!')+'</h2><p>'+msg+'</p>'+
-      '<div class="kpis"><div><b>'+Math.round(score/n*100)+'%</b><span>SCORE</span></div><div><b>+'+Math.round(xp)+'</b><span>XP</span></div><div><b>'+S.streak.n+'</b><span>REEKS</span></div></div>'+
-      (wrong.length?'<div class="review"><div class="kick" style="margin-bottom:8px">Nakijken</div>'+wrong.map(function(a){return '<div class="it"><b>'+esc(a.q.q)+'</b>'+(a.sel!=null?'<span class="y">Jouw antwoord: '+esc(a.q.a[a.sel])+'</span><br>':'<span class="y">Niet beantwoord</span><br>')+'<span class="a">Juist: '+esc(a.q.a[a.q.c])+'</span><div style="color:var(--taupe);margin-top:3px">'+esc(a.q.e)+'</div></div>'}).join('')+'</div>':'')+
-      (mode==='mod'&&!pass?'<button class="btn gold" data-r>Opnieuw proberen</button><div style="height:10px"></div>':'')+
-      (mode==='mod'&&pass&&mi<C.length-1?'<button class="btn gold" data-nm>Naar module '+ROM[mi+1]+'</button><div style="height:10px"></div>':'')+
-      (mode==='exam'&&!pass?'<button class="btn gold" data-r>Examen opnieuw</button><div style="height:10px"></div>':'')+
-      '<button class="btn ghost" data-h>Terug naar overzicht</button></div></div>';
+      '<h2>'+(pass?(mode==='exam'?L('Geslaagd!'):L('Goed gedaan!')):(mode==='exam'||mode==='mod')?L('Bijna!'):L('Klaar!'))+'</h2><p>'+msg+'</p>'+
+      '<div class="kpis"><div><b>'+Math.round(score/n*100)+L('%</b><span>SCORE</span></div><div><b>+')+Math.round(xp)+'</b><span>XP</span></div><div><b>'+S.streak.n+L('</b><span>REEKS</span></div></div>')+
+      (wrong.length?L('<div class="review"><div class="kick" style="margin-bottom:8px">Nakijken</div>')+wrong.map(function(a){return '<div class="it"><b>'+esc(a.q.q)+'</b>'+(a.sel!=null?L('<span class="y">Jouw antwoord: ')+esc(a.q.a[a.sel])+'</span><br>':L('<span class="y">Niet beantwoord</span><br>'))+L('<span class="a">Juist: ')+esc(a.q.a[a.q.c])+'</span><div style="color:var(--taupe);margin-top:3px">'+esc(a.q.e)+'</div></div>'}).join('')+'</div>':'')+
+      (mode==='mod'&&!pass?L('<button class="btn gold" data-r>Opnieuw proberen</button><div style="height:10px"></div>'):'')+
+      (mode==='mod'&&pass&&mi<C.length-1?L('<button class="btn gold" data-nm>Naar module ')+ROM[mi+1]+'</button><div style="height:10px"></div>':'')+
+      (mode==='exam'&&!pass?L('<button class="btn gold" data-r>Examen opnieuw</button><div style="height:10px"></div>'):'')+
+      L('<button class="btn ghost" data-h>Terug naar overzicht</button></div></div>');
     if(pass)confetti();
     var r=app.querySelector('[data-r]');if(r)r.onclick=function(){startQuiz(mode,mi)};
     var nm=app.querySelector('[data-nm]');if(nm)nm.onclick=function(){tab='leren';home();openModule(mi+1);};
@@ -368,28 +374,28 @@ function startQuiz(mode,mi){
 // ---------- test tab ----------
 function vTest(){
   var wn=Object.keys(S.wrong).length, last=S.exams[0];
-  app.innerHTML='<div class="scr"><header class="top"><div class="row"><div class="brand"><img src="img/logo.png" alt=""></div>'+chips()+'</div><h1>Test <em>jezelf</em></h1><p>Zoals een theorie-examen: oefen tot je het zeker weet.</p></header>'+
-   '<div class="sec"><button class="tile dark" data-m="exam"><span class="ic">'+ICO.trophy+'</span><span><b>Eindexamen</b><span>'+EXAM_N+' willekeurige vragen · '+EXAM_MIN+' min · '+Math.round(PASS*100)+'% om te slagen</span></span><span class="go">'+ICO.chev+'</span></button>'+
-   '<button class="tile" data-m="practice"><span class="ic">'+ICO.bolt+'</span><span><b>Snel oefenen</b><span>10 willekeurige vragen met direct uitleg</span></span><span class="go">'+ICO.chev+'</span></button>'+
-   '<button class="tile" data-m="wrong"><span class="ic">'+ICO.redo+'</span><span><b>Foutenbank</b><span>'+(wn?wn+' vraag'+(wn>1?'en':'')+' om te herhalen':'Nog geen fouten. Goed bezig!')+'</span></span><span class="go">'+ICO.chev+'</span></button></div>'+
-   '<div class="sec"><h3>Per module</h3>'+C.map(function(m,mi){return '<button class="tile" data-mod="'+mi+'" style="padding:12px 14px'+(lessonsDone(mi)?'':';opacity:.55')+'"><span class="ic" style="width:40px;height:40px;font-family:Cormorant Garamond,serif;font-size:19px;font-weight:600">'+ROM[mi]+'</span><span><b style="font-size:15px">'+esc(m.t)+'</b><span>'+(S.best[m.id]!=null?'Beste: '+S.best[m.id]+'/'+m.quiz.length:m.quiz.length+' vragen')+(lessonsDone(mi)?'':' · eerst de lessen')+'</span></span><span class="go">'+(modDone(mi)?'<span style="color:var(--ok)">'+ICO.check+'</span>':ICO.chev)+'</span></button>'}).join('')+'</div>'+
-   (last?'<div class="sec"><h3>Laatste examens</h3><div class="hist">'+S.exams.slice(0,5).map(function(e){return '<div class="h"><span>'+e.d+'</span><span>'+e.s+'/'+e.n+' &nbsp;<span class="pill '+(e.p?'p">Geslaagd':'f">Niet geslaagd')+'</span></span></div>'}).join('')+'</div></div>':'')+
+  app.innerHTML='<div class="scr"><header class="top"><div class="row"><div class="brand"><img src="img/logo.png" alt=""></div>'+chips()+L('</div><h1>Test <em>jezelf</em></h1><p>Zoals een theorie-examen: oefen tot je het zeker weet.</p></header>')+
+   '<div class="sec"><button class="tile dark" data-m="exam"><span class="ic">'+ICO.trophy+L('</span><span><b>Eindexamen</b><span>')+EXAM_N+L(' willekeurige vragen · ')+EXAM_MIN+L(' min · ')+Math.round(PASS*100)+L('% om te slagen</span></span><span class="go">')+ICO.chev+'</span></button>'+
+   '<button class="tile" data-m="practice"><span class="ic">'+ICO.bolt+L('</span><span><b>Snel oefenen</b><span>10 willekeurige vragen met direct uitleg</span></span><span class="go">')+ICO.chev+'</span></button>'+
+   '<button class="tile" data-m="wrong"><span class="ic">'+ICO.redo+L('</span><span><b>Foutenbank</b><span>')+(wn?wn+' '+(S.lang==='en'?(wn>1?'questions':'question')+' to repeat':(wn>1?'vragen':'vraag')+' om te herhalen'):L('Nog geen fouten. Goed bezig!'))+'</span></span><span class="go">'+ICO.chev+'</span></button></div>'+
+   L('<div class="sec"><h3>Per module</h3>')+C.map(function(m,mi){return '<button class="tile" data-mod="'+mi+'" style="padding:12px 14px'+(lessonsDone(mi)?'':';opacity:.55')+'"><span class="ic" style="width:40px;height:40px;font-family:Cormorant Garamond,serif;font-size:19px;font-weight:600">'+ROM[mi]+'</span><span><b style="font-size:15px">'+esc(m.t)+'</b><span>'+(S.best[m.id]!=null?L('Beste: ')+S.best[m.id]+'/'+m.quiz.length:m.quiz.length+L(' vragen'))+(lessonsDone(mi)?'':L(' · eerst de lessen'))+'</span></span><span class="go">'+(modDone(mi)?'<span style="color:var(--ok)">'+ICO.check+'</span>':ICO.chev)+'</span></button>'}).join('')+'</div>'+
+   (last?L('<div class="sec"><h3>Laatste examens</h3><div class="hist">')+S.exams.slice(0,5).map(function(e){return '<div class="h"><span>'+e.d+'</span><span>'+e.s+'/'+e.n+' &nbsp;<span class="pill '+(e.p?'p">Geslaagd':L('f">Niet geslaagd'))+'</span></span></div>'}).join('')+'</div></div>':'')+
    '<div style="height:20px"></div></div>'+tabs();
   app.querySelectorAll('[data-m]').forEach(function(b){b.onclick=function(){startQuiz(b.dataset.m)}});
-  app.querySelectorAll('[data-mod]').forEach(function(b){b.onclick=function(){var mi=+b.dataset.mod;if(!lessonsDone(mi)){toast('Rond eerst de lessen van module '+ROM[mi]+' af');return;}startQuiz('mod',mi)}});
+  app.querySelectorAll('[data-mod]').forEach(function(b){b.onclick=function(){var mi=+b.dataset.mod;if(!lessonsDone(mi)){toast(L('Rond eerst de lessen van module ')+ROM[mi]+' af');return;}startQuiz('mod',mi)}});
 }
 // ---------- me tab ----------
 function vMe(){
   var nd=C.filter(function(_,i){return modDone(i)}).length, passed=S.exams.some(function(e){return e.p}), tq=allQ().length;
-  app.innerHTML='<div class="scr"><header class="top"><div class="row"><div class="brand"><img src="img/logo.png" alt=""></div>'+chips()+'</div><h1>Jouw <em>voortgang</em></h1><p>'+(S.name?esc(S.name)+' · ':'')+Math.round(totalPct()*100)+'% van de training voltooid</p></header>'+
-   '<div class="sec"><div class="kpis"><div><b>'+nd+'/'+C.length+'</b><span>MODULES</span></div><div><b>'+S.xp+'</b><span>XP</span></div><div><b>'+S.streak.n+'</b><span>DAGEN REEKS</span></div></div></div>'+
-   (passed&&nd===C.length?'<div class="cert"><div style="color:var(--gold-l);margin-bottom:6px">'+ICO.trophy+'</div><span>AEDES DEI ACADEMY</span><b>Training venapunctie<br>theorie voltooid</b><span>'+(S.name?esc(S.name)+' · ':'')+S.exams.find(function(e){return e.p}).d+'</span></div>':'')+
-   '<div class="sec"><h3>Modules</h3><div class="mods">'+C.map(function(m,mi){return '<div class="m"><span class="n">'+ROM[mi]+'</span><span style="flex:1"><b>'+esc(m.t)+'</b><div class="bar lt"><i style="width:'+Math.round(modPct(mi)*100)+'%"></i></div></span><em>'+(modDone(mi)?'✓ Klaar':Math.round(modPct(mi)*100)+'%')+'</em></div>'}).join('')+'</div></div>'+
-   '<div class="sec"><h3>Instellingen</h3><button class="tile" data-name><span class="ic">'+ICO.me+'</span><span><b>Jouw naam</b><span>'+(S.name?esc(S.name):'Voor op je certificaat')+'</span></span><span class="go">'+ICO.chev+'</span></button>'+
-   '<button class="tile" data-reset><span class="ic" style="color:var(--bad)">'+ICO.redo+'</span><span><b>Voortgang wissen</b><span>Opnieuw beginnen op dit apparaat</span></span></button>'+
-   '<p class="empty">Je voortgang wordt op dit apparaat bewaard. '+tq+' oefenvragen in '+C.length+' modules. Gebaseerd op het Cursusboek Venapunctie, editie 2026.</p></div><div style="height:20px"></div></div>'+tabs();
-  app.querySelector('[data-name]').onclick=function(){var sh=document.getElementById('sheet');sh.innerHTML='<div class="grab"></div><div class="kick">Certificaat</div><h2>Jouw naam</h2><input id="nm" maxlength="60" style="width:100%;font:inherit;font-size:16px;padding:14px;border-radius:14px;border:1px solid var(--line);margin:14px 0" placeholder="Voor- en achternaam"><button class="btn gold" id="nmok">Opslaan</button>';sh.querySelector('#nm').value=S.name||'';openSheet();sh.querySelector('#nmok').onclick=function(){S.name=sh.querySelector('#nm').value.trim().slice(0,60);save();closeSheet();vMe();bindTabs();};};
-  var rs=app.querySelector('[data-reset]');rs.onclick=function(){if(!rs._armed){rs._armed=1;toast('Tik nogmaals om alles te wissen');setTimeout(function(){rs._armed=0},3000);return;}try{localStorage.removeItem(KEY);}catch(e){}S=load();vMe();bindTabs();toast('Voortgang gewist');};
+  app.innerHTML='<div class="scr"><header class="top"><div class="row"><div class="brand"><img src="img/logo.png" alt=""></div>'+chips()+L('</div><h1>Jouw <em>voortgang</em></h1><p>')+(S.name?esc(S.name)+' · ':'')+Math.round(totalPct()*100)+L('% van de training voltooid</p></header>')+
+   '<div class="sec"><div class="kpis"><div><b>'+nd+'/'+C.length+L('</b><span>MODULES</span></div><div><b>')+S.xp+'</b><span>XP</span></div><div><b>'+S.streak.n+L('</b><span>DAGEN REEKS</span></div></div></div>')+
+   (passed&&nd===C.length?'<div class="cert"><div style="color:var(--gold-l);margin-bottom:6px">'+ICO.trophy+L('</div><span>AEDES DEI ACADEMY</span><b>Training venapunctie<br>theorie voltooid</b><span>')+(S.name?esc(S.name)+' · ':'')+S.exams.find(function(e){return e.p}).d+'</span></div>':'')+
+   L('<div class="sec"><h3>Modules</h3><div class="mods">')+C.map(function(m,mi){return '<div class="m"><span class="n">'+ROM[mi]+'</span><span style="flex:1"><b>'+esc(m.t)+'</b><div class="bar lt"><i style="width:'+Math.round(modPct(mi)*100)+'%"></i></div></span><em>'+(modDone(mi)?L('✓ Klaar'):Math.round(modPct(mi)*100)+'%')+'</em></div>'}).join('')+'</div></div>'+
+   L('<div class="sec"><h3>Instellingen</h3><button class="tile" data-name><span class="ic">')+ICO.me+L('</span><span><b>Jouw naam</b><span>')+(S.name?esc(S.name):L('Voor op je certificaat'))+'</span></span><span class="go">'+ICO.chev+'</span></button>'+
+   '<button class="tile" data-reset><span class="ic" style="color:var(--bad)">'+ICO.redo+L('</span><span><b>Voortgang wissen</b><span>Opnieuw beginnen op dit apparaat</span></span></button>')+
+   L('<p class="empty">Je voortgang wordt op dit apparaat bewaard. ')+tq+L(' oefenvragen in ')+C.length+L(' modules. Gebaseerd op het Cursusboek Venapunctie, editie 2026.</p></div><div style="height:20px"></div></div>')+tabs();
+  app.querySelector('[data-name]').onclick=function(){var sh=document.getElementById('sheet');sh.innerHTML=L('<div class="grab"></div><div class="kick">Certificaat</div><h2>Jouw naam</h2><input id="nm" maxlength="60" style="width:100%;font:inherit;font-size:16px;padding:14px;border-radius:14px;border:1px solid var(--line);margin:14px 0" placeholder="Voor- en achternaam"><button class="btn gold" id="nmok">Opslaan</button>');sh.querySelector('#nm').value=S.name||'';openSheet();sh.querySelector('#nmok').onclick=function(){S.name=sh.querySelector('#nm').value.trim().slice(0,60);save();closeSheet();vMe();bindTabs();};};
+  var rs=app.querySelector('[data-reset]');rs.onclick=function(){if(!rs._armed){rs._armed=1;toast(L('Tik nogmaals om alles te wissen'));setTimeout(function(){rs._armed=0},3000);return;}try{localStorage.removeItem(KEY);}catch(e){}S=load();vMe();bindTabs();toast(L('Voortgang gewist'));};
 }
 // ---------- confetti ----------
 function confetti(){var c=document.createElement('canvas');c.className='confetti';document.body.appendChild(c);var x=c.getContext('2d'),W=c.width=innerWidth,H=c.height=innerHeight;
