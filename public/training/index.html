@@ -328,7 +328,7 @@ function startQuiz(mode,mi){
     app.querySelector('[data-check]').onclick=check;
     if(end){tick();}
   }
-  function confirmLeave(){return i===0&&sel===null||window.confirm('Stoppen? Je voortgang in deze toets gaat verloren.');}
+  function confirmLeave(){return true;}
   function check(){if(sel===null||locked)return;var q=qs[i],ok=sel===q.c;answers.push({q:q,sel:sel,ok:ok});
     if(ok){if(S.wrong[q.id]){delete S.wrong[q.id];}}else S.wrong[q.id]=(S.wrong[q.id]||0)+1;save();
     if(!instant){next();return;}
@@ -388,8 +388,8 @@ function vMe(){
    '<div class="sec"><h3>Instellingen</h3><button class="tile" data-name><span class="ic">'+ICO.me+'</span><span><b>Jouw naam</b><span>'+(S.name?esc(S.name):'Voor op je certificaat')+'</span></span><span class="go">'+ICO.chev+'</span></button>'+
    '<button class="tile" data-reset><span class="ic" style="color:var(--bad)">'+ICO.redo+'</span><span><b>Voortgang wissen</b><span>Opnieuw beginnen op dit apparaat</span></span></button>'+
    '<p class="empty">Je voortgang wordt op dit apparaat bewaard. '+tq+' oefenvragen in '+C.length+' modules. Gebaseerd op het Cursusboek Venapunctie, editie 2026.</p></div><div style="height:20px"></div></div>'+tabs();
-  app.querySelector('[data-name]').onclick=function(){var n=prompt('Jouw naam',S.name||'');if(n!==null){S.name=n.trim().slice(0,60);save();vMe();bindTabs();}};
-  app.querySelector('[data-reset]').onclick=function(){if(confirm('Alle voortgang op dit apparaat wissen?')){localStorage.removeItem(KEY);S=load();vMe();bindTabs();}};
+  app.querySelector('[data-name]').onclick=function(){var sh=document.getElementById('sheet');sh.innerHTML='<div class="grab"></div><div class="kick">Certificaat</div><h2>Jouw naam</h2><input id="nm" maxlength="60" style="width:100%;font:inherit;font-size:16px;padding:14px;border-radius:14px;border:1px solid var(--line);margin:14px 0" placeholder="Voor- en achternaam"><button class="btn gold" id="nmok">Opslaan</button>';sh.querySelector('#nm').value=S.name||'';openSheet();sh.querySelector('#nmok').onclick=function(){S.name=sh.querySelector('#nm').value.trim().slice(0,60);save();closeSheet();vMe();bindTabs();};};
+  var rs=app.querySelector('[data-reset]');rs.onclick=function(){if(!rs._armed){rs._armed=1;toast('Tik nogmaals om alles te wissen');setTimeout(function(){rs._armed=0},3000);return;}try{localStorage.removeItem(KEY);}catch(e){}S=load();vMe();bindTabs();toast('Voortgang gewist');};
 }
 // ---------- confetti ----------
 function confetti(){var c=document.createElement('canvas');c.className='confetti';document.body.appendChild(c);var x=c.getContext('2d'),W=c.width=innerWidth,H=c.height=innerHeight;
