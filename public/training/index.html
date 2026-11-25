@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="nl"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#1B2B3A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AD Training">
+<title>Venapunctie Training · Aedes Dei Academy</title>
+<link rel="icon" href="/img/favicon.svg">
+<link rel="apple-touch-icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F8F6F2;--beige:#E9DFD2;--sand:#EFE8DD;--gold:#B99A6B;--gold-l:#D9C6A5;--gold-d:#8F7146;--navy:#25394B;--navy-d:#1B2B3A;--taupe:#8C7B6B;--ink:#2F3337;--line:#E2D7C6;--ok:#4E8A5E;--bad:#B5584A;--safe-b:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#E7E1D8}
+body{font-family:Figtree,system-ui,sans-serif;color:var(--ink);font-size:15px;line-height:1.5}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.serif{font-family:"Cormorant Garamond",serif}
+#app{max-width:460px;margin:0 auto;min-height:100%;background:var(--cream);position:relative;display:flex;flex-direction:column;box-shadow:0 0 60px rgba(37,57,75,.12)}
+@media(min-width:520px){body{padding:24px 0}#app{min-height:calc(100vh - 48px);border-radius:28px;overflow:hidden}}
+.scr{flex:1;overflow-y:auto;padding-bottom:calc(84px + var(--safe-b))}
+.scr.full{padding-bottom:0}
+/* top */
+.top{background:var(--navy-d);color:#fff;padding:calc(18px + env(safe-area-inset-top,0px)) 20px 22px;position:relative;overflow:hidden}
+.top::after{content:"";position:absolute;right:-60px;top:-30px;width:220px;height:300px;border:1px solid rgba(217,198,165,.25);border-radius:110px 110px 0 0;pointer-events:none}
+.top .row{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{height:46px}
+.chips{display:flex;gap:8px}
+.chip{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.08);border:1px solid rgba(217,198,165,.25);padding:5px 10px;border-radius:99px;font-weight:600;font-size:13px;color:var(--gold-l)}
+.chip svg{width:15px;height:15px}
+.top h1{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:34px;line-height:1.05;margin:18px 0 4px;position:relative;z-index:1}
+.top h1 em{color:var(--gold-l)}
+.top p{margin:0;color:#CFC6B8;font-size:14px;position:relative;z-index:1}
+.bar{height:8px;border-radius:9px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:16px;position:relative;z-index:1}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#E3C891);border-radius:9px;transition:width .6s}
+.bar.lt{background:var(--beige)}
+.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--gold-l);margin-top:7px;position:relative;z-index:1;letter-spacing:.04em}
+/* path */
+.path{padding:26px 0 30px;position:relative}
+.unit{position:relative;display:flex;flex-direction:column;align-items:center;margin-bottom:6px}
+.node{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;position:relative;transition:transform .15s}
+.node:active{transform:scale(.94)}
+.node .core{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:600;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+.node svg.ring{position:absolute;inset:0;transform:rotate(-90deg)}
+.node.open .core{background:linear-gradient(160deg,#CDAF7C,var(--gold-d));color:#fff}
+.node.done .core{background:var(--navy);color:var(--gold-l)}
+.node.lock .core{background:#DDD5C9;color:#A79C8E;box-shadow:0 5px 0 #CFC5B7}
+.node.cur::before{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--gold);animation:pulse 1.8s infinite}
+@keyframes pulse{0%{transform:scale(.92);opacity:1}100%{transform:scale(1.18);opacity:0}}
+.ulabel{margin-top:10px;text-align:center;max-width:200px}
+.ulabel b{display:block;font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;color:var(--navy);line-height:1.15}
+.ulabel span{font-size:12px;color:var(--taupe)}
+.start{position:absolute;top:-34px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;letter-spacing:.12em;padding:5px 10px;border-radius:8px;white-space:nowrap}
+.start::after{content:"";position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-bottom:0;border-top-color:var(--navy)}
+.conn{width:2px;height:34px;margin:8px auto;background:repeating-linear-gradient(var(--gold-l) 0 5px,transparent 5px 10px)}
+.final{margin:12px 20px 0;padding:20px;border-radius:22px;background:var(--navy);color:#fff;display:flex;gap:14px;align-items:center}
+.final .ic{width:52px;height:52px;border-radius:16px;background:rgba(217,198,165,.15);display:grid;place-items:center;flex:none}
+.final b{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:600;display:block;line-height:1.1}
+.final span{font-size:13px;color:#CFC6B8}
+/* tabbar */
+.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:460px;background:rgba(248,246,242,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;padding:8px 8px calc(8px + var(--safe-b));z-index:20}
+@media(min-width:520px){.tabs{bottom:24px;border-radius:0 0 28px 28px}}
+.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#A39788;padding:4px 0}
+.tabs button svg{width:24px;height:24px}
+.tabs button.on{color:var(--navy)}
+.tabs button.on svg{color:var(--gold-d)}
+/* sheet */
+.veil{position:fixed;inset:0;background:rgba(27,43,58,.45);z-index:30;opacity:0;pointer-events:none;transition:opacity .25s}
+.veil.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;bottom:0;width:100%;max-width:460px;transform:translate(-50%,105%);background:var(--cream);border-radius:26px 26px 0 0;z-index:31;transition:transform .32s cubic-bezier(.2,.8,.2,1);padding:10px 20px calc(24px + var(--safe-b));max-height:86vh;overflow-y:auto}
+.sheet.on{transform:translate(-50%,0)}
+.grab{width:40px;height:5px;border-radius:5px;background:var(--beige);margin:0 auto 14px}
+.sheet h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:28px;margin:2px 0 2px;color:var(--navy);line-height:1.1}
+.kick{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);font-weight:700}
+.list{margin:16px 0 0;display:flex;flex-direction:column;gap:10px}
+.li{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:16px;background:#fff;border:1px solid var(--line);text-align:left;width:100%}
+.li .dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--sand);color:var(--gold-d);font-weight:700}
+.li.ok .dot{background:var(--ok);color:#fff}
+.li.lk{opacity:.5}
+.li b{display:block;font-weight:600;color:var(--navy)}
+.li span{font-size:12.5px;color:var(--taupe)}
+.li .go{margin-left:auto;color:var(--gold-d)}
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px 18px;border-radius:16px;font-weight:700;font-size:15px;letter-spacing:.02em;background:var(--navy);color:#fff;box-shadow:0 4px 0 #0F1C28;transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #0F1C28}
+.btn.gold{background:linear-gradient(160deg,#C9A970,var(--gold-d));box-shadow:0 4px 0 #6E5432}
+.btn.gold:active{box-shadow:0 1px 0 #6E5432}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line);box-shadow:0 4px 0 var(--beige)}
+.btn.ok{background:var(--ok);box-shadow:0 4px 0 #346343}
+.btn.bad{background:var(--bad);box-shadow:0 4px 0 #8A3F34}
+.btn[disabled]{background:#D7CFC3;color:#fff;box-shadow:0 4px 0 #C4BBAE;pointer-events:none}
+/* player */
+.ph{display:flex;align-items:center;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) 18px 10px;position:sticky;top:0;background:var(--cream);z-index:5}
+.ph .x{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--taupe)}
+.ph .bar{flex:1;margin:0;background:var(--beige);height:12px}
+.ph .bar i{background:linear-gradient(90deg,var(--gold),#D8B87C)}
+.ph .cnt{font-size:13px;font-weight:700;color:var(--gold-d);min-width:38px;text-align:right}
+.card{margin:6px 18px 0;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.card .kick{margin-bottom:6px}
+.card h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:31px;line-height:1.08;color:var(--navy);margin:0 0 14px}
+.card .img{border-radius:20px;overflow:hidden;margin:0 0 16px;background:#fff;border:1px solid var(--line)}
+.card .img img{width:100%;display:block;max-height:250px;object-fit:contain}
+.card .body{font-size:16px;line-height:1.6}
+.card .body p{margin:0 0 12px}
+.card .body ul,.card .body ol{margin:0 0 12px;padding-left:20px}
+.card .body li{margin-bottom:7px}
+.card .body ol li::marker{color:var(--gold-d);font-weight:700}
+.card .body ul li::marker{color:var(--gold)}
+.card .body b{color:var(--navy)}
+.card .body dl{margin:0 0 12px;border-top:1px solid var(--line)}
+.card .body dt{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:18px;color:var(--navy);padding-top:10px}
+.card .body dd{margin:0;padding:1px 0 10px;border-bottom:1px solid var(--line);color:#4E5257;font-size:15px}
+.card .note{background:var(--sand);border-radius:14px;padding:12px 14px;font-size:14.5px;color:#5B4E40}
+.stats{display:flex;gap:10px;margin:2px 0 14px}
+.stats div{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}
+.stats b{display:block;font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:600;line-height:1;color:var(--navy)}
+.stats span{font-size:12px;color:var(--taupe);line-height:1.3;display:block;margin-top:4px}
+.tubes{list-style:none;padding:0!important}
+.tubes li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);margin:0!important}
+.tubes i{width:16px;height:16px;border-radius:50%;flex:none;margin-top:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.foot{position:sticky;bottom:0;padding:16px 18px calc(16px + var(--safe-b));background:linear-gradient(180deg,rgba(248,246,242,0),var(--cream) 30%)}
+/* quiz */
+.q{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:27px;line-height:1.15;color:var(--navy);margin:2px 0 20px}
+.opts{display:flex;flex-direction:column;gap:11px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;padding:15px 16px;border-radius:16px;background:#fff;border:2px solid var(--line);box-shadow:0 3px 0 var(--line);font-size:15.5px;font-weight:500;transition:border-color .15s,background .15s}
+.opt .k{width:28px;height:28px;border-radius:9px;border:2px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--taupe);flex:none}
+.opt.sel{border-color:var(--gold);background:#FBF6EC;box-shadow:0 3px 0 var(--gold-l)}
+.opt.sel .k{border-color:var(--gold);color:var(--gold-d)}
+.opt.right{border-color:var(--ok);background:#EDF5EE;box-shadow:0 3px 0 #BCD8C2}
+.opt.right .k{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:#FAEDEA;box-shadow:0 3px 0 #E5C2BB}
+.opt.wrong .k{background:var(--bad);border-color:var(--bad);color:#fff}
+.fb{position:fixed;left:50%;bottom:0;transform:translate(-50%,105%);width:100%;max-width:460px;padding:18px 18px calc(18px + var(--safe-b));z-index:25;transition:transform .28s cubic-bezier(.2,.8,.2,1);border-radius:22px 22px 0 0}
+.fb.on{transform:translate(-50%,0)}
+.fb.good{background:#E4F0E6}.fb.nope{background:#F7E5E1}
+.fb h3{margin:0 0 4px;font-size:19px;display:flex;gap:8px;align-items:center}
+.fb.good h3{color:var(--ok)}.fb.nope h3{color:var(--bad)}
+.fb p{margin:0 0 14px;font-size:14.5px;color:#4A4540}
+/* result */
+.res{text-align:center;padding:calc(40px + env(safe-area-inset-top,0px)) 24px 30px}
+.res .medal{width:130px;height:130px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#F1DDB0,var(--gold) 55%,var(--gold-d));box-shadow:0 14px 30px -10px rgba(143,113,70,.7);color:#fff;font-family:"Cormorant Garamond",serif;font-size:44px;font-weight:600;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+.res .medal.fail{background:radial-gradient(circle at 35% 30%,#E9E2D8,#B9AE9F 60%,#8C7B6B)}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+.res h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:34px;color:var(--navy);margin:0 0 6px;line-height:1.1}
+.res p{color:var(--taupe);margin:0 0 22px}
+.kpis{display:flex;gap:10px;margin:0 0 24px}
+.kpis div{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 8px}
+.kpis b{display:block;font-family:"Cormorant Garamond",serif;font-size:28px;color:var(--navy);line-height:1}
+.kpis span{font-size:11.5px;color:var(--taupe);letter-spacing:.04em}
+.review{text-align:left;margin:0 0 18px}
+.review .it{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;font-size:14px}
+.review .it b{color:var(--navy);display:block;margin-bottom:3px}
+.review .it .a{color:var(--ok);font-weight:600}
+.review .it .y{color:var(--bad)}
+/* sections */
+.sec{padding:22px 20px 0}
+.sec h3{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:22px;color:var(--navy);margin:0 0 12px}
+.tile{display:flex;gap:14px;align-items:center;padding:16px;border-radius:20px;background:#fff;border:1px solid var(--line);margin-bottom:12px;width:100%;text-align:left}
+.tile .ic{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;flex:none;background:var(--sand);color:var(--gold-d)}
+.tile.dark{background:var(--navy);border-color:var(--navy);color:#fff}
+.tile.dark .ic{background:rgba(217,198,165,.15);color:var(--gold-l)}
+.tile b{display:block;font-size:16px;font-weight:700}
+.tile span{font-size:13px;color:var(--taupe)}
+.tile.dark span{color:#CFC6B8}
+.tile .go{margin-left:auto;opacity:.6}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--navy);font-size:13px;background:var(--sand);padding:4px 9px;border-radius:9px}
+.empty{color:var(--taupe);font-size:14px;padding:6px 0 0}
+.mods .m{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.mods .m .n{font-family:"Cormorant Garamond",serif;font-size:20px;color:var(--gold);width:28px}
+.mods .m b{font-weight:600;color:var(--navy);font-size:14.5px;display:block}
+.mods .m .bar{margin:5px 0 0;height:6px}
+.mods .m em{font-style:normal;font-size:12px;color:var(--taupe);margin-left:auto;white-space:nowrap}
+.hist .h{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.pill{font-size:11px;font-weight:700;padding:3px 8px;border-radius:8px}
+.pill.p{background:#E4F0E6;color:var(--ok)}.pill.f{background:#F7E5E1;color:var(--bad)}
+.cert{margin:0 20px;padding:22px;border-radius:22px;background:var(--navy-d);color:#fff;text-align:center;position:relative;overflow:hidden}
+.cert::before{content:"";position:absolute;left:50%;top:14px;width:150px;height:190px;margin-left:-75px;border:1px solid rgba(217,198,165,.35);border-radius:75px 75px 0 0}
+.cert *{position:relative}
+.cert b{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:500;display:block}
+.cert span{color:var(--gold-l);font-size:13px}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
+.toast{position:fixed;top:20px;left:50%;transform:translate(-50%,-140%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:14px;font-weight:600;font-size:14px;z-index:50;transition:transform .3s}
+.toast.on{transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="veil" id="veil"></div>
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+<script src="content.js"></script>
+<script>
+(function(){
+var C=window.COURSE, KEY='ad-train-v1', app=document.getElementById('app');
+var ROM=['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+var EXAM_N=25, EXAM_MIN=20, PASS=0.8, XP_CARD=2, XP_Q=10;
+var S=load();
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY)||'{}');}catch(e){var s={};}
+  return Object.assign({lessons:{},best:{},done:{},xp:0,streak:{n:0,last:''},wrong:{},exams:[]},s);}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function today(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function bumpStreak(){var t=today();if(S.streak.last===t)return;var y=new Date();y.setDate(y.getDate()-1);var ys=y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();S.streak.n=(S.streak.last===ys?S.streak.n:0)+1;S.streak.last=t;}
+function addXP(n){S.xp+=n;bumpStreak();save();}
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var ICO={
+ x:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+ fire:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3 1-6 1-8.5z"/></svg>',
+ star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.4 7L12 17.8 5.8 21.2l1.4-7L2 9.4l7-.8z"/></svg>',
+ path:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="5" r="2.5"/><circle cx="17" cy="12" r="2.5"/><circle cx="7" cy="19" r="2.5"/><path d="M9 6.5l6 4M15 13.5l-6 4"/></svg>',
+ test:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>',
+ me:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+ check:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+ lock:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+ book:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/></svg>',
+ quiz:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .8-1 1.5V14M12 17.5v.01"/></svg>',
+ chev:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>',
+ trophy:'<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M9 17h6"/></svg>',
+ bolt:'<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
+ redo:'<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.5-5.8L4 8.5M4 4v4.5h4.5"/></svg>'
+};
+// helpers on progress
+function lessonDone(mi,li){return !!S.lessons[C[mi].id+'-'+li];}
+function lessonsDone(mi){return C[mi].lessons.every(function(_,li){return lessonDone(mi,li)});}
+function modDone(mi){return !!S.done[C[mi].id];}
+function unlocked(mi){return mi===0||modDone(mi-1);}
+function modPct(mi){var m=C[mi],tot=m.lessons.length+1,d=m.lessons.filter(function(_,li){return lessonDone(mi,li)}).length+(modDone(mi)?1:0);return d/tot;}
+function totalPct(){var t=0;C.forEach(function(_,i){t+=modPct(i)});return t/C.length;}
+function allQ(){var a=[];C.forEach(function(m,mi){m.quiz.forEach(function(q,qi){a.push(Object.assign({id:m.id+'-'+qi,mod:mi},q))})});return a;}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function toast(t){var e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on')},1800);}
+function chips(){return '<div class="chips"><span class="chip">'+ICO.fire+S.streak.n+'</span><span class="chip">'+ICO.star+S.xp+' XP</span></div>';}
+// ---------- tabs ----------
+var tab='leren', timerId=null;
+function tabs(){return '<nav class="tabs">'+[['leren','Leren',ICO.path],['toets','Toetsen',ICO.test],['ik','Voortgang',ICO.me]].map(function(t){return '<button data-tab="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'">'+t[2]+t[1]+'</button>'}).join('')+'</nav>';}
+function bindTabs(){app.querySelectorAll('[data-tab]').forEach(function(b){b.onclick=function(){tab=b.dataset.tab;home();}});}
+function home(){clearInterval(timerId);closeSheet();({leren:vLearn,toets:vTest,ik:vMe})[tab]();bindTabs();window.scrollTo(0,0);}
+// ---------- learn (path) ----------
+function vLearn(){
+  var cur=-1;for(var i=0;i<C.length;i++){if(unlocked(i)&&!modDone(i)){cur=i;break;}}
+  var pct=Math.round(totalPct()*100), nd=C.filter(function(_,i){return modDone(i)}).length;
+  var h='<div class="scr"><header class="top"><div class="row"><div class="brand"><img src="img/logo.png" alt="Aedes Dei Academy"></div>'+chips()+'</div>'+
+   '<h1>Venapunctie<br><em>training</em></h1><p>Leer, oefen en test jezelf, stap voor stap.</p>'+
+   '<div class="bar"><i style="width:'+pct+'%"></i></div><div class="meta"><span>'+nd+' van '+C.length+' modules</span><span>'+pct+'%</span></div></header><div class="path">';
+  C.forEach(function(m,mi){
+    var st=modDone(mi)?'done':unlocked(mi)?'open':'lock', off=[0,-62,0,62][mi%4], p=modPct(mi), r=36, L=2*Math.PI*r;
+    if(mi) h+='<div class="conn" style="transform:translateX('+((off+[0,-62,0,62][(mi-1)%4])/2)+'px)"></div>';
+    h+='<div class="unit" style="transform:translateX('+off+'px)">'+(mi===cur?'<span class="start">'+(p>0?'GA VERDER':'START')+'</span>':'')+
+      '<button class="node '+st+(mi===cur?' cur':'')+'" data-mod="'+mi+'" aria-label="'+esc(m.t)+'">'+
+      (st!=='lock'?'<svg class="ring" viewBox="0 0 78 78"><circle cx="39" cy="39" r="'+r+'" fill="none" stroke="#E9DFD2" stroke-width="4"/><circle cx="39" cy="39" r="'+r+'" fill="none" stroke="#B99A6B" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+(L*p)+' '+L+'"/></svg>':'')+
+      '<span class="core">'+(st==='done'?ICO.check:st==='lock'?ICO.lock:ROM[mi])+'</span></button>'+
+      '<div class="ulabel"><b>'+esc(m.t)+'</b><span>'+esc(m.s)+'</span></div></div>';
+  });
+  var allDone=C.every(function(_,i){return modDone(i)});
+  h+='<button class="final" data-go="exam" style="width:calc(100% - 40px);text-align:left"><span class="ic" style="color:var(--gold-l)">'+ICO.trophy+'</span><span><b>Eindexamen</b><span>'+(allDone?'Alle modules af: tijd voor het examen!':EXAM_N+' vragen · '+EXAM_MIN+' minuten · '+Math.round(PASS*100)+'% om te slagen')+'</span></span></button></div></div>'+tabs();
+  app.innerHTML=h;
+  app.querySelectorAll('[data-mod]').forEach(function(b){b.onclick=function(){var mi=+b.dataset.mod;if(!unlocked(mi)){toast('Rond eerst module '+ROM[mi-1]+' af');return;}openModule(mi);}});
+  app.querySelector('[data-go=exam]').onclick=function(){startQuiz('exam');};
+  var c=app.querySelector('.cur');if(c&&cur>1)setTimeout(function(){c.scrollIntoView({block:'center',behavior:'smooth'})},250);
+}
+// ---------- module sheet ----------
+function openModule(mi){
+  var m=C[mi], sh=document.getElementById('sheet'), ld=lessonsDone(mi);
+  var h='<div class="grab"></div><div class="kick">Module '+ROM[mi]+'</div><h2>'+esc(m.t)+'</h2><div style="color:var(--taupe);font-size:14px">'+esc(m.s)+'</div><div class="list">';
+  m.lessons.forEach(function(l,li){var d=lessonDone(mi,li),lk=li>0&&!lessonDone(mi,li-1);
+    h+='<button class="li '+(d?'ok':'')+(lk?' lk':'')+'" data-l="'+li+'"><span class="dot">'+(d?ICO.check:ICO.book)+'</span><span><b>'+esc(l.t)+'</b><span>Les '+(li+1)+' · '+l.cards.length+' kaarten</span></span><span class="go">'+(lk?ICO.lock:ICO.chev)+'</span></button>';});
+  var best=S.best[m.id];
+  h+='<button class="li '+(modDone(mi)?'ok':'')+(ld?'':' lk')+'" data-q><span class="dot">'+(modDone(mi)?ICO.check:ICO.quiz)+'</span><span><b>Moduletoets</b><span>'+m.quiz.length+' vragen'+(best!=null?' · beste score '+best+'/'+m.quiz.length:' · 80% om af te ronden')+'</span></span><span class="go">'+(ld?ICO.chev:ICO.lock)+'</span></button></div>';
+  var next=m.lessons.findIndex(function(_,li){return !lessonDone(mi,li)});
+  h+='<div style="margin-top:18px">'+(next>=0?'<button class="btn gold" data-start>'+(next?'Verder met les '+(next+1):'Start les 1')+'</button>':'<button class="btn gold" data-startq>'+(modDone(mi)?'Toets opnieuw doen':'Start de moduletoets')+'</button>')+'</div>';
+  sh.innerHTML=h;openSheet();
+  sh.querySelectorAll('[data-l]').forEach(function(b){b.onclick=function(){var li=+b.dataset.l;if(li>0&&!lessonDone(mi,li-1)){toast('Doe eerst les '+li);return;}lesson(mi,li);}});
+  sh.querySelector('[data-q]').onclick=function(){if(!lessonsDone(mi)){toast('Rond eerst alle lessen af');return;}startQuiz('mod',mi);};
+  var s1=sh.querySelector('[data-start]');if(s1)s1.onclick=function(){lesson(mi,next);};
+  var s2=sh.querySelector('[data-startq]');if(s2)s2.onclick=function(){startQuiz('mod',mi);};
+}
+function openSheet(){document.getElementById('sheet').classList.add('on');document.getElementById('veil').classList.add('on');}
+function closeSheet(){document.getElementById('sheet').classList.remove('on');document.getElementById('veil').classList.remove('on');}
+document.getElementById('veil').onclick=closeSheet;
+// ---------- lesson player ----------
+function lesson(mi,li){
+  closeSheet();var m=C[mi],l=m.lessons[li],i=0;
+  function draw(){var c=l.cards[i];
+    app.innerHTML='<div class="scr full"><div class="ph"><button class="x" data-x>'+ICO.x+'</button><div class="bar"><i style="width:'+((i+1)/l.cards.length*100)+'%"></i></div><span class="cnt">'+(i+1)+'/'+l.cards.length+'</span></div>'+
+     '<div class="card"><div class="kick">Module '+ROM[mi]+' · '+esc(l.t)+'</div><h2>'+c.h+'</h2>'+(c.img?'<div class="img"><img src="img/'+c.img+'" alt=""></div>':'')+'<div class="body">'+c.b+'</div></div>'+
+     '<div class="foot" style="display:flex;gap:10px">'+(i?'<button class="btn ghost" data-prev style="width:auto;padding:15px 20px">Terug</button>':'')+'<button class="btn" data-next>'+(i<l.cards.length-1?'Doorgaan':'Les afronden')+'</button></div></div>';
+    window.scrollTo(0,0);app.querySelector('.scr').scrollTop=0;
+    app.querySelector('[data-x]').onclick=home;
+    var p=app.querySelector('[data-prev]');if(p)p.onclick=function(){i--;draw();};
+    app.querySelector('[data-next]').onclick=function(){if(i<l.cards.length-1){i++;draw();return;}
+      var first=!lessonDone(mi,li);S.lessons[m.id+'-'+li]=1;addXP(first?XP_CARD*l.cards.length:2);
+      lessonDoneScreen(mi,li,first);};
+  }
+  draw();
+}
+function lessonDoneScreen(mi,li,first){
+  var m=C[mi], nextL=li+1<m.lessons.length;
+  app.innerHTML='<div class="scr full"><div class="res"><div class="medal">'+ICO.check.replace('width="22" height="22"','width="60" height="60"')+'</div><h2>Les afgerond!</h2><p>'+esc(m.lessons[li].t)+(first?' · +'+(XP_CARD*m.lessons[li].cards.length)+' XP':'')+'</p>'+
+   '<div class="kpis"><div><b>'+S.streak.n+'</b><span>DAGEN REEKS</span></div><div><b>'+S.xp+'</b><span>XP TOTAAL</span></div></div>'+
+   (nextL?'<button class="btn gold" data-a>Volgende les</button>':'<button class="btn gold" data-a>Naar de moduletoets</button>')+'<div style="height:10px"></div><button class="btn ghost" data-h>Terug naar overzicht</button></div></div>';
+  if(first)confetti();
+  app.querySelector('[data-a]').onclick=function(){nextL?lesson(mi,li+1):startQuiz('mod',mi);};
+  app.querySelector('[data-h]').onclick=home;
+}
+// ---------- quiz engine ----------
+// mode: mod (module test) | exam (timed, feedback at end) | practice (10 random) | wrong (mistakes)
+function startQuiz(mode,mi){
+  closeSheet();var qs;
+  if(mode==='mod')qs=C[mi].quiz.map(function(q,qi){return Object.assign({id:C[mi].id+'-'+qi,mod:mi},q)});
+  else if(mode==='exam')qs=shuffle(allQ()).slice(0,EXAM_N);
+  else if(mode==='practice')qs=shuffle(allQ()).slice(0,10);
+  else{var w=S.wrong;qs=allQ().filter(function(q){return w[q.id]});if(!qs.length){toast('Geen fouten om te oefenen 🎉');return;}qs=shuffle(qs).slice(0,15);}
+  qs=qs.map(function(q){var order=shuffle(q.a.map(function(_,k){return k}));return Object.assign({},q,{order:order})});
+  var i=0,answers=[],sel=null,locked=false,end=mode==='exam'?Date.now()+EXAM_MIN*60000:0, instant=mode!=='exam';
+  var title={mod:'Moduletoets '+ROM[mi],exam:'Eindexamen',practice:'Oefenen',wrong:'Foutenbank'}[mode];
+  function tick(){var t=app.querySelector('.timer');if(!t)return;var s=Math.max(0,Math.round((end-Date.now())/1000));t.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(s<=0){clearInterval(timerId);finish(true);}}
+  function draw(){var q=qs[i];sel=null;locked=false;
+    app.innerHTML='<div class="scr full"><div class="ph"><button class="x" data-x>'+ICO.x+'</button><div class="bar"><i style="width:'+(i/qs.length*100)+'%"></i></div>'+(end?'<span class="timer">--:--</span>':'<span class="cnt">'+(i+1)+'/'+qs.length+'</span>')+'</div>'+
+     '<div class="card"><div class="kick">'+title+(end?' · vraag '+(i+1)+' van '+qs.length:'')+'</div><div class="q">'+esc(q.q)+'</div><div class="opts">'+
+     q.order.map(function(k,n){return '<button class="opt" data-k="'+k+'"><span class="k">'+'ABCD'[n]+'</span><span>'+esc(q.a[k])+'</span></button>'}).join('')+'</div></div>'+
+     '<div class="foot"><button class="btn" data-check disabled>'+(instant?'Controleren':(i<qs.length-1?'Volgende':'Inleveren'))+'</button></div></div><div class="fb" id="fb"></div>';
+    app.querySelector('[data-x]').onclick=function(){if(confirmLeave())home();};
+    app.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){if(locked)return;app.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel')});b.classList.add('sel');sel=+b.dataset.k;app.querySelector('[data-check]').disabled=false;}});
+    app.querySelector('[data-check]').onclick=check;
+    if(end){tick();}
+  }
+  function confirmLeave(){return i===0&&sel===null||window.confirm('Stoppen? Je voortgang in deze toets gaat verloren.');}
+  function check(){if(sel===null||locked)return;var q=qs[i],ok=sel===q.c;answers.push({q:q,sel:sel,ok:ok});
+    if(ok){if(S.wrong[q.id]){delete S.wrong[q.id];}}else S.wrong[q.id]=(S.wrong[q.id]||0)+1;save();
+    if(!instant){next();return;}
+    locked=true;
+    app.querySelectorAll('.opt').forEach(function(o){var k=+o.dataset.k;if(k===q.c)o.classList.add('right');else if(k===sel)o.classList.add('wrong');o.classList.remove('sel');});
+    var fb=document.getElementById('fb');fb.className='fb on '+(ok?'good':'nope');
+    fb.innerHTML='<h3>'+(ok?ICO.check+' '+['Goed zo!','Uitstekend!','Helemaal juist!','Top!'][Math.floor(Math.random()*4)]:ICO.x+' Niet helemaal')+'</h3><p>'+(ok?'':'Juist antwoord: <b>'+esc(q.a[q.c])+'</b>. ')+esc(q.e)+'</p><button class="btn '+(ok?'ok':'bad')+'" data-n>'+(i<qs.length-1?'Doorgaan':'Bekijk resultaat')+'</button>';
+    fb.querySelector('[data-n]').onclick=next;
+  }
+  function next(){i++;if(i<qs.length)draw();else finish(false);}
+  function finish(timeout){clearInterval(timerId);
+    qs.slice(answers.length).forEach(function(q){answers.push({q:q,sel:null,ok:false})});
+    var score=answers.filter(function(a){return a.ok}).length,n=qs.length,pass=score/n>=PASS;
+    var xp=score*XP_Q/(mode==='mod'&&modDone(mi)?2:1);addXP(Math.round(xp));
+    var newly=false;
+    if(mode==='mod'){var id=C[mi].id;S.best[id]=Math.max(S.best[id]||0,score);if(pass&&!S.done[id]){S.done[id]=1;newly=true;}}
+    if(mode==='exam')S.exams.unshift({d:new Date().toLocaleDateString('nl-NL'),s:score,n:n,p:pass});
+    save();
+    var msg=mode==='mod'?(pass?(newly?'Module '+ROM[mi]+' afgerond! '+(mi<C.length-1?'Module '+ROM[mi+1]+' is nu open.':'Je kunt nu het eindexamen doen.'):'Weer geslaagd voor deze module.'):'Je hebt '+Math.ceil(n*PASS)+' goed nodig. Lees de lessen nog eens en probeer opnieuw.')
+      :mode==='exam'?(timeout?'De tijd is om. ':'')+(pass?'Gefeliciteerd, je bent geslaagd voor het eindexamen!':'Nog niet geslaagd: je hebt '+Math.ceil(n*PASS)+' goed nodig.'):'Fouten komen in je foutenbank, zodat je ze later kunt herhalen.';
+    var wrong=answers.filter(function(a){return !a.ok});
+    app.innerHTML='<div class="scr full"><div class="res"><div class="medal'+(pass||mode==='practice'||mode==='wrong'?'':' fail')+'">'+score+'/'+n+'</div>'+
+      '<h2>'+(pass?(mode==='exam'?'Geslaagd!':'Goed gedaan!'):(mode==='exam'||mode==='mod')?'Bijna!':'Klaar!')+'</h2><p>'+msg+'</p>'+
+      '<div class="kpis"><div><b>'+Math.round(score/n*100)+'%</b><span>SCORE</span></div><div><b>+'+Math.round(xp)+'</b><span>XP</span></div><div><b>'+S.streak.n+'</b><span>REEKS</span></div></div>'+
+      (wrong.length?'<div class="review"><div class="kick" style="margin-bottom:8px">Nakijken</div>'+wrong.map(function(a){return '<div class="it"><b>'+esc(a.q.q)+'</b>'+(a.sel!=null?'<span class="y">Jouw antwoord: '+esc(a.q.a[a.sel])+'</span><br>':'<span class="y">Niet beantwoord</span><br>')+'<span class="a">Juist: '+esc(a.q.a[a.q.c])+'</span><div style="color:var(--taupe);margin-top:3px">'+esc(a.q.e)+'</div></div>'}).join('')+'</div>':'')+
+      (mode==='mod'&&!pass?'<button class="btn gold" data-r>Opnieuw proberen</button><div style="height:10px"></div>':'')+
+      (mode==='mod'&&pass&&mi<C.length-1?'<button class="btn gold" data-nm>Naar module '+ROM[mi+1]+'</button><div style="height:10px"></div>':'')+
+      (mode==='exam'&&!pass?'<button class="btn gold" data-r>Examen opnieuw</button><div style="height:10px"></div>':'')+
+      '<button class="btn ghost" data-h>Terug naar overzicht</button></div></div>';
+    if(pass)confetti();
+    var r=app.querySelector('[data-r]');if(r)r.onclick=function(){startQuiz(mode,mi)};
+    var nm=app.querySelector('[data-nm]');if(nm)nm.onclick=function(){tab='leren';home();openModule(mi+1);};
+    app.querySelector('[data-h]').onclick=function(){if(mode==='exam'||mode==='practice'||mode==='wrong')tab='toets';home();};
+  }
+  draw();if(end){timerId=setInterval(tick,1000);}
+}
+// ---------- test tab ----------
+function vTest(){
+  var wn=Object.keys(S.wrong).length, last=S.exams[0];
+  app.innerHTML='<div class="scr"><header class="top"><div class="row"><div class="brand"><img src="img/logo.png" alt=""></div>'+chips()+'</div><h1>Test <em>jezelf</em></h1><p>Zoals een theorie-examen: oefen tot je het zeker weet.</p></header>'+
+   '<div class="sec"><button class="tile dark" data-m="exam"><span class="ic">'+ICO.trophy+'</span><span><b>Eindexamen</b><span>'+EXAM_N+' willekeurige vragen · '+EXAM_MIN+' min · '+Math.round(PASS*100)+'% om te slagen</span></span><span class="go">'+ICO.chev+'</span></button>'+
+   '<button class="tile" data-m="practice"><span class="ic">'+ICO.bolt+'</span><span><b>Snel oefenen</b><span>10 willekeurige vragen met direct uitleg</span></span><span class="go">'+ICO.chev+'</span></button>'+
+   '<button class="tile" data-m="wrong"><span class="ic">'+ICO.redo+'</span><span><b>Foutenbank</b><span>'+(wn?wn+' vraag'+(wn>1?'en':'')+' om te herhalen':'Nog geen fouten. Goed bezig!')+'</span></span><span class="go">'+ICO.chev+'</span></button></div>'+
+   '<div class="sec"><h3>Per module</h3>'+C.map(function(m,mi){return '<button class="tile" data-mod="'+mi+'" style="padding:12px 14px'+(lessonsDone(mi)?'':';opacity:.55')+'"><span class="ic" style="width:40px;height:40px;font-family:Cormorant Garamond,serif;font-size:19px;font-weight:600">'+ROM[mi]+'</span><span><b style="font-size:15px">'+esc(m.t)+'</b><span>'+(S.best[m.id]!=null?'Beste: '+S.best[m.id]+'/'+m.quiz.length:m.quiz.length+' vragen')+(lessonsDone(mi)?'':' · eerst de lessen')+'</span></span><span class="go">'+(modDone(mi)?'<span style="color:var(--ok)">'+ICO.check+'</span>':ICO.chev)+'</span></button>'}).join('')+'</div>'+
+   (last?'<div class="sec"><h3>Laatste examens</h3><div class="hist">'+S.exams.slice(0,5).map(function(e){return '<div class="h"><span>'+e.d+'</span><span>'+e.s+'/'+e.n+' &nbsp;<span class="pill '+(e.p?'p">Geslaagd':'f">Niet geslaagd')+'</span></span></div>'}).join('')+'</div></div>':'')+
+   '<div style="height:20px"></div></div>'+tabs();
+  app.querySelectorAll('[data-m]').forEach(function(b){b.onclick=function(){startQuiz(b.dataset.m)}});
+  app.querySelectorAll('[data-mod]').forEach(function(b){b.onclick=function(){var mi=+b.dataset.mod;if(!lessonsDone(mi)){toast('Rond eerst de lessen van module '+ROM[mi]+' af');return;}startQuiz('mod',mi)}});
+}
+// ---------- me tab ----------
+function vMe(){
+  var nd=C.filter(function(_,i){return modDone(i)}).length, passed=S.exams.some(function(e){return e.p}), tq=allQ().length;
+  app.innerHTML='<div class="scr"><header class="top"><div class="row"><div class="brand"><img src="img/logo.png" alt=""></div>'+chips()+'</div><h1>Jouw <em>voortgang</em></h1><p>'+(S.name?esc(S.name)+' · ':'')+Math.round(totalPct()*100)+'% van de training voltooid</p></header>'+
+   '<div class="sec"><div class="kpis"><div><b>'+nd+'/'+C.length+'</b><span>MODULES</span></div><div><b>'+S.xp+'</b><span>XP</span></div><div><b>'+S.streak.n+'</b><span>DAGEN REEKS</span></div></div></div>'+
+   (passed&&nd===C.length?'<div class="cert"><div style="color:var(--gold-l);margin-bottom:6px">'+ICO.trophy+'</div><span>AEDES DEI ACADEMY</span><b>Training venapunctie<br>theorie voltooid</b><span>'+(S.name?esc(S.name)+' · ':'')+S.exams.find(function(e){return e.p}).d+'</span></div>':'')+
+   '<div class="sec"><h3>Modules</h3><div class="mods">'+C.map(function(m,mi){return '<div class="m"><span class="n">'+ROM[mi]+'</span><span style="flex:1"><b>'+esc(m.t)+'</b><div class="bar lt"><i style="width:'+Math.round(modPct(mi)*100)+'%"></i></div></span><em>'+(modDone(mi)?'✓ Klaar':Math.round(modPct(mi)*100)+'%')+'</em></div>'}).join('')+'</div></div>'+
+   '<div class="sec"><h3>Instellingen</h3><button class="tile" data-name><span class="ic">'+ICO.me+'</span><span><b>Jouw naam</b><span>'+(S.name?esc(S.name):'Voor op je certificaat')+'</span></span><span class="go">'+ICO.chev+'</span></button>'+
+   '<button class="tile" data-reset><span class="ic" style="color:var(--bad)">'+ICO.redo+'</span><span><b>Voortgang wissen</b><span>Opnieuw beginnen op dit apparaat</span></span></button>'+
+   '<p class="empty">Je voortgang wordt op dit apparaat bewaard. '+tq+' oefenvragen in '+C.length+' modules. Gebaseerd op het Cursusboek Venapunctie, editie 2026.</p></div><div style="height:20px"></div></div>'+tabs();
+  app.querySelector('[data-name]').onclick=function(){var n=prompt('Jouw naam',S.name||'');if(n!==null){S.name=n.trim().slice(0,60);save();vMe();bindTabs();}};
+  app.querySelector('[data-reset]').onclick=function(){if(confirm('Alle voortgang op dit apparaat wissen?')){localStorage.removeItem(KEY);S=load();vMe();bindTabs();}};
+}
+// ---------- confetti ----------
+function confetti(){var c=document.createElement('canvas');c.className='confetti';document.body.appendChild(c);var x=c.getContext('2d'),W=c.width=innerWidth,H=c.height=innerHeight;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){c.remove();return;}
+  var P=[],cols=['#B99A6B','#D9C6A5','#25394B','#E3C891','#8F7146'];for(var i=0;i<110;i++)P.push({x:W/2,y:H/3,vx:(Math.random()-.5)*14,vy:Math.random()*-13-3,r:Math.random()*6+3,c:cols[i%5],a:Math.random()*6});
+  var t=0;(function f(){x.clearRect(0,0,W,H);P.forEach(function(p){p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.a+=.15;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();});if(++t<120)requestAnimationFrame(f);else c.remove();})();}
+home();
+})();
+</script>
+</body></html>
